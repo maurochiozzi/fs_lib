@@ -1,6 +1,6 @@
 #include "body.h"
 
-#include "space.h"
+#include "../space/space.h"
 
 void initBody(Body *body) {
     setCoordinate(&body->position, 0.0, 0.0, 0.0);

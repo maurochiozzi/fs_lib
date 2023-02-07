@@ -1,7 +1,7 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-#include "space.h"
+#include "../space/space.h"
 
 typedef struct
 {

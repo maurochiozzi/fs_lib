@@ -1,10 +1,9 @@
 #ifndef BEACON_H
 #define BEACON_H
 
-#include "space.h"
+#include "../space/space.h"
 
-typedef struct
-{
+typedef struct Beacon {
     Coordinate position;
 
     float frequency;
