@@ -1,5 +1,5 @@
-#ifndef FIELD_H
-#define FIELD_H
+#ifndef SPACE_H
+#define SPACE_H
 
 // defines a spacial position
 typedef struct

@@ -1,7 +1,7 @@
 #ifndef BODY_H
 #define BODY_H
 
-#include "field.h"
+#include "space.h"
 
 typedef struct
 {

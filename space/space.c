@@ -1,6 +1,5 @@
-#include "field.h"
-
 #include "math.h"
+#include "space.h"
 
 void setCoordinate(Coordinate *point, float x, float y, float z) {
     point->x = x;
