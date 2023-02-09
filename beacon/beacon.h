@@ -4,10 +4,13 @@
 #include "../space/space.h"
 
 typedef struct Beacon {
-    Coordinate position;
-
     float frequency;
     float magnetic_moment_rms;
+
+    Coordinate position;
+
+    int survey_status;  // 0 will be undiscovered and 1 discovered
+
 } Beacon;
 
 void initBeacon(Beacon *beacon);

@@ -11,6 +11,7 @@
                 "${workspaceFolder}\\body\\*.c",
                 "${workspaceFolder}\\space\\*.c",
                 "${workspaceFolder}\\beacon\\*.c",
+                "${workspaceFolder}\\station\\*.c",
                 "${workspaceFolder}\\environment\\*.c",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"

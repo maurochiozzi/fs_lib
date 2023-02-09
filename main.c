@@ -4,6 +4,7 @@
 #include "beacon/beacon.h"
 #include "body/body.h"
 #include "space/space.h"
+#include "station/station.h"
 
 #define PREVIOUS_POSITIONS_SIZE 10
 
@@ -12,19 +13,19 @@ Body *previous_positions;
 int previous_position_index;
 
 // stores beacons frequency, magnetic moment and location
-#define MAX_REACHABLE_BEACONS 5
+int amount_of_beacons_available;
 
 Beacon *beacons;
 
 // An array of nodes will define a environment boundary
-#define MAX_ENVIRONMENT_NODES 4
+#define MAX_ENVIRONMENT_NODES 3
 
 Coordinate *environment;
 
 // stores magnetic space samples
 #define MAGNETIC_INTENSITY_SAMPLE_SIZE ;
 
-int magnetic_intensity_samples;
+int magnetic_intensity_index;
 Vector **magnetic_intensity_samples;
 
 int init();
@@ -33,8 +34,6 @@ int initBeacons();
 int initEnvironments();
 
 int initSensors();
-
-int fetchData(Beacon *beacons, Coordinate *environment);
 
 int fetchBeaconsData(Beacon *beacons);
 int fetchEnvironmentBoundaries(Coordinate *environment);
@@ -45,8 +44,6 @@ int acquireBodyPosition();
 
 int main(void) {
     init();
-
-    fetchData(beacons, environment);
 
     surveyBeacons(beacons, environment);
 
@@ -73,44 +70,32 @@ int init() {
 int initPreviousPositionArray() {
     previous_position_index = 0;
 
-    previous_positions = (Body *)malloc(PREVIOUS_POSITIONS_SIZE);
+    previous_positions = (Body *)malloc(PREVIOUS_POSITIONS_SIZE * sizeof(Body));
 
     return 0;
 }
 
 int initBeacons() {
-    beacons = (Beacon *)malloc(MAX_REACHABLE_BEACONS);
+    amount_of_beacons_available = requestStationNumberOfBeacons();
+
+    beacons = (Beacon *)malloc(amount_of_beacons_available * sizeof(Beacon));
+
+    for (int index = 0; index < amount_of_beacons_available; index++) {
+        initBeacon(&beacons[index]);
+    }
+
+    requestBeaconsInformation(beacons, amount_of_beacons_available);
 
     return 0;
 }
 
 int initEnvironments() {
-    environment = (Coordinate *)malloc(MAX_ENVIRONMENT_NODES);
+    environment = (Coordinate *)malloc(MAX_ENVIRONMENT_NODES * sizeof(Coordinate));
 
     return 0;
 }
 
 int initSensors() {
-    return 0;
-}
-
-int fetchData(Beacon *beacons, Coordinate *environment) {
-    printf("Fetching data...\n");
-
-    // fetch beacon informations (frequency and magnetic moment) from station
-    fetchBeaconsData(beacons);
-
-    // fetch environment boundaries from station
-    fetchEnvironmentBoundaries(environment);
-
-    return 0;
-}
-
-int fetchBeaconsData(Beacon *beacons) {
-    return 0;
-}
-
-int fetchEnvironmentBoundaries(Coordinate *environment) {
     return 0;
 }
 
@@ -122,6 +107,23 @@ int surveyBeacons(Beacon *beacons, Coordinate *environment) {
 
 int acquireBodyPosition() {
     printf("Acquiring position...\n");
+
+    char buf[] = "0.100;0.8foo40;0.030;;;;0.460;0.760bar;-0.090trash";
+    char *err, *p = buf;
+    double val;
+    while (*p) {
+        val = strtod(p, &err);
+        if (p == err)
+            p++;
+        else if ((err == NULL) || (*err == 0)) {
+            printf("Value: %f\n", val);
+            break;
+        } else {
+            printf("Value: %f\n", val);
+            p = err + 1;
+        }
+    }
+    return 0;
 
     while (1) {
         // while (magnetic_instensity_samples < MAGNETIC_SAMPLE_SIZE) {

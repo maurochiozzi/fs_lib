@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "space.h": "c",
-        "body.h": "c"
+        "body.h": "c",
+        "station_communication.h": "c",
+        "beacon.h": "c",
+        "station.h": "c"
     }
 }
