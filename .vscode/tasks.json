@@ -8,7 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${workspaceFolder}\\*.c",
-                "${workspaceFolder}\\body\\*.c",
+                "${workspaceFolder}\\device\\*.c",
                 "${workspaceFolder}\\space\\*.c",
                 "${workspaceFolder}\\beacon\\*.c",
                 "${workspaceFolder}\\station\\*.c",

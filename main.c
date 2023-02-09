@@ -2,14 +2,14 @@
 #include <stdlib.h>
 
 #include "beacon/beacon.h"
-#include "body/body.h"
+#include "device/device.h"
 #include "space/space.h"
 #include "station/station.h"
 
 #define PREVIOUS_POSITIONS_SIZE 10
 
-Body body;
-Body *previous_positions;
+Device device;
+Device *previous_positions;
 int previous_position_index;
 
 // stores beacons frequency, magnetic moment and location
@@ -29,7 +29,7 @@ int magnetic_intensity_index;
 Vector **magnetic_intensity_samples;
 
 int init();
-int initPreviousPositionArray(Body *previous_positions);
+int initPreviousPositionArray(Device *previous_positions);
 int initBeacons(Beacon *beacons);
 int initEnvironments(Coordinate *environment);
 
@@ -37,14 +37,14 @@ int initSensors();
 
 int surveyBeacons(Beacon *beacons, Coordinate *environment);
 
-int acquireBodyPosition();
+int acquireDevicePosition();
 
 int main(void) {
     init();
 
     surveyBeacons(beacons, environment);
 
-    acquireBodyPosition();
+    acquireDevicePosition();
 
     return 0;
 }
@@ -52,7 +52,7 @@ int main(void) {
 int init() {
     printf("Initializing...\n");
 
-    initBody(&body);
+    initDevice(&device);
     initPreviousPositionArray(previous_positions);
 
     initBeacons(beacons);
@@ -62,10 +62,10 @@ int init() {
     return 0;
 }
 
-int initPreviousPositionArray(Body *previous_positions) {
+int initPreviousPositionArray(Device *previous_positions) {
     previous_position_index = 0;
 
-    previous_positions = (Body *)malloc(PREVIOUS_POSITIONS_SIZE * sizeof(Body));
+    previous_positions = (Device *)malloc(PREVIOUS_POSITIONS_SIZE * sizeof(Device));
 
     // its not required to init it with positions at zero
 
@@ -102,7 +102,7 @@ int surveyBeacons(Beacon *beacons, Coordinate *environment) {
     return 0;
 }
 
-int acquireBodyPosition() {
+int acquireDevicePosition() {
     printf("Acquiring position...\n");
 
     char buf[] = "0.100;0.8foo40;0.030;;;;0.460;0.760bar;-0.090trash";
