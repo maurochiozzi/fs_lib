@@ -29,14 +29,11 @@ int magnetic_intensity_index;
 Vector **magnetic_intensity_samples;
 
 int init();
-int initPreviousPositionArray();
-int initBeacons();
-int initEnvironments();
+int initPreviousPositionArray(Body *previous_positions);
+int initBeacons(Beacon *beacons);
+int initEnvironments(Coordinate *environment);
 
 int initSensors();
-
-int fetchBeaconsData(Beacon *beacons);
-int fetchEnvironmentBoundaries(Coordinate *environment);
 
 int surveyBeacons(Beacon *beacons, Coordinate *environment);
 
@@ -56,26 +53,26 @@ int init() {
     printf("Initializing...\n");
 
     initBody(&body);
+    initPreviousPositionArray(previous_positions);
 
-    printf("Body position (%.2f, %.2f, %.2f)\n", body.heading.x, body.heading.y, body.heading.z);
-
-    initPreviousPositionArray();
-    initBeacons();
-    initEnvironments();
+    initBeacons(beacons);
+    initEnvironments(environment);
     initSensors();
 
     return 0;
 }
 
-int initPreviousPositionArray() {
+int initPreviousPositionArray(Body *previous_positions) {
     previous_position_index = 0;
 
     previous_positions = (Body *)malloc(PREVIOUS_POSITIONS_SIZE * sizeof(Body));
 
+    // its not required to init it with positions at zero
+
     return 0;
 }
 
-int initBeacons() {
+int initBeacons(Beacon *beacons) {
     amount_of_beacons_available = requestStationNumberOfBeacons();
 
     beacons = (Beacon *)malloc(amount_of_beacons_available * sizeof(Beacon));
@@ -89,7 +86,7 @@ int initBeacons() {
     return 0;
 }
 
-int initEnvironments() {
+int initEnvironments(Coordinate *environment) {
     environment = (Coordinate *)malloc(MAX_ENVIRONMENT_NODES * sizeof(Coordinate));
 
     return 0;
