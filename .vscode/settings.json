@@ -4,6 +4,7 @@
         "device.h": "c",
         "station_communication.h": "c",
         "beacon.h": "c",
-        "station.h": "c"
+        "station.h": "c",
+        "indexer.h": "c"
     }
 }

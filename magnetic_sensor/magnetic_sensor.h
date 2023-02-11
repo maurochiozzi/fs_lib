@@ -1,6 +1,7 @@
 #ifndef MAGNETIC_SENSOR_H
 #define MAGNETIC_SENSOR_H
 
+#include "../indexer/indexer.h"
 #include "../space/space.h"
 
 typedef struct
@@ -16,16 +17,14 @@ typedef struct
     int sample_size;
     float *samples;
 
-    int sample_index;
-    int buffer_index;
+    Indexer indexer;
 
 } MagneticSensor;
 
-void initSensor(MagneticSensor sensor, int i2c);
+void initMagneticSensor(MagneticSensor sensor, int i2c);
 
 int addSample(MagneticSensor sensor, Vector vector);
-int incrementSampleIndex(MagneticSensor sensor);
-void mutexSampleCache(MagneticSensor sensor);
+
 void resetSampleCache(MagneticSensor sensor);
 
 #endif
