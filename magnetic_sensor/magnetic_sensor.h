@@ -8,13 +8,16 @@ typedef struct
     int address;
 
     // Position of the sensor inside of the device
-    Coordinate position;
+    Coordinate device_position;
+
+    // Position of the sensor in respect of the beacons
+    Coordinate local_position;
 
     int sample_size;
-    float **samples;
+    float *samples;
 
     int sample_index;
-    int sample_cache;
+    int buffer_index;
 
 } MagneticSensor;
 

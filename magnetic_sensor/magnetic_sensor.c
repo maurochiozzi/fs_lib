@@ -3,36 +3,42 @@
 #include "../space/space.h"
 
 void initSensor(MagneticSensor sensor, int i2c) {
-    // pass
+    // init sensor buffer
+    sensor.samples = (float*)malloc(sizeof(float) * 2 * sensor.sample_size);
+
+    // init sensor connection
 }
 
 int addSample(MagneticSensor sensor, Vector vector) {
-    sensor.samples[sensor.sample_cache][sensor.sample_index] = norm(vector);
+    sensor.samples[sensor.sample_index] = norm(vector);
 
     return incrementSampleIndex(sensor);
 }
 
 int incrementSampleIndex(MagneticSensor sensor) {
-    sensor.sample_index = (sensor.sample_index + 1) % sensor.sample_size;
+    sensor.sample_index = (sensor.sample_index + 1) % 2 * sensor.sample_size;
 
-    if (sensor.sample_index == 0) {
+    int increment_buffer = sensor.sample_index % sensor.sample_size;
+
+    if (increment_buffer == 0) {
         mutexSampleCache(sensor);
     }
 
-    return sensor.sample_index != 0;
+    return increment_buffer;
 }
 
 void mutexSampleCache(MagneticSensor sensor) {
-    sensor.sample_cache = (sensor.sample_cache + 1) % 2;
+    sensor.buffer_index = (sensor.buffer_index + 1) % 2;
 }
 
 /**
  * This function will reset the cache of the previous filled cache.
  */
 void resetSampleCache(MagneticSensor sensor) {
-    const int previous_cache_index = (sensor.sample_cache + 1) % 2;
+    const int previous_cache_index = (sensor.buffer_index + 1) % 2;
 
-    for (int index = 0; index < sensor.sample_size; index++) {
-        sensor.samples[previous_cache_index][index] = 0.0;
+    for (int index = sensor.buffer_index * sensor.sample_size;
+         index < (sensor.buffer_index + 1) * sensor.sample_size; index++) {
+        sensor.samples[index] = 0.0;
     }
 }
