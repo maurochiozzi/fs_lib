@@ -18,6 +18,7 @@ typedef struct Vector {
 void setCoordinate(Coordinate *point, float x, float y, float z);
 void setVector(Vector *vector, float x, float y, float z);
 
+float norm(Vector vector);
 float euclideanDistance2(Coordinate point_a, Coordinate point_b);
 
 #endif

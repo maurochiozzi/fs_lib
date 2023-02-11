@@ -89,6 +89,9 @@ int initBeacons(Beacon *beacons) {
 int initEnvironments(Coordinate *environment) {
     environment = (Coordinate *)malloc(MAX_ENVIRONMENT_NODES * sizeof(Coordinate));
 
+    // doesn't need to init coordinates since the environment data
+    // will be fetched from station
+
     return 0;
 }
 
