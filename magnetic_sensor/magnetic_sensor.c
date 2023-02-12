@@ -1,5 +1,7 @@
 #include "magnetic_sensor.h"
 
+#include <stdlib.h>
+
 #include "../indexer/indexer.h"
 #include "../space/space.h"
 #include "../spectrum/spectrum.h"

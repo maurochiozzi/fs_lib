@@ -3,8 +3,11 @@
 
 #include <complex.h>
 #include <math.h>
+#include <stdlib.h>
 
 #include "../indexer/indexer.h"
+
+float complex* angles;
 
 void initSpectrumAngles(int sample_size) {
     angles = (float complex*)malloc(sizeof(float complex) * sample_size * sample_size);
