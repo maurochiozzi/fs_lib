@@ -15,7 +15,9 @@
                 "${workspaceFolder}\\station\\*.c",
                 "${workspaceFolder}\\spectrum\\*.c",
                 "${workspaceFolder}\\environment\\*.c",
-                "${workspaceFolder}\\magneic_sensor\\*.c",
+                "${workspaceFolder}\\trilateration\\*.c",
+                "${workspaceFolder}\\magnetic_sensor\\*.c",
+
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
