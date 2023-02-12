@@ -6,7 +6,7 @@
 
 void initMagneticSensor(MagneticSensor sensor, int i2c) {
     // init sensor buffer
-    sensor.samples = (float*)malloc(sizeof(float) * 2 * sensor.sample_size);
+    sensor.samples = (float *)malloc(sizeof(float) * 2 * sensor.sample_size);
     sensor.indexer.sample_size = sensor.sample_size;
 
     // init sensor connection
@@ -20,6 +20,24 @@ int addSample(MagneticSensor sensor, Vector vector) {
     updateSpectrum(sensor.spectrum, sample, sensor.samples, sensor.indexer);
 
     return incrementIndex(sensor.indexer);
+}
+
+void getMagneticSignalStrength(MagneticSensor sensor,
+                               Beacon *beacons,
+                               MagneticSignalStrength *magnetic_signal_strength,
+                               int amount_of_beacons,
+                               int reference) {
+    magnetic_signal_strength = (MagneticSignalStrength *)malloc(
+        sizeof(MagneticSensor) * amount_of_beacons);
+
+    for (int index = 0; index < amount_of_beacons; index++) {
+        magnetic_signal_strength[index].reference =
+            reference == BEACON ? beacons[index].position : sensor.device_position;
+
+        magnetic_signal_strength[index].intensity =
+            getIntensity(sensor.spectrum, beacons[index].spectrum_window,
+                         sensor.indexer);
+    }
 }
 
 /**
