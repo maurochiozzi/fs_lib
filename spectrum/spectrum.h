@@ -14,8 +14,12 @@ typedef struct
 
 } Spectrum;
 
-void initSpectrumAnalysis(int sample_size);
+void initSpectrumAngles(int sample_size);
+
 void initSpectrum(Spectrum spectrum);
-void update(Spectrum spectrum, const float sample, const float *samples, int index);
+void updateSpectrum(Spectrum spectrum, const float sample,
+                    const float *samples, Indexer indexer);
+
+float getIntensity(Spectrum spectrum, int window, Indexer indexer);
 
 #endif

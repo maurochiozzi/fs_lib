@@ -2,6 +2,7 @@
 
 #include "../indexer/indexer.h"
 #include "../space/space.h"
+#include "../spectrum/spectrum.h"
 
 void initMagneticSensor(MagneticSensor sensor, int i2c) {
     // init sensor buffer
@@ -12,7 +13,11 @@ void initMagneticSensor(MagneticSensor sensor, int i2c) {
 }
 
 int addSample(MagneticSensor sensor, Vector vector) {
-    sensor.samples[sensor.indexer.sample] = norm(vector);
+    const float sample = norm(vector);
+
+    sensor.samples[sensor.indexer.sample] = sample;
+
+    updateSpectrum(sensor.spectrum, sample, sensor.samples, sensor.indexer);
 
     return incrementIndex(sensor.indexer);
 }

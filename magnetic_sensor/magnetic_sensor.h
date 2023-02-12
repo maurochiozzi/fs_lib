@@ -3,6 +3,7 @@
 
 #include "../indexer/indexer.h"
 #include "../space/space.h"
+#include "../spectrum/spectrum.h"
 
 typedef struct
 {
@@ -16,6 +17,8 @@ typedef struct
 
     int sample_size;
     float *samples;
+
+    Spectrum spectrum;
 
     Indexer indexer;
 
