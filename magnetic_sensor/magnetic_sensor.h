@@ -6,8 +6,7 @@
 #include "../space/space.h"
 #include "../spectrum/spectrum.h"
 
-typedef struct
-{
+typedef struct MagneticSensor {
     int address;
 
     // Position of the sensor inside of the device
@@ -25,26 +24,15 @@ typedef struct
 
 } MagneticSensor;
 
-typedef struct
-{
-    Coordinate reference;
-    Coordinate destination;
-
-    float intensity;
-} MagneticSignalStrength;
-
-enum Reference { BEACON,
-                 SENSOR };
-
 void initMagneticSensor(MagneticSensor sensor, int i2c);
 
-int addSample(MagneticSensor sensor, Vector vector);
+Vector sampleMagneticSignal(MagneticSensor sensor);
 
-void getMagneticSignalStrength(MagneticSensor sensor,
-                               Beacon *beacons,
-                               MagneticSignalStrength *magnetic_signal_strength,
-                               int amount_of_beacons,
-                               int reference);
+int addSampleMagneticSignal(MagneticSensor sensor, Vector vector);
+
+float getMagneticSignalStrength(MagneticSensor sensor, Beacon beacon);
+
+float getDistanceFromSensor(MagneticSensor sensor, Beacon beacon);
 
 void resetSampleCache(MagneticSensor sensor);
 

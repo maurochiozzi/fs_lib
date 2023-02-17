@@ -1,5 +1,6 @@
 #include "magnetic_sensor.h"
 
+#include <math.h>
 #include <stdlib.h>
 
 #include "../indexer/indexer.h"
@@ -14,7 +15,13 @@ void initMagneticSensor(MagneticSensor sensor, int i2c) {
     // init sensor connection
 }
 
-int addSample(MagneticSensor sensor, Vector vector) {
+Vector sampleMagneticSignal(MagneticSensor sensor) {
+    Vector vector = {.x = 0.0, .y = 0.0, .z = 0.0};
+
+    return vector;
+}
+
+int addSampleMagneticSignal(MagneticSensor sensor, Vector vector) {
     const float sample = norm(vector);
 
     sensor.samples[sensor.indexer.sample] = sample;
@@ -24,22 +31,17 @@ int addSample(MagneticSensor sensor, Vector vector) {
     return incrementIndex(sensor.indexer);
 }
 
-void getMagneticSignalStrength(MagneticSensor sensor,
-                               Beacon *beacons,
-                               MagneticSignalStrength *magnetic_signal_strength,
-                               int amount_of_beacons,
-                               int reference) {
-    magnetic_signal_strength = (MagneticSignalStrength *)malloc(
-        sizeof(MagneticSensor) * amount_of_beacons);
+float getMagneticSignalStrength(MagneticSensor sensor, Beacon beacon) {
+    return getIntensity(sensor.spectrum, beacon.spectrum_window,
+                        sensor.indexer);
+}
 
-    for (int index = 0; index < amount_of_beacons; index++) {
-        magnetic_signal_strength[index].reference =
-            reference == BEACON ? beacons[index].position : sensor.device_position;
+float getDistanceFromSensor(MagneticSensor sensor, Beacon beacon) {
+    float magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
 
-        magnetic_signal_strength[index].intensity =
-            getIntensity(sensor.spectrum, beacons[index].spectrum_window,
-                         sensor.indexer);
-    }
+    float distance = cbrt(beacon.magnetic_moment_rms / magnetic_signal_strength * 1000000);
+
+    return distance;
 }
 
 /**

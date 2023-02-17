@@ -3,17 +3,18 @@
 
 #include "beacon/beacon.h"
 #include "device/device.h"
+#include "magnetic_sensor/magnetic_sensor.h"
 #include "space/space.h"
 #include "station/station.h"
 
-#define PREVIOUS_POSITIONS_SIZE 10
-
 Device device;
 Device *previous_positions;
+
 int previous_position_index;
+const int device_position_history_size = 10;
 
 // stores beacons frequency, magnetic moment and location
-int amount_of_beacons_available;
+int amount_of_beacons;
 
 Beacon *beacons;
 
@@ -22,11 +23,12 @@ Beacon *beacons;
 
 Coordinate *environment;
 
-// stores magnetic space samples
-#define MAGNETIC_INTENSITY_SAMPLE_SIZE ;
+// stores magnetic data
+const int sample_size = 110;
+const int sample_rate = 220;  // Hz
 
-int magnetic_intensity_index;
-Vector **magnetic_intensity_samples;
+const int amount_of_magnetic_sensor = 3;
+MagneticSensor magnetic_sensors[3];
 
 int init();
 int initPreviousPositionArray(Device *previous_positions);
@@ -53,6 +55,12 @@ int init() {
     printf("Initializing...\n");
 
     initDevice(&device);
+
+    printf("%0.2f,%0.2f,%0.2f\n",
+           device.position.x,
+           device.position.y,
+           device.position.z);
+
     initPreviousPositionArray(previous_positions);
 
     initBeacons(beacons);
@@ -65,7 +73,7 @@ int init() {
 int initPreviousPositionArray(Device *previous_positions) {
     previous_position_index = 0;
 
-    previous_positions = (Device *)malloc(PREVIOUS_POSITIONS_SIZE * sizeof(Device));
+    previous_positions = (Device *)malloc(device_position_history_size * sizeof(Device));
 
     // its not required to init it with positions at zero
 
@@ -73,15 +81,15 @@ int initPreviousPositionArray(Device *previous_positions) {
 }
 
 int initBeacons(Beacon *beacons) {
-    amount_of_beacons_available = requestStationNumberOfBeacons();
+    amount_of_beacons = requestStationNumberOfBeacons();
 
-    beacons = (Beacon *)malloc(amount_of_beacons_available * sizeof(Beacon));
+    beacons = (Beacon *)malloc(amount_of_beacons * sizeof(Beacon));
 
-    for (int index = 0; index < amount_of_beacons_available; index++) {
-        initBeacon(&beacons[index]);
+    requestBeaconsInformation(beacons, amount_of_beacons);
+
+    for (int index = 0; index < amount_of_beacons; index++) {
+        initBeacon(beacons[index], sample_rate, sample_size);
     }
-
-    requestBeaconsInformation(beacons, amount_of_beacons_available);
 
     return 0;
 }
@@ -96,11 +104,27 @@ int initEnvironments(Coordinate *environment) {
 }
 
 int initSensors() {
+    for (int index = 0; index < amount_of_magnetic_sensor; index++) {
+        initMagneticSensor(magnetic_sensors[index], 0);
+    }
+
     return 0;
 }
 
 int surveyBeacons(Beacon *beacons, Coordinate *environment) {
     printf("Surveying beacons...\n");
+
+    for (int sample = 0; sample < sample_size; sample++) {
+        for (int index = 0; index < amount_of_magnetic_sensor; index++) {
+            Vector vector = sampleMagneticSignal(magnetic_sensors[index]);
+            addSampleMagneticSignal(magnetic_sensors[index], vector);
+        }
+    }
+
+    for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
+        for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+        }
+    }
 
     return 0;
 }
@@ -108,26 +132,9 @@ int surveyBeacons(Beacon *beacons, Coordinate *environment) {
 int acquireDevicePosition() {
     printf("Acquiring position...\n");
 
-    char buf[] = "0.100;0.8foo40;0.030;;;;0.460;0.760bar;-0.090trash";
-    char *err, *p = buf;
-    double val;
-    while (*p) {
-        val = strtod(p, &err);
-        if (p == err)
-            p++;
-        else if ((err == NULL) || (*err == 0)) {
-            printf("Value: %f\n", val);
-            break;
-        } else {
-            printf("Value: %f\n", val);
-            p = err + 1;
-        }
-    }
-    return 0;
-
     while (1) {
-        // while (magnetic_instensity_samples < MAGNETIC_SAMPLE_SIZE) {
-        //     sample_magnetic_space(&magnetic_space_samples, magnetic_instensity_samples);
+        // while (magnetic_intensity_samples < MAGNETIC_SAMPLE_SIZE) {
+        //     sample_magnetic_space(&magnetic_space_samples, magnetic_intensity_samples);
 
         //     update_magnetic_space_spectrum(&magnetic_space_samples);
         // }

@@ -5,6 +5,9 @@
         "station_communication.h": "c",
         "beacon.h": "c",
         "station.h": "c",
-        "indexer.h": "c"
+        "indexer.h": "c",
+        "stdlib.h": "c",
+        "magnetic_sensor.h": "c",
+        "math.h": "c"
     }
 }

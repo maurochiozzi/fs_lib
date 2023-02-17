@@ -3,9 +3,9 @@
 int incrementIndex(Indexer indexer) {
     indexer.sample = (indexer.sample + 1) % 2 * indexer.sample_size;
 
-    int increment_buffer = indexer.sample % indexer.sample_size;
+    int increment_buffer = indexer.sample % indexer.sample_size == 0;
 
-    if (increment_buffer == 0) {
+    if (increment_buffer == 1) {
         mutexSampleCache(indexer);
     }
 

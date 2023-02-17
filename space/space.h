@@ -15,6 +15,15 @@ typedef struct Vector {
     float z;
 } Vector;
 
+/**
+ * A segment defined by its origin and magnitude
+ */
+typedef struct Segment {
+    Coordinate reference;
+
+    float magnitude;
+} Segment;
+
 void setCoordinate(Coordinate *point, float x, float y, float z);
 void setVector(Vector *vector, float x, float y, float z);
 

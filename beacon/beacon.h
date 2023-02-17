@@ -11,11 +11,11 @@ typedef struct Beacon {
 
     Coordinate position;
 
-    float accuracy;
+    float precision;
     int survey_status;  // 0 will be undiscovered and 1 discovered
 
 } Beacon;
 
-void initBeacon(Beacon beacon);
+void initBeacon(Beacon beacon, int sample_rate, int sample_size);
 
 #endif
