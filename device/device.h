@@ -11,8 +11,8 @@ typedef struct
     Coordinate position;
     Vector heading;
 
-    MagneticSensor *sensors;
-    int amount_of_sensors;
+    MagneticSensor *magnetic_sensors;
+    int amount_of_magnetic_sensors;
 
 } Device;
 
@@ -25,6 +25,6 @@ void updatePosition(Device *device, Coordinate position, Vector heading);
 
 void getCoordinates(Device *device, Environment *environment, int reference);
 
-Coordinate estimateDevicePosition(Device *device, Environment *environment);
+void estimateDevicePosition(Device *device, Environment *environment);
 
 #endif

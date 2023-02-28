@@ -17,9 +17,9 @@ void updatePosition(Device *device, Coordinate position, Vector heading) {
     device->heading = heading;
 }
 
-void getCoordinates(Device *device, Beacon *beacons,
-                    const int amount_of_beacons, int reference) {
-    const int amount_of_magnetic_sensor = device->amount_of_sensors;
+void getCoordinates(Device *device, Environment *environment, int reference) {
+    const int amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
+    const int amount_of_beacons = environment->amount_of_beacons;
 
     Segment *segments = (Segment *)malloc(sizeof(Segment) *
                                           amount_of_magnetic_sensor * amount_of_beacons);
@@ -30,10 +30,10 @@ void getCoordinates(Device *device, Beacon *beacons,
 
     // Build the matrix of distances [s x b]
     for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
-        current_sensor = &device->sensors[sensor_index];
+        current_sensor = &device->magnetic_sensors[sensor_index];
 
         for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
-            current_beacon = &beacons[beacon_index];
+            current_beacon = &environment->beacons[beacon_index];
 
             current_segment = &segments[sensor_index * amount_of_magnetic_sensor + beacon_index];
 
@@ -54,7 +54,7 @@ void getCoordinates(Device *device, Beacon *beacons,
                 references[sensor_index] = segments[sensor_index * base_index];
             }
 
-            beacons[beacon_index].position =
+            environment->beacons[beacon_index].position =
                 getSpacePosition(references, amount_of_magnetic_sensor);
         }
 
@@ -68,7 +68,7 @@ void getCoordinates(Device *device, Beacon *beacons,
                 references[beacon_index] = segments[beacon_index * base_index];
             }
 
-            device->sensors[sensor_index].local_position =
+            device->magnetic_sensors[sensor_index].local_position =
                 getSpacePosition(references, amount_of_beacons);
         }
     }
@@ -77,14 +77,17 @@ void getCoordinates(Device *device, Beacon *beacons,
     free(segments);
 }
 
-Coordinate getDevicePosition(Device *device) {
-    Coordinate position;
+void estimateDevicePosition(Device *device, Environment *environment) {
+    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
 
-    for (int index = 0; index < available_points; index++) {
-        position.x += coordinates[index].x / available_points;
-        position.y += coordinates[index].y / available_points;
-        position.z += coordinates[index].z / available_points;
+    Coordinate *device_position = &device->position;
+    Coordinate *sensor_position;
+
+    for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+        sensor_position = &device->magnetic_sensors[sensor_index].local_position;
+
+        device_position->x += sensor_position->x / amount_of_magnetic_sensors;
+        device_position->y += sensor_position->y / amount_of_magnetic_sensors;
+        device_position->z += sensor_position->z / amount_of_magnetic_sensors;
     }
-
-    return position;
 }
