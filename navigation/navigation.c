@@ -1,4 +1,4 @@
-#include "trilateration.h"
+#include "navigation.h"
 
 #include "../space/space.h"
 

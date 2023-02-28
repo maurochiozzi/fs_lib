@@ -14,8 +14,8 @@
                 "${workspaceFolder}\\indexer\\*.c",
                 "${workspaceFolder}\\station\\*.c",
                 "${workspaceFolder}\\spectrum\\*.c",
+                "${workspaceFolder}\\navigation\\*.c",
                 "${workspaceFolder}\\environment\\*.c",
-                "${workspaceFolder}\\trilateration\\*.c",
                 "${workspaceFolder}\\magnetic_sensor\\*.c",
 
                 "-o",

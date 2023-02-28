@@ -1,6 +1,6 @@
-#ifndef TRILATERATION_H
+#ifndef NAVIGATION_H
 
-#define TRILATERATION_H
+#define NAVIGATION_H
 
 #include "../space/space.h"
 

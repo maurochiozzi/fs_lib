@@ -4,8 +4,8 @@
 
 #include "../beacon/beacon.h"
 #include "../magnetic_sensor/magnetic_sensor.h"
+#include "../navigation/navigation.h"
 #include "../space/space.h"
-#include "../trilateration/trilateration.h"
 
 void initDevice(Device *device) {
     setCoordinate(&device->position, 0.0, 0.0, 0.0);
