@@ -11,7 +11,7 @@ Coordinate getSpacePosition(Segment *segments, int available_references) {
                            .y = 0.0,
                            .z = 0.0};
 
-    if (available_references == 3) {
+    if (available_references >= 3) {
         float A;
         float B;
         float C;

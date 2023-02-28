@@ -17,22 +17,24 @@ void updatePosition(Device *device, Coordinate position, Vector heading) {
     device->heading = heading;
 }
 
-void getCoordinates(Beacon *beacons, MagneticSensor *sensors,
-                    const int amount_of_beacons,
-                    const int amount_of_magnetic_sensor,
-                    int reference, Coordinate *coordinates) {
+void getCoordinates(Device *device, Beacon *beacons,
+                    const int amount_of_beacons, int reference) {
+    const int amount_of_magnetic_sensor = device->amount_of_sensors;
+
     Segment *segments = (Segment *)malloc(sizeof(Segment) *
-                                          amount_of_magnetic_sensor *
-                                          amount_of_beacons);
+                                          amount_of_magnetic_sensor * amount_of_beacons);
+    Segment *references;
     Segment *current_segment;
     Beacon *current_beacon;
     MagneticSensor *current_sensor;
 
-    // Build the matrix o distances [s x b]
+    // Build the matrix of distances [s x b]
     for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
+        current_sensor = &device->sensors[sensor_index];
+
         for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
             current_beacon = &beacons[beacon_index];
-            current_sensor = &sensors[sensor_index];
+
             current_segment = &segments[sensor_index * amount_of_magnetic_sensor + beacon_index];
 
             current_segment->magnitude = getDistanceFromSensor(*current_sensor, *current_beacon);
@@ -43,31 +45,39 @@ void getCoordinates(Beacon *beacons, MagneticSensor *sensors,
     }
 
     if (reference == BEACON) {
-        for (int beacon_index = 0; beacon_index < 3; beacon_index++) {
-            int base_index = beacon_index * 3;
+        references = (Segment *)malloc(sizeof(Segment) * amount_of_magnetic_sensor);
 
-            Segment references[] = {segments[base_index + 0],
-                                    segments[base_index + 1],
-                                    segments[base_index + 2]};
+        for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+            int base_index = amount_of_beacons + beacon_index;
 
-            coordinates[beacon_index] = getSpacePosition(references, 3);
+            for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index) {
+                references[sensor_index] = segments[sensor_index * base_index];
+            }
+
+            beacons[beacon_index].position =
+                getSpacePosition(references, amount_of_magnetic_sensor);
         }
+
     } else {
-        for (int beacon_index = 0; beacon_index < 3; beacon_index++) {
-            int base_index = beacon_index;
+        references = (Segment *)malloc(sizeof(Segment) * amount_of_beacons);
 
-            Segment references[] = {segments[base_index + 0],
-                                    segments[base_index + 3],
-                                    segments[base_index + 6]};
+        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
+            int base_index = sensor_index * amount_of_beacons;
 
-            coordinates[beacon_index] = getSpacePosition(references, 3);
+            for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index) {
+                references[beacon_index] = segments[beacon_index * base_index];
+            }
+
+            device->sensors[sensor_index].local_position =
+                getSpacePosition(references, amount_of_beacons);
         }
     }
 
+    free(references);
     free(segments);
 }
 
-Coordinate getDevicePosition(Coordinate *coordinates, int available_points) {
+Coordinate getDevicePosition(Device *device) {
     Coordinate position;
 
     for (int index = 0; index < available_points; index++) {
