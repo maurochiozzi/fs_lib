@@ -16,9 +16,6 @@ typedef struct
 
 } Device;
 
-enum Reference { BEACON,
-                 SENSOR };
-
 void initDevice(Device *device);
 
 void updatePosition(Device *device, Coordinate position, Vector heading);

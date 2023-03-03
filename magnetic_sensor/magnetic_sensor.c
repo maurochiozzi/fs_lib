@@ -36,7 +36,7 @@ float getMagneticSignalStrength(MagneticSensor sensor, Beacon beacon) {
                         sensor.indexer);
 }
 
-float getDistanceFromSensor(MagneticSensor sensor, Beacon beacon) {
+float calculateDistanceFromBeacon(MagneticSensor sensor, Beacon beacon) {
     float magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
 
     float distance = cbrt(beacon.magnetic_moment_rms / magnetic_signal_strength * 1000000);
