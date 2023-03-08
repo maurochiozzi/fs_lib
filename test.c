@@ -6,7 +6,7 @@
 int tests_run = 0;
 
 static char *all_tests() {
-    mu_run_test(device_all_tests);
+    mu_run_all_sub_tests(device_all_tests);
 
     return 0;
 }
