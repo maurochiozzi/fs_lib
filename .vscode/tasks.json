@@ -12,7 +12,6 @@
                 "${workspaceFolder}\\beacon\\*.c",
                 "${workspaceFolder}\\device\\*.c",
                 "${workspaceFolder}\\indexer\\*.c",
-                "${workspaceFolder}\\minunit\\*.c",
                 "${workspaceFolder}\\station\\*.c",
                 "${workspaceFolder}\\spectrum\\*.c",
                 "${workspaceFolder}\\navigation\\*.c",
