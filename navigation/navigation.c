@@ -1,5 +1,7 @@
 #include "navigation.h"
 
+#include <stdlib.h>
+
 #include "../beacon/beacon.h"
 #include "../device/device.h"
 #include "../environment/environment.h"
@@ -17,8 +19,8 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
                                                  amount_of_magnetic_sensors *
                                                  amount_of_beacons);
 
-    buildSegmentsMatrix(&device, &environment, &segments_matrix, SENSOR);
-    estimateMagneticSensorsPositions(&device, &environment, &segments_matrix);
+    buildSegmentsMatrix(device, environment, segments_matrix, SENSOR);
+    estimateMagneticSensorsPositions(device, environment, segments_matrix);
 
     free(segments_matrix);
 }
@@ -34,8 +36,8 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
                                                  amount_of_magnetic_sensors *
                                                  amount_of_beacons);
 
-    buildSegmentsMatrix(&device, &environment, &segments_matrix, BEACON);
-    estimateBeaconsPositions(&device, &environment, &segments_matrix);
+    buildSegmentsMatrix(device, environment, segments_matrix, BEACON);
+    estimateBeaconsPositions(device, environment, segments_matrix);
 
     free(segments_matrix);
 }
