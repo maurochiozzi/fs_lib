@@ -6,6 +6,8 @@
 #include "../space/space.h"
 #include "../spectrum/spectrum.h"
 
+#define MAGNETIC_SENSOR_INITIALIZATION_CHECK_SUM 6
+
 typedef struct MagneticSensor {
     int address;
 
@@ -15,6 +17,7 @@ typedef struct MagneticSensor {
     // Position of the sensor in respect of the beacons
     Coordinate local_position;
 
+    int amount_of_buffers;
     int sample_size;
     float *samples;
 
@@ -22,18 +25,25 @@ typedef struct MagneticSensor {
 
     Indexer indexer;
 
+    int initialized;
+
 } MagneticSensor;
 
-void initMagneticSensor(MagneticSensor sensor, int i2c);
+void initMagneticSensor(MagneticSensor *sensor,
+                        unsigned int sample_size,
+                        unsigned int amount_of_buffers,
+                        int i2c);
+
+int isMagneticSensorInitialized(MagneticSensor *sensor);
 
 Vector sampleMagneticSignal(MagneticSensor sensor);
 
-int addSampleMagneticSignal(MagneticSensor sensor, Vector vector);
+int addSampleMagneticSignal(MagneticSensor *sensor, Vector vector);
 
 float getMagneticSignalStrength(MagneticSensor sensor, Beacon beacon);
 
 float calculateDistanceFromBeacon(MagneticSensor sensor, Beacon beacon);
 
-void resetSampleCache(MagneticSensor sensor);
+void resetSampleCache(MagneticSensor *sensor);
 
 #endif

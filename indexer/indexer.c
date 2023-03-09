@@ -1,17 +1,51 @@
 #include "indexer.h"
 
-int incrementIndex(Indexer indexer) {
-    indexer.sample = (indexer.sample + 1) % 2 * indexer.sample_size;
+void initIndexer(Indexer *indexer, int sample_size, int amount_of_buffers) {
+    if (sample_size <= 10 || amount_of_buffers < 1) return;
 
-    int increment_buffer = indexer.sample % indexer.sample_size == 0;
+    indexer->sample_size = sample_size;
+    indexer->amount_of_buffers = amount_of_buffers;
 
-    if (increment_buffer == 1) {
+    indexer->initialized = 1;
+}
+
+int isIndexerInitialized(Indexer *indexer) {
+    int check_sum = 0;
+
+    if (indexer->initialized == 1) {
+        check_sum++;
+    }
+
+    if (indexer->sample_size > 0) {
+        check_sum++;
+    }
+
+    if (indexer->amount_of_buffers > 0) {
+        check_sum++;
+    }
+
+    return check_sum == INDEXER_INITIALIZATION_CHECK_SUM;
+}
+
+int incrementIndex(Indexer *indexer) {
+    const int sample = indexer->sample;
+    const int sample_size = indexer->sample_size;
+    const int amount_of_buffers = indexer->amount_of_buffers;
+
+    indexer->sample = (sample + 1) %
+                      (amount_of_buffers *
+                       sample_size);
+
+    int increment_buffer = sample % sample_size == 0;
+
+    if (increment_buffer) {
         mutexSampleCache(indexer);
     }
 
     return increment_buffer;
 }
 
-void mutexSampleCache(Indexer indexer) {
-    indexer.buffer = (indexer.buffer + 1) % 2;
+void mutexSampleCache(Indexer *indexer) {
+    indexer->buffer = (indexer->buffer + 1) %
+                      indexer->amount_of_buffers;
 }

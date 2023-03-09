@@ -7,9 +7,13 @@
 #include "../navigation/navigation.h"
 #include "../space/space.h"
 
-void initDevice(Device *device) {
+void initDevice(Device *device, int amount_of_magnetic_sensors) {
+    if (amount_of_magnetic_sensors < 1) return;
+
     setCoordinate(&device->position, 0.0, 0.0, 0.0);
     setVector(&device->heading, 0.0, 0.0, 0.0);
+
+    device->amount_of_magnetic_sensors = amount_of_magnetic_sensors;
 
     device->magnetic_sensors =
         (MagneticSensor *)malloc(sizeof(MagneticSensor) * device->amount_of_magnetic_sensors);
@@ -17,29 +21,33 @@ void initDevice(Device *device) {
     device->initialized = 1;
 }
 
-int isDeviceReady(Device *device) {
+int isDeviceInitialized(Device *device) {
     Coordinate *position = &device->position;
     Vector *heading = &device->heading;
 
-    int check_sum_device_ready = 0;
+    int check_sum = 0;
 
     if (device->initialized) {
-        check_sum_device_ready++;
+        check_sum++;
+    }
+
+    if (device->amount_of_magnetic_sensors > 0) {
+        check_sum++;
     }
 
     if ((position->x == 0.0 &&
          position->y == 0.0 &&
          position->z == 0.0)) {
-        check_sum_device_ready++;
+        check_sum++;
     }
 
     if (heading->x == 0.0 &&
         heading->y == 0.0 &&
         heading->z == 0.0) {
-        check_sum_device_ready++;
+        check_sum++;
     }
 
-    return check_sum_device_ready == TOTAL_INITIALIZATION_CHECK_SUM;
+    return check_sum == DEVICE_INITIALIZATION_CHECK_SUM;
 }
 
 void updateDevicePosition(Device *device, Environment *environment) {

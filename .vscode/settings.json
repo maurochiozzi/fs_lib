@@ -9,6 +9,9 @@
         "stdlib.h": "c",
         "magnetic_sensor.h": "c",
         "math.h": "c",
-        "environment.h": "c"
+        "environment.h": "c",
+        "spectrum.h": "c",
+        "test_magnetic_sensor.h": "c",
+        "minunit.h": "c"
     }
 }
