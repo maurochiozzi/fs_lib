@@ -1,6 +1,7 @@
 #include "magnetic_sensor.h"
 
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "../indexer/indexer.h"
@@ -10,11 +11,15 @@
 void initMagneticSensor(MagneticSensor *sensor,
                         unsigned int sample_size,
                         unsigned int amount_of_buffers,
-                        int i2c) {
-    if (sample_size <= 10 || amount_of_buffers < 1) return;
+                        int i2c_address) {
+    sensor->initialized = 0;
+    sensor->address = -1;
+
+    if (sample_size <= 10 || amount_of_buffers < 1 || i2c_address < 0) return;
 
     sensor->sample_size = sample_size;
     sensor->amount_of_buffers = amount_of_buffers;
+    sensor->address = i2c_address;
 
     initIndexer(&sensor->indexer, sample_size, amount_of_buffers);
     initSpectrum(&sensor->spectrum, sample_size, amount_of_buffers);
@@ -31,7 +36,7 @@ void initMagneticSensor(MagneticSensor *sensor,
 int isMagneticSensorInitialized(MagneticSensor *sensor) {
     int check_sum = 0;
 
-    if (sensor->initialized) {
+    if (sensor->initialized == 1) {
         check_sum++;
     }
 

@@ -6,7 +6,7 @@
 #include "../minunit/minunit.h"
 #include "indexer.h"
 
-static char *test_indexer_ready() {
+static char *test_indexer_initialized() {
     Indexer indexer;
 
     initIndexer(&indexer, 110, 2);
@@ -17,18 +17,18 @@ static char *test_indexer_ready() {
     return 0;
 }
 
-static char *test_indexer_not_ready() {
+static char *test_indexer_not_initialized() {
     Indexer indexer;
 
     mu_assert("error, indexer initialization misinterpreting",
-              isIndexerInitialized(&indexer) != 0);
+              isIndexerInitialized(&indexer) == 0);
 
     return 0;
 }
 
 static char *indexer_all_tests() {
-    mu_run_test(test_indexer_ready);
-    mu_run_test(test_indexer_not_ready);
+    mu_run_test(test_indexer_not_initialized);
+    mu_run_test(test_indexer_initialized);
 
     return 0;
 }

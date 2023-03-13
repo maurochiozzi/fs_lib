@@ -1,5 +1,7 @@
 #include "indexer.h"
 
+#include <stdio.h>
+
 void initIndexer(Indexer *indexer, int sample_size, int amount_of_buffers) {
     if (sample_size <= 10 || amount_of_buffers < 1) return;
 
@@ -16,11 +18,11 @@ int isIndexerInitialized(Indexer *indexer) {
         check_sum++;
     }
 
-    if (indexer->sample_size > 0) {
+    if (indexer->sample_size > 10) {
         check_sum++;
     }
 
-    if (indexer->amount_of_buffers > 0) {
+    if (indexer->amount_of_buffers > 1) {
         check_sum++;
     }
 

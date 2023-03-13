@@ -6,7 +6,7 @@
 #include "../minunit/minunit.h"
 #include "magnetic_sensor.h"
 
-static char *test_magnetic_sensor_ready() {
+static char *test_magnetic_sensor_initialized() {
     MagneticSensor sensor;
 
     initMagneticSensor(&sensor, 110, 2, 0xE2);
@@ -17,18 +17,18 @@ static char *test_magnetic_sensor_ready() {
     return 0;
 }
 
-static char *test_magnetic_sensor_not_ready() {
+static char *test_magnetic_sensor_not_initialized() {
     MagneticSensor sensor;
 
     mu_assert("error, sensor initialization misinterpreting",
-              isMagneticSensorInitialized(&sensor) != 0);
+              isMagneticSensorInitialized(&sensor) == 0);
 
     return 0;
 }
 
 static char *magnetic_sensor_all_tests() {
-    mu_run_test(test_magnetic_sensor_ready);
-    mu_run_test(test_magnetic_sensor_not_ready);
+    mu_run_test(test_magnetic_sensor_not_initialized);
+    mu_run_test(test_magnetic_sensor_initialized);
 
     return 0;
 }
