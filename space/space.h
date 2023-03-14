@@ -15,6 +15,11 @@ typedef struct Vector {
     float z;
 } Vector;
 
+typedef struct Baseline {
+    Coordinate initial_point;
+    Coordinate ending_point;
+} Baseline;
+
 /**
  * A segment defined by its origin and magnitude
  */
@@ -28,6 +33,6 @@ void setCoordinate(Coordinate *point, float x, float y, float z);
 void setVector(Vector *vector, float x, float y, float z);
 
 float norm(Vector vector);
-float euclideanDistance2(Coordinate point_a, Coordinate point_b);
+float euclideanDistance2(Coordinate *start, Coordinate *end);
 
 #endif

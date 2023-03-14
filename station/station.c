@@ -9,6 +9,8 @@ int requestStationNumberOfBeacons() {
 }
 
 void requestBeaconsInformation(Beacon* beacons, int number_of_beacons) {
+    MagneticFieldSource* source;
+
     const float beacons_data[5][2] = {
         {10.0, 0.5},
         {16.0, 0.2},
@@ -17,7 +19,9 @@ void requestBeaconsInformation(Beacon* beacons, int number_of_beacons) {
         {64.0, 0.3}};
 
     for (int index = 0; index < number_of_beacons; index++) {
-        beacons[index].frequency = beacons_data[index][0];
-        beacons[index].magnetic_moment_rms = beacons_data[index][1];
+        source = &beacons[index].magnetic_field_source;
+
+        source->frequency = beacons_data[index][0];
+        source->magnetic_moment_rms = beacons_data[index][1];
     }
 }

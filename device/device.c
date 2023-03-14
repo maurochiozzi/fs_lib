@@ -18,10 +18,17 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
     device->amount_of_magnetic_sensors = amount_of_magnetic_sensors;
 
     device->magnetic_sensors = magnetic_sensors;
-    device->configured = 0;
+    device->magnetic_sensors_configured = 0;
+    device->baseline_configured = 0;
     device->ready = 0;
 
     device->initialized = 1;
+}
+
+void setBaseline(Device *device, Baseline *baseline) {
+    device->baseline = baseline;
+
+    device->baseline_configured = 1;
 }
 
 int isDeviceInitialized(Device *device) {
@@ -68,7 +75,7 @@ int isDeviceReady(Device *device) {
     }
 
     // If all sensors are correctly configured, check the flag as true
-    device->configured = 1;
+    device->magnetic_sensors_configured = 1;
     check_sum++;
 
     if (check_sum == DEVICE_READY_CHECK_SUM) device->ready = 1;

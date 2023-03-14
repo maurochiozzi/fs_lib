@@ -10,6 +10,7 @@ typedef struct
     Coordinate *edges;
 
     Beacon *beacons;
+
     int amount_of_beacons;
 
 } Environment;

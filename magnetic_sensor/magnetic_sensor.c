@@ -79,15 +79,15 @@ int addSampleMagneticSignal(MagneticSensor *sensor, Vector vector) {
     return incrementIndex(&sensor->indexer);
 }
 
-float getMagneticSignalStrength(MagneticSensor sensor, Beacon beacon) {
-    return getIntensity(sensor.spectrum, beacon.spectrum_window,
-                        sensor.indexer);
+float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon) {
+    return getSpectrumWindowIntensity(&sensor->spectrum, beacon->spectrum_window,
+                                      &sensor->indexer);
 }
 
-float calculateDistanceFromBeacon(MagneticSensor sensor, Beacon beacon) {
+float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
     float magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
 
-    float distance = cbrt(beacon.magnetic_moment_rms /
+    float distance = cbrt(beacon->magnetic_field_source.magnetic_moment_rms /
                           magnetic_signal_strength * 1000000);
 
     return distance;

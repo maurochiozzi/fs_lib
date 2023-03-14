@@ -14,16 +14,21 @@ typedef struct
     Coordinate position;
     Vector heading;
 
+    Baseline *baseline;
+
     MagneticSensor *magnetic_sensors;
     int amount_of_magnetic_sensors;
 
     int initialized;
-    int configured;
+    int magnetic_sensors_configured;
+    int baseline_configured;
     int ready;
 
 } Device;
 
 void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_magnetic_sensors);
+
+void setBaseline(Device *Device, Baseline *baseline);
 
 int isDeviceInitialized(Device *device);
 

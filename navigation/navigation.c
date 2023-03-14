@@ -60,10 +60,11 @@ void buildSegmentsMatrix(Device *device, Environment *environment,
             current_segment =
                 &segments_matrix[sensor_index * amount_of_magnetic_sensors + beacon_index];
 
-            current_segment->magnitude = calculateDistanceFromBeacon(*current_sensor, *current_beacon);
+            current_segment->magnitude = calculateDistanceFromBeacon(&current_sensor, &current_beacon);
 
-            current_segment->reference = reference == BEACON ? current_beacon->position
-                                                             : current_sensor->device_position;
+            current_segment->reference =
+                reference == BEACON ? current_beacon->magnetic_field_source.position
+                                    : current_sensor->device_position;
         }
     }
 }
@@ -110,7 +111,7 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
 
         calculatePositionByTrilateration(
             references, amount_of_magnetic_sensor,
-            &environment->beacons[beacon_index].position);
+            &environment->beacons[beacon_index].magnetic_field_source.position);
     }
 
     free(references);

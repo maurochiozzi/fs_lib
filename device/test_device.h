@@ -20,7 +20,7 @@ static char *test_device_initialization() {
     return 0;
 }
 
-static char *test_device_not_initialization() {
+static char *test_device_not_initialized() {
     Device device;
 
     mu_assert("error, device initialization misinterpreting",
@@ -80,7 +80,7 @@ static char *test_device_without_sensors() {
 }
 
 static char *device_all_tests() {
-    mu_run_test(test_device_not_initialization);
+    mu_run_test(test_device_not_initialized);
     mu_run_test(test_device_initialization);
     mu_run_test(test_device_not_ready);
     mu_run_test(test_device_ready);

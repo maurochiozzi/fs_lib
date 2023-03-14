@@ -12,6 +12,7 @@
         "environment.h": "c",
         "spectrum.h": "c",
         "test_magnetic_sensor.h": "c",
-        "minunit.h": "c"
+        "minunit.h": "c",
+        "magnetic_field.h": "c"
     }
 }

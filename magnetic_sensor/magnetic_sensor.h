@@ -40,9 +40,9 @@ Vector sampleMagneticSignal(MagneticSensor sensor);
 
 int addSampleMagneticSignal(MagneticSensor *sensor, Vector vector);
 
-float getMagneticSignalStrength(MagneticSensor sensor, Beacon beacon);
+float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon);
 
-float calculateDistanceFromBeacon(MagneticSensor sensor, Beacon beacon);
+float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon);
 
 void resetSampleCache(MagneticSensor *sensor);
 

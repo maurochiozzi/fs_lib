@@ -86,10 +86,10 @@ void updateSpectrum(Spectrum* spectrum, const float sample,
     }
 }
 
-float getIntensity(Spectrum spectrum, int window, Indexer indexer) {
+float getSpectrumWindowIntensity(Spectrum* spectrum, int window, Indexer* indexer) {
     float intensity;
 
-    intensity = spectrum.samples[indexer.buffer * indexer.sample_size + window];
+    intensity = spectrum->samples[indexer->buffer * indexer->sample_size + window];
 
     return intensity;
 }
