@@ -20,7 +20,7 @@ static char *test_environment_initialization() {
     beacons = (Beacon *)malloc(sizeof(Beacon) * amount_of_beacons);
 
     for (int index = 0; index < amount_of_beacons; index++) {
-                initBeacon(&beacons[index], 0.1, 55.0, 220, 110);
+        initBeacon(&beacons[index], 0.1, 55.0, 220, 110);
     }
 
     initEnvironment(&environment, beacons, edges, amount_of_beacons, amount_of_edges);
@@ -41,7 +41,7 @@ static char *test_environment_not_initialized() {
 }
 
 static char *environment_all_tests() {
-    // mu_run_test(test_environment_not_initialized);
+    mu_run_test(test_environment_not_initialized);
     mu_run_test(test_environment_initialization);
 
     return 0;

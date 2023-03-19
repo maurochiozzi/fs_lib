@@ -10,6 +10,7 @@
 #include "../magnetic_field/test_magnetic_field.h"
 #include "../magnetic_sensor/test_magnetic_sensor.h"
 #include "../minunit/minunit.h"
+#include "../navigation/test_navigation.h"
 #include "../spectrum/test_spectrum.h"
 
 static char *all_unit_tests() {
@@ -20,6 +21,7 @@ static char *all_unit_tests() {
     mu_run_all_sub_tests(magnetic_field_all_tests);
     mu_run_all_sub_tests(beacon_all_tests);
     mu_run_all_sub_tests(environment_all_tests);
+    mu_run_all_sub_tests(navigation_all_tests);
 
     return 0;
 }
