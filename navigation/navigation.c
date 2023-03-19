@@ -60,7 +60,7 @@ void buildSegmentsMatrix(Device *device, Environment *environment,
             current_segment =
                 &segments_matrix[sensor_index * amount_of_magnetic_sensors + beacon_index];
 
-            current_segment->magnitude = calculateDistanceFromBeacon(&current_sensor, &current_beacon);
+            current_segment->magnitude = calculateDistanceFromBeacon(current_sensor, current_beacon);
 
             current_segment->reference =
                 reference == BEACON ? current_beacon->magnetic_field_source.position

@@ -25,8 +25,8 @@ void initMagneticSensor(MagneticSensor *sensor,
     initSpectrum(&sensor->spectrum, sample_size, amount_of_buffers);
 
     // init sensor buffer
-    sensor->samples = (float *)malloc(sizeof(float) * amount_of_buffers * sensor->sample_size);
-    sensor->indexer.sample_size = sensor->sample_size;
+    sensor->samples = (float *)malloc(sizeof(float) * amount_of_buffers * sample_size);
+    sensor->indexer.sample_size = sample_size;
 
     // init sensor connection
 

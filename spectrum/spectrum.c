@@ -20,9 +20,9 @@ void initSpectrum(Spectrum* spectrum, int sample_size, int amount_of_buffers) {
 
     spectrum->samples = (float complex*)malloc(
         sizeof(float complex) *
-        spectrum->amount_of_buffers * spectrum->sample_size);
+        amount_of_buffers * sample_size);
 
-    spectrum->double_per_sample_size = 2.0 / spectrum->sample_size;
+    spectrum->double_per_sample_size = 2.0 / sample_size;
 
     initSpectrumAngles(sample_size);
 

@@ -10,17 +10,17 @@
 #include "../space/space.h"
 
 void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_magnetic_sensors) {
+    device->initialized = 0;
+
     if (amount_of_magnetic_sensors < 1) return;
+
+    device->baseline_configured = 0;
 
     setCoordinate(&device->position, 0.0, 0.0, 0.0);
     setVector(&device->heading, 0.0, 0.0, 0.0);
 
     device->amount_of_magnetic_sensors = amount_of_magnetic_sensors;
-
     device->magnetic_sensors = magnetic_sensors;
-    device->magnetic_sensors_configured = 0;
-    device->baseline_configured = 0;
-    device->ready = 0;
 
     device->initialized = 1;
 }
@@ -32,41 +32,10 @@ void setBaseline(Device *device, Baseline *baseline) {
 }
 
 int isDeviceInitialized(Device *device) {
-    Coordinate *position = &device->position;
-    Vector *heading = &device->heading;
-
-    int check_sum = 0;
-
-    if (device->initialized == 1) {
-        check_sum++;
-    }
-
-    if (device->amount_of_magnetic_sensors > 0) {
-        check_sum++;
-    }
-
-    if ((position->x == 0.0 &&
-         position->y == 0.0 &&
-         position->z == 0.0)) {
-        check_sum++;
-    }
-
-    if (heading->x == 0.0 &&
-        heading->y == 0.0 &&
-        heading->z == 0.0) {
-        check_sum++;
-    }
-
-    return check_sum == DEVICE_INITIALIZATION_CHECK_SUM;
-}
-
-int isDeviceReady(Device *device) {
-    int check_sum = 0;
-
-    check_sum += isDeviceInitialized(device);
+    if (device->initialized == 0) return 0;
 
     // Check if all magnetic sensors are correctly initialized
-    for (int index = 1; index < device->amount_of_magnetic_sensors; index++) {
+    for (int index = 0; index < device->amount_of_magnetic_sensors; index++) {
         if (isMagneticSensorInitialized(&device->magnetic_sensors[index]) == 0) {
             // If at least one sensor is wrongly initialized, device is not ready
 
@@ -74,15 +43,7 @@ int isDeviceReady(Device *device) {
         }
     }
 
-    // If all sensors are correctly configured, check the flag as true
-    device->magnetic_sensors_configured = 1;
-    check_sum++;
-
-    if (check_sum == DEVICE_READY_CHECK_SUM) device->ready = 1;
-
-    // return check_sum verification instead of ready status. If device is
-    // not properly initialized, it's not possible to know the value of 'ready'
-    return check_sum == DEVICE_READY_CHECK_SUM;
+    return device->amount_of_magnetic_sensors > 0 && device->initialized == 1;
 }
 
 void updateDevicePosition(Device *device, Environment *environment) {

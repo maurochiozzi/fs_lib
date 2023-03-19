@@ -5,22 +5,22 @@
 
 #include "../space/space.h"
 
-void initBeacon(Beacon *beacon, float magnetic_moment_rms, float frequency,
+void initBeacon(Beacon *beacon,
+                float magnetic_moment_rms, float frequency,
                 int sample_rate, int sample_size) {
     beacon->initialized = 0;
-    beacon->spectrum_window = -1;
+
+    if (sample_rate <= 0 || sample_size <= 0) return;
 
     beacon->check_sum = 0;
     beacon->check_prd = 1;
-
-    if (sample_rate <= 0 || sample_size <= 0) return;
 
     initMagneticFieldSource(&beacon->magnetic_field_source, magnetic_moment_rms, frequency);
 
     beacon->spectrum_window = beacon->magnetic_field_source.frequency * (sample_rate / sample_size);
     beacon->survey_status = 0;
 
-    beacon->initialized == 1;
+    beacon->initialized = 1;
 
     // Calculate check sum and product
     beacon->check_sum += beacon->initialized;
@@ -33,6 +33,8 @@ void initBeacon(Beacon *beacon, float magnetic_moment_rms, float frequency,
 }
 
 int isBeaconInitialized(Beacon *beacon) {
+    if (beacon && beacon->initialized == 0) return 0;
+
     float check_sum = 0;
     float check_prd = 1;
 

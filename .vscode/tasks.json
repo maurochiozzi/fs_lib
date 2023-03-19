@@ -18,9 +18,6 @@
                 "${workspaceFolder}\\environment\\*.c",
                 "${workspaceFolder}\\magnetic_field\\*.c",
                 "${workspaceFolder}\\magnetic_sensor\\*.c",
-                
-                
-
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],

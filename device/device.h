@@ -6,9 +6,6 @@
 #include "../magnetic_sensor/magnetic_sensor.h"
 #include "../space/space.h"
 
-#define DEVICE_INITIALIZATION_CHECK_SUM 4
-#define DEVICE_READY_CHECK_SUM 2
-
 typedef struct
 {
     Coordinate position;
@@ -19,10 +16,8 @@ typedef struct
     MagneticSensor *magnetic_sensors;
     int amount_of_magnetic_sensors;
 
-    int initialized;
-    int magnetic_sensors_configured;
     int baseline_configured;
-    int ready;
+    int initialized;
 
 } Device;
 
@@ -31,8 +26,6 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
 void setBaseline(Device *Device, Baseline *baseline);
 
 int isDeviceInitialized(Device *device);
-
-int isDeviceReady(Device *device);
 
 void updatePosition(Device *device, Coordinate position, Vector heading);
 
