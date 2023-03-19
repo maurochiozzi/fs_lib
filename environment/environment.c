@@ -9,6 +9,9 @@ void initEnvironment(Environment *environment, Beacon *beacons,
 
     if (amount_of_edges <= 0 || amount_of_beacons <= 0) return;
 
+    environment->check_sum = 0;
+    environment->check_prd = 1;
+
     environment->amount_of_edges = amount_of_edges;
     environment->amount_of_beacons = amount_of_beacons;
 
