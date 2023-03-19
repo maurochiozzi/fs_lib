@@ -40,7 +40,7 @@ static char *test_device_not_initialized() {
 }
 
 static char *device_all_tests() {
-    // mu_run_test(test_device_not_initialized);
+    mu_run_test(test_device_not_initialized);
     mu_run_test(test_device_initialization);
 
     return 0;

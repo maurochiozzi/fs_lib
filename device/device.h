@@ -17,6 +17,10 @@ typedef struct
     int amount_of_magnetic_sensors;
 
     int baseline_configured;
+
+    int check_prd;
+    int check_sum;
+
     int initialized;
 
 } Device;

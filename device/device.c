@@ -14,6 +14,9 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
 
     if (amount_of_magnetic_sensors < 1) return;
 
+    device->check_sum = 0;
+    device->check_prd = 1;
+
     device->baseline_configured = 0;
 
     setCoordinate(&device->position, 0.0, 0.0, 0.0);
@@ -23,6 +26,13 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
     device->magnetic_sensors = magnetic_sensors;
 
     device->initialized = 1;
+
+    // Calculate check sum and product
+    device->check_sum += device->initialized;
+    device->check_sum += device->amount_of_magnetic_sensors;
+
+    device->check_prd *= device->initialized;
+    device->check_prd *= device->amount_of_magnetic_sensors;
 }
 
 void setBaseline(Device *device, Baseline *baseline) {
@@ -34,6 +44,17 @@ void setBaseline(Device *device, Baseline *baseline) {
 int isDeviceInitialized(Device *device) {
     if (device->initialized == 0) return 0;
 
+    float check_sum = 0;
+    float check_prd = 1;
+
+    check_sum += device->initialized;
+    check_sum += device->amount_of_magnetic_sensors;
+
+    check_prd *= device->initialized;
+    check_prd *= device->amount_of_magnetic_sensors;
+
+    if (!(check_sum == device->check_sum && check_prd == device->check_prd)) return 0;
+
     // Check if all magnetic sensors are correctly initialized
     for (int index = 0; index < device->amount_of_magnetic_sensors; index++) {
         if (isMagneticSensorInitialized(&device->magnetic_sensors[index]) == 0) {
@@ -43,7 +64,7 @@ int isDeviceInitialized(Device *device) {
         }
     }
 
-    return device->amount_of_magnetic_sensors > 0 && device->initialized == 1;
+    return 1;
 }
 
 void updateDevicePosition(Device *device, Environment *environment) {
