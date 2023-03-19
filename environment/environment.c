@@ -33,15 +33,6 @@ void initEnvironment(Environment *environment, Beacon *beacons,
 int isEnvironmentInitialized(Environment *environment) {
     if (environment->initialized == 0) return 0;
 
-    // Check if all beacons sensors are correctly initialized
-    for (int index = 0; index < environment->amount_of_beacons; index++) {
-        if (isBeaconInitialized(&environment->beacons[index]) == 0) {
-            // If at least one beacon is wrongly initialized, environment is not ready
-
-            return 0;
-        }
-    }
-
     float check_sum = 0;
     float check_prd = 1;
 
@@ -53,7 +44,18 @@ int isEnvironmentInitialized(Environment *environment) {
     check_prd *= environment->amount_of_beacons;
     check_prd *= environment->amount_of_edges;
 
-    return check_sum == environment->check_sum && check_prd == environment->check_prd;
+    if (!(check_sum == environment->check_sum && check_prd == environment->check_prd)) return 0;
+
+    // Check if all beacons sensors are correctly initialized
+    for (int index = 0; index < environment->amount_of_beacons; index++) {
+        if (isBeaconInitialized(&environment->beacons[index]) == 0) {
+            // If at least one beacon is wrongly initialized, environment is not ready
+
+            return 0;
+        }
+    }
+
+    return 1;
 }
 
 int isPointInsideEnvironment(Environment *environment, Coordinate *point) {
