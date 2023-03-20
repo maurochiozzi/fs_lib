@@ -1,11 +1,15 @@
 
+#include <stdio.h>
+
 #include "../minunit/minunit.h"
+#include "static_test.h"
 #include "unit_test.h"
 
 int tests_run = 0;
 
 static char *all_tests() {
     mu_run_all_sub_tests(all_unit_tests);
+    mu_run_all_sub_tests(all_static_tests);
 
     return 0;
 }

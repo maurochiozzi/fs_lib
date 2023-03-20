@@ -1,8 +1,6 @@
 #ifndef UNIT_TEST
 #define UNIT_TEST
 
-#include <stdio.h>
-
 #include "../beacon/test_beacon.h"
 #include "../device/test_device.h"
 #include "../environment/test_environment.h"

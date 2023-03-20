@@ -13,6 +13,9 @@
         "spectrum.h": "c",
         "test_magnetic_sensor.h": "c",
         "minunit.h": "c",
-        "magnetic_field.h": "c"
+        "magnetic_field.h": "c",
+        "stdio.h": "c",
+        "test_indexer.h": "c",
+        "unit_test.h": "c"
     }
 }
