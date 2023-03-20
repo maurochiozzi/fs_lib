@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../environment/environment.h"
 #include "../space/space.h"
 #include "math.h"
 
@@ -44,8 +45,8 @@ int isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
     return check_sum == source->check_sum && check_prd == source->check_prd;
 }
 
-float getMagneticIntensityFromSource(MagneticFieldSource *source, Coordinate *target) {
-    float distance = euclideanDistance2(&source->position, target);
+float getMagneticIntensityFromSource(MagneticFieldSource *source, Coordinate *reference) {
+    float distance = euclideanDistance2(&source->position, reference);
 
     float intensity = source->magnetic_moment_rms / (distance * distance * distance) * 1000000;
 

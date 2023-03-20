@@ -69,12 +69,11 @@ Vector sampleMagneticSignal(MagneticSensor sensor) {
     return vector;
 }
 
-int addSampleMagneticSignal(MagneticSensor *sensor, Vector vector) {
-    const float sample = norm(vector);
+int addSampleMagneticSignal(MagneticSensor *sensor, float magnetic_sample) {
+    sensor->samples[sensor->indexer.sample] = magnetic_sample;
 
-    sensor->samples[sensor->indexer.sample] = sample;
-
-    updateSpectrum(&sensor->spectrum, sample, sensor->samples, &sensor->indexer);
+    updateSpectrum(&sensor->spectrum, magnetic_sample,
+                   sensor->samples, &sensor->indexer);
 
     return incrementIndex(&sensor->indexer);
 }

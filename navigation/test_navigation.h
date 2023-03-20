@@ -29,7 +29,7 @@ static char *test_calculate_position_by_trilateration_three_references() {
     segments[2].reference.z = 0;
     segments[2].magnitude = sqrt(4 * 4 + 2 * 2);
 
-    calculatePositionByTrilateration(segments, 3, &position_estimated);
+    calculatePositionByTrilateration(segments, &position_estimated, 3);
 
     mu_assert("error, trilateration test 01",
               position_estimated.x == 4.0 &&
@@ -53,7 +53,7 @@ static char *test_calculate_position_by_trilateration_three_references() {
     segments[2].reference.z = 0;
     segments[2].magnitude = sqrt(4 * 4 + 4 * 4);
 
-    calculatePositionByTrilateration(segments, 3, &position_estimated);
+    calculatePositionByTrilateration(segments, &position_estimated, 3);
 
     mu_assert("error, trilateration test 02",
               position_estimated.x == 2.0 &&

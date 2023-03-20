@@ -20,6 +20,6 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
 void estimateBeaconsPositions(Device *device, Environment *environment,
                               Segment *segments_matrix);
 
-void calculatePositionByTrilateration(Segment *segments, int available_references,
-                                      Coordinate *position);
+void calculatePositionByTrilateration(Segment *segments, Coordinate *position,
+                                      int available_references);
 #endif

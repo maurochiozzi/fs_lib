@@ -86,8 +86,8 @@ void estimateMagneticSensorsPositions(Device *device, Environment *environment,
         }
 
         calculatePositionByTrilateration(
-            references, amount_of_beacons,
-            &device->magnetic_sensors[sensor_index].local_position);
+            references, &device->magnetic_sensors[sensor_index].local_position,
+            amount_of_beacons);
     }
 
     free(references);
@@ -109,9 +109,9 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
             references[sensor_index] = segments_matrix[sensor_index * base_index];
         }
 
-        calculatePositionByTrilateration(
-            references, amount_of_magnetic_sensor,
-            &environment->beacons[beacon_index].magnetic_field_source.position);
+        Coordinate *source_position = &environment->beacons[beacon_index].magnetic_field_source.position;
+
+        calculatePositionByTrilateration(references, source_position, amount_of_magnetic_sensor);
     }
 
     free(references);
@@ -121,8 +121,9 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
  * For further reference: https://www.101computing.net/cell-phone-trilateration-algorithm/
  */
 
-void calculatePositionByTrilateration(Segment *segments, int available_references,
-                                      Coordinate *position) {
+void calculatePositionByTrilateration(Segment *segments,
+                                      Coordinate *position,
+                                      int available_references) {
     if (available_references >= 3) {
         float A;
         float B;

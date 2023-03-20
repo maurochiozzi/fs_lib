@@ -27,4 +27,6 @@ int isEnvironmentInitialized(Environment *environment);
 
 int isPointInsideEnvironment(Environment *environment, Coordinate *point);
 
+float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference, float time_slice);
+
 #endif

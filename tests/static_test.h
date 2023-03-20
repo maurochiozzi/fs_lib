@@ -19,9 +19,9 @@ static char *static_device_beacon_survey() {
     const int amount_of_magnetic_sensors = 3;
     MagneticSensor *sensors;
     Coordinate sensors_device_position[] = {
-        [0] = {.x = 0, .y = 0, .z = 0},
-        [1] = {.x = 0, .y = 0, .z = 0},
-        [2] = {.x = 0, .y = 0, .z = 0}};
+        [0] = {.x = -0.5, .y = -2.886751345948, .z = 0},
+        [1] = {.x = +0.0, .y = +0.577350269190, .z = 0},
+        [2] = {.x = -0.5, .y = +2.886751345948, .z = 0}};
 
     const int sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
 
@@ -44,10 +44,10 @@ static char *static_device_beacon_survey() {
     // in this moment
     Environment environment;
 
-    const int amount_of_beacons = 3;
+    const int amount_of_beacons = 4;
     Beacon *beacons;
-    const float beacons_source_magnetic_moment[] = {.2, .05, .1};
-    const float beacons_source_frequency[] = {35, 45, 80};
+    const float beacons_source_magnetic_moment[] = {.2, .05, .1, .3};
+    const float beacons_source_frequency[] = {35, 45, 80, 52};
 
     const int amount_of_edges = 10;
     Coordinate *edges;
@@ -67,6 +67,35 @@ static char *static_device_beacon_survey() {
               isEnvironmentInitialized(&environment) == 1);
 
     // start surveying beacons
+
+    MagneticSensor *sensor;
+    float environment_magnetic_field_intensity;
+
+    float delta_time = 1.0 / sample_rate;
+    float time_slice = 0.0;
+
+    for (int index = 0; index < sample_size; index++) {
+        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+            sensor = &device.magnetic_sensors[sensor_index];
+
+            // environment_magnetic_field_intensity =
+            //     mockEnvironmentMagneticField(&environment, &sensor, time_slice);
+
+            // addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
+        }
+
+        time_slice += delta_time;
+    }
+
+    // need to sample first
+    // estimateMagneticBeaconSourcePosition(&device, &environment);
+
+    Coordinate *first_beacon_position = &beacons[0].magnetic_field_source.position;
+
+    printf("%d, %d, %d",
+           first_beacon_position->x,
+           first_beacon_position->y,
+           first_beacon_position->z);
 
     free(sensors);
     free(beacons);

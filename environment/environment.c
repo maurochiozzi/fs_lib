@@ -1,6 +1,9 @@
 #include "environment.h"
 
+#include <math.h>
+
 #include "../beacon/beacon.h"
+#include "../magnetic_field/magnetic_field.h"
 #include "../space/space.h"
 
 void initEnvironment(Environment *environment, Beacon *beacons,
@@ -60,4 +63,24 @@ int isEnvironmentInitialized(Environment *environment) {
 
 int isPointInsideEnvironment(Environment *environment, Coordinate *point) {
     return 0;
+}
+
+float mockMagneticSourceDistanceByIntensity(MagneticFieldSource *source, Coordinate *reference, float time_slice) {
+    float distance = getMagneticIntensityFromSource(source, reference) *
+                     cos(source->frequency * time_slice);
+
+    return distance;
+}
+
+float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference, float time_slice) {
+    float environment_magnetic_field_intensity = 0;
+
+    Beacon *beacons = environment->beacons;
+
+    for (int beacon_index = 0; beacon_index < environment->amount_of_beacons; beacon_index++) {
+        environment_magnetic_field_intensity += mockMagneticSourceDistanceByIntensity(
+            &beacons[beacon_index].magnetic_field_source, reference, time_slice);
+    }
+
+    return environment_magnetic_field_intensity;
 }

@@ -38,7 +38,7 @@ int isMagneticSensorInitialized(MagneticSensor *sensor);
 
 Vector sampleMagneticSignal(MagneticSensor sensor);
 
-int addSampleMagneticSignal(MagneticSensor *sensor, Vector vector);
+int addSampleMagneticSignal(MagneticSensor *sensor, float magnetic_sample);
 
 float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon);
 
