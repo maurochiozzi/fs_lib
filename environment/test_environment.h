@@ -28,6 +28,8 @@ static char *test_environment_initialization() {
     mu_assert("error, environment initialization",
               isEnvironmentInitialized(&environment) == 1);
 
+    free(beacons);
+
     return 0;
 }
 

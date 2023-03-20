@@ -27,6 +27,8 @@ static char *test_device_initialization() {
     mu_assert("error, device initialization",
               isDeviceInitialized(&device) == 1);
 
+    free(sensors);
+
     return 0;
 }
 
