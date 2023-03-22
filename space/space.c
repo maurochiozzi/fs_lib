@@ -23,5 +23,5 @@ float euclideanDistance2(Coordinate *start, Coordinate *end) {
     float delta_y = start->y - end->y;
     float delta_z = start->z - end->z;
 
-    return delta_x * delta_x + delta_y * delta_y + delta_z * delta_z;
+    return sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
 }
