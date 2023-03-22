@@ -111,7 +111,7 @@ void updateSpectrum(MagneticSensor *sensor, const float sample) {
             spectrum->double_per_sample_size * (sensor->samples[i] * (angle));
     }
 
-    complex float temp = spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample];
+    complex float temp = sensor->spectrum.samples[indexer->buffer * indexer->sample_size + indexer->sample];
     printf("%d, %f + i%f\n", indexer->buffer * indexer->sample_size + indexer->sample, creal(temp), cimag(temp));
 }
 
