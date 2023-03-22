@@ -8,6 +8,10 @@ void initIndexer(Indexer *indexer, int sample_size, int amount_of_buffers) {
     indexer->sample_size = sample_size;
     indexer->amount_of_buffers = amount_of_buffers;
 
+    // initialize sample and buffer indexers
+    indexer->sample = 0;
+    indexer->buffer = 0;
+
     indexer->initialized = 1;
 }
 
@@ -34,11 +38,9 @@ int incrementIndex(Indexer *indexer) {
     const int sample_size = indexer->sample_size;
     const int amount_of_buffers = indexer->amount_of_buffers;
 
-    indexer->sample = (sample + 1) %
-                      (amount_of_buffers *
-                       sample_size);
+    indexer->sample = (sample + 1) % sample_size;
 
-    int increment_buffer = sample % sample_size == 0;
+    int increment_buffer = indexer->sample == 0;
 
     if (increment_buffer) {
         mutexSampleCache(indexer);
