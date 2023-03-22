@@ -69,11 +69,10 @@ Vector sampleMagneticSignal(MagneticSensor sensor) {
     return vector;
 }
 
-int addSampleMagneticSignal(MagneticSensor *sensor, float magnetic_sample) {
-    sensor->samples[sensor->indexer.sample] = magnetic_sample;
+int addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
+    sensor->samples[sensor->indexer.sample] = sample;
 
-    updateSpectrum(&sensor->spectrum, magnetic_sample,
-                   sensor->samples, &sensor->indexer);
+    updateSpectrum(sensor, sample);
 
     return incrementIndex(&sensor->indexer);
 }
@@ -90,6 +89,30 @@ float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
                           magnetic_signal_strength * 1000000);
 
     return distance;
+}
+
+void updateSpectrum(MagneticSensor *sensor, const float sample) {
+    Spectrum *spectrum = &sensor->spectrum;
+    Indexer *indexer = &sensor->indexer;
+
+    float complex angle;
+
+    for (int i = 0; i < indexer->sample + 1; i++) {
+        angle = angles[indexer->sample * indexer->sample_size + i];
+
+        spectrum->samples[indexer->buffer * indexer->sample_size + i] +=
+            spectrum->double_per_sample_size * (sample * (angle));
+    }
+
+    for (int i = 0; i < indexer->sample; i++) {
+        angle = angles[indexer->sample * indexer->sample_size + i];
+
+        spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample] +=
+            spectrum->double_per_sample_size * (sensor->samples[i] * (angle));
+    }
+
+    complex float temp = spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample];
+    printf("%d, %f + i%f\n", indexer->buffer * indexer->sample_size + indexer->sample, creal(temp), cimag(temp));
 }
 
 /**

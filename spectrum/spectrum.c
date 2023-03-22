@@ -4,9 +4,11 @@
 
 #include <complex.h>
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "../indexer/indexer.h"
+#include "../spectrum/spectrum.h"
 
 float complex* angles;
 int angles_initialized;
@@ -69,25 +71,6 @@ int isSpectrumInitialized(Spectrum* spectrum) {
     }
 
     return check_sum == SPECTRUM_INITIALIZATION_CHECK_SUM;
-}
-
-void updateSpectrum(Spectrum* spectrum, const float sample,
-                    const float* samples, Indexer* indexer) {
-    float complex angle;
-
-    for (int i = 0; i < indexer->sample + 1; i++) {
-        angle = angles[indexer->sample * indexer->sample_size + i];
-
-        spectrum->samples[indexer->buffer * indexer->sample_size + i] +=
-            spectrum->double_per_sample_size * (sample * (angle));
-    }
-
-    for (int i = 0; i < indexer->sample; i++) {
-        angle = angles[indexer->sample * indexer->sample_size + i];
-
-        spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample] +=
-            spectrum->double_per_sample_size * (samples[i] * (angle));
-    }
 }
 
 float getSpectrumWindowIntensity(Spectrum* spectrum, int window, Indexer* indexer) {

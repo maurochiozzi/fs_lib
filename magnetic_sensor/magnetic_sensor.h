@@ -40,6 +40,8 @@ Vector sampleMagneticSignal(MagneticSensor sensor);
 
 int addSampleMagneticSignal(MagneticSensor *sensor, float magnetic_sample);
 
+void updateSpectrum(MagneticSensor *sensor, const float sample);
+
 float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon);
 
 float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon);
