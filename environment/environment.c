@@ -1,6 +1,11 @@
 #include "environment.h"
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 #include <math.h>
+#include <stdio.h>
 
 #include "../beacon/beacon.h"
 #include "../magnetic_field/magnetic_field.h"
@@ -65,11 +70,10 @@ int isPointInsideEnvironment(Environment *environment, Coordinate *point) {
     return 0;
 }
 
-float mockMagneticSourceDistanceByIntensity(MagneticFieldSource *source, Coordinate *reference, float time_slice) {
-    float distance = getMagneticIntensityFromSource(source, reference) *
-                     cos(source->frequency * time_slice);
+float mockMagneticSourceIntensityFromSource(MagneticFieldSource *source, Coordinate *reference, float time_slice) {
+    float intensity = getMagneticIntensityFromSource(source, reference);
 
-    return distance;
+    return intensity * cos(2 * M_PI * source->frequency * time_slice);
 }
 
 float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference, float time_slice) {
@@ -78,7 +82,7 @@ float mockEnvironmentMagneticField(Environment *environment, Coordinate *referen
     Beacon *beacons = environment->beacons;
 
     for (int beacon_index = 0; beacon_index < environment->amount_of_beacons; beacon_index++) {
-        environment_magnetic_field_intensity += mockMagneticSourceDistanceByIntensity(
+        environment_magnetic_field_intensity += mockMagneticSourceIntensityFromSource(
             &beacons[beacon_index].magnetic_field_source, reference, time_slice);
     }
 
