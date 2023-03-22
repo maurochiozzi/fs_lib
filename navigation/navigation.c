@@ -85,9 +85,9 @@ void estimateMagneticSensorsPositions(Device *device, Environment *environment,
             references[beacon_index] = segments_matrix[beacon_index * base_index];
         }
 
-        calculatePositionByTrilateration(
-            references, &device->magnetic_sensors[sensor_index].local_position,
-            amount_of_beacons);
+        // calculatePositionByTrilateration(
+        //     references, amount_of_beacons,
+        //     &device.magnetic_sensors[sensor_index].local_position);
     }
 
     free(references);
@@ -109,7 +109,7 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
             references[sensor_index] = segments_matrix[sensor_index * base_index];
         }
 
-        Coordinate *source_position = &environment->beacons[beacon_index].magnetic_field_source.position;
+        Coordinate *source_position;  // = &environment->beacons[beacon_index].magnetic_field_source.position;
 
         calculatePositionByTrilateration(references, source_position, amount_of_magnetic_sensor);
     }
