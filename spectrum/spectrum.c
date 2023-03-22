@@ -22,6 +22,10 @@ void initSpectrum(Spectrum* spectrum, int sample_size, int amount_of_buffers) {
         sizeof(float complex) *
         amount_of_buffers * sample_size);
 
+    for (int index = 0; index < amount_of_buffers * sample_size; index++) {
+        spectrum->samples[index] = 0.0;
+    }
+
     spectrum->double_per_sample_size = 2.0 / sample_size;
 
     initSpectrumAngles(sample_size);
