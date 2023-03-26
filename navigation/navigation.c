@@ -105,7 +105,7 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
     for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
         int base_index = amount_of_beacons + beacon_index;
 
-        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index) {
+        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
             references[sensor_index] = segments_matrix[sensor_index * base_index];
         }
 
