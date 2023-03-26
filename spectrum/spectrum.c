@@ -46,7 +46,7 @@ void initSpectrumAngles(int sample_size) {
         for (int i = 0; i < amount_of_angles; i++) {  // this will be the current_index
             for (int j = 0; j < amount_of_angles; j++) {
                 angles[i * amount_of_angles + j] =
-                    cexp(i * j * amount_of_angles * (-(M_PI)*I));
+                    cexp(-(2 * i * j * (M_PI)*I) / amount_of_angles);
             }
         }
 
