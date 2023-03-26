@@ -11,8 +11,8 @@
 
 static char *static_device_beacon_survey() {
     const int buffer_size = 2;
-    const int sample_size = 110;
-    const int sample_rate = 220;
+    const int sample_size = 20;
+    const int sample_rate = 40;
 
     // Define and initialize device with its sensors
     Device device;
@@ -50,7 +50,7 @@ static char *static_device_beacon_survey() {
     Beacon *beacons;
     Beacon *mocked_beacons;
     const float beacons_source_magnetic_moment = 6.999 * pow(10, -8);
-    const float beacons_source_frequency[] = {36, 40, 80, 52};
+    const float beacons_source_frequency[] = {2, 4, 6, 8};  // {36, 40, 80, 52};
 
     Coordinate mocked_beacons_positions[] = {
         [0] = {.x = -2.0, .y = -1.0, .z = 0},
@@ -76,11 +76,6 @@ static char *static_device_beacon_survey() {
                    sample_rate, sample_size);
 
         mocked_beacons[index].magnetic_field_source.position = mocked_beacons_positions[index];
-
-        // printf("%f, %f, %f\n",
-        //        mocked_beacons[index].magnetic_field_source.position.x,
-        //        mocked_beacons[index].magnetic_field_source.position.y,
-        //        mocked_beacons[index].magnetic_field_source.position.z);
     }
 
     initEnvironment(&environment, beacons, edges, amount_of_beacons, amount_of_edges);
@@ -104,36 +99,15 @@ static char *static_device_beacon_survey() {
             environment_magnetic_field_intensity =
                 mockEnvironmentMagneticField(&mocked_environment, &sensor->device_position, time_slice);
 
-            // if (sensor_index == 0) {
-            //     printf("%f, %f, %f, %f, %f\n",
-            //            sensor->device_position.x,
-            //            sensor->device_position.y,
-            //            sensor->device_position.z,
-            //            environment_magnetic_field_intensity,
-            //            time_slice);
-            // }
-
             addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
         }
 
         time_slice += delta_time;
     }
 
-    for (int index = 0; index < sample_size; index++) {
-        // printf("%f\n", sensors[0].samples[index]);
-        // complex float temp = sensors[0].spectrum.samples[index];
-        // printf("%d, %f + i%f\n", index, creal(temp), cimag(temp));
-    }
-
-    // need to sample first
     // estimateMagneticBeaconSourcePosition(&device, &environment);
 
     Coordinate *first_beacon_position = &beacons[0].magnetic_field_source.position;
-
-    // printf("%d, %d, %d",
-    //        first_beacon_position->x,
-    //        first_beacon_position->y,
-    //        first_beacon_position->z);
 
     free(sensors);
     free(beacons);
