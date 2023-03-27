@@ -32,6 +32,7 @@ void setBaseline(Device *Device, Baseline *baseline);
 int isDeviceInitialized(Device *device);
 
 void updatePosition(Device *device, Coordinate position, Vector heading);
+void updateDevicePosition(Device *device, Environment *environment);
 
 void getCoordinates(Device *device, Environment *environment, int reference);
 
