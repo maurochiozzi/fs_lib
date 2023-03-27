@@ -1,5 +1,6 @@
 #include "navigation.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "../beacon/beacon.h"
@@ -7,6 +8,7 @@
 #include "../environment/environment.h"
 #include "../magnetic_sensor/magnetic_sensor.h"
 #include "../space/space.h"
+#include "../spectrum/spectrum.h"
 
 void estimateMagneticSensorPosition(Device *device, Environment *environment) {
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
@@ -15,12 +17,20 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
     Coordinate *device_position = &device->position;
     Coordinate *sensor_position;
 
+    MagneticSensor *sensor;
+
     Segment *segments_matrix = (Segment *)malloc(sizeof(Segment) *
                                                  amount_of_magnetic_sensors *
                                                  amount_of_beacons);
 
     buildSegmentsMatrix(device, environment, segments_matrix, SENSOR);
     estimateMagneticSensorsPositions(device, environment, segments_matrix);
+
+    for (int i = 0; i < device->amount_of_magnetic_sensors; i++) {
+        sensor = &device->magnetic_sensors[i];
+
+        clearPastSpectrum(&sensor->spectrum, &sensor->indexer);
+    }
 
     free(segments_matrix);
 }
@@ -32,12 +42,21 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
     Coordinate *device_position = &device->position;
     Coordinate *sensor_position;
 
+    MagneticSensor *sensor;
+
     Segment *segments_matrix = (Segment *)malloc(sizeof(Segment) *
                                                  amount_of_magnetic_sensors *
                                                  amount_of_beacons);
 
     buildSegmentsMatrix(device, environment, segments_matrix, BEACON);
+
     estimateBeaconsPositions(device, environment, segments_matrix);
+
+    for (int i = 0; i < device->amount_of_magnetic_sensors; i++) {
+        sensor = &device->magnetic_sensors[i];
+
+        clearPastSpectrum(&sensor->spectrum, &sensor->indexer);
+    }
 
     free(segments_matrix);
 }
@@ -55,16 +74,18 @@ void buildSegmentsMatrix(Device *device, Environment *environment,
         current_sensor = &device->magnetic_sensors[sensor_index];
 
         for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+            int indexer = sensor_index * amount_of_beacons + beacon_index;
+
             current_beacon = &environment->beacons[beacon_index];
 
             current_segment =
-                &segments_matrix[sensor_index * amount_of_magnetic_sensors + beacon_index];
+                &segments_matrix[indexer];
 
             current_segment->magnitude = calculateDistanceFromBeacon(current_sensor, current_beacon);
 
             current_segment->reference =
-                reference == BEACON ? current_beacon->magnetic_field_source.position
-                                    : current_sensor->device_position;
+                reference == BEACON ? current_sensor->device_position
+                                    : current_beacon->magnetic_field_source.position;
         }
     }
 }
@@ -79,15 +100,15 @@ void estimateMagneticSensorsPositions(Device *device, Environment *environment,
     references = (Segment *)malloc(sizeof(Segment) * amount_of_beacons);
 
     for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
-        int base_index = sensor_index * amount_of_beacons;
+        for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+            int indexer = sensor_index * amount_of_beacons + beacon_index;
 
-        for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index) {
-            references[beacon_index] = segments_matrix[beacon_index * base_index];
+            references[beacon_index] = segments_matrix[indexer];
         }
 
-        // calculatePositionByTrilateration(
-        //     references, amount_of_beacons,
-        //     &device.magnetic_sensors[sensor_index].local_position);
+        Coordinate *sensor_position = &device->magnetic_sensors[sensor_index].local_position;
+
+        calculatePositionByTrilateration(references, sensor_position, amount_of_beacons);
     }
 
     free(references);
@@ -103,13 +124,13 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
     references = (Segment *)malloc(sizeof(Segment) * amount_of_magnetic_sensor);
 
     for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
-        int base_index = amount_of_beacons + beacon_index;
-
         for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
-            references[sensor_index] = segments_matrix[sensor_index * base_index];
+            int indexer = sensor_index * amount_of_beacons + beacon_index;
+
+            references[sensor_index] = segments_matrix[indexer];
         }
 
-        Coordinate *source_position;  // = &environment->beacons[beacon_index].magnetic_field_source.position;
+        Coordinate *source_position = &environment->beacons[beacon_index].magnetic_field_source.position;
 
         calculatePositionByTrilateration(references, source_position, amount_of_magnetic_sensor);
     }
