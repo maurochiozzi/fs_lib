@@ -17,7 +17,7 @@ void initBeacon(Beacon *beacon,
 
     initMagneticFieldSource(&beacon->magnetic_field_source, magnetic_moment_rms, frequency);
 
-    beacon->spectrum_window = beacon->magnetic_field_source.frequency * (sample_rate / sample_size);
+    beacon->spectrum_window = beacon->magnetic_field_source.frequency / (sample_rate / sample_size);
     beacon->survey_status = 0;
 
     beacon->initialized = 1;
