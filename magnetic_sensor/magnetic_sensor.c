@@ -70,7 +70,9 @@ Vector sampleMagneticSignal(MagneticSensor sensor) {
 }
 
 int addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
-    sensor->samples[sensor->indexer.sample] = sample;
+    int indexer = sensor->indexer.buffer * sensor->indexer.sample_size + sensor->indexer.sample;
+
+    sensor->samples[indexer] = sample;
 
     updateSpectrum(sensor, sample);
 
