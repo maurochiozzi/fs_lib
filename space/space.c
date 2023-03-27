@@ -1,5 +1,7 @@
 #include "space.h"
 
+#include <stdio.h>
+
 #include "math.h"
 
 void setCoordinate(Coordinate *point, float x, float y, float z) {
@@ -24,4 +26,24 @@ float euclideanDistance2(Coordinate *start, Coordinate *end) {
     float delta_z = start->z - end->z;
 
     return sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z);
+}
+
+void sumCoordinateOffset(Coordinate *point, Coordinate *offset, Coordinate *result) {
+    result->x = point->x + offset->x;
+    result->y = point->y + offset->y;
+    result->z = point->z + offset->z;
+}
+
+float calculatePositionError(Coordinate *reference, Coordinate *real) {
+    Vector error;
+
+    error.x = (reference->x - real->x);
+    error.y = (reference->y - real->y);
+    error.z = (reference->z - real->z);
+
+    return norm(error);
+}
+
+void printCoordinate(Coordinate *point) {
+    printf("(%3.6f, %3.6f, %3.6f)\n", point->x, point->y, point->z);
 }

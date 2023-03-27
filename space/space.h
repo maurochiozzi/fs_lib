@@ -34,5 +34,10 @@ void setVector(Vector *vector, float x, float y, float z);
 
 float norm(Vector vector);
 float euclideanDistance2(Coordinate *start, Coordinate *end);
+void sumCoordinateOffset(Coordinate *point, Coordinate *offset, Coordinate *result);
+
+float calculatePositionError(Coordinate *reference, Coordinate *real);
+
+void printCoordinate(Coordinate *point);
 
 #endif
