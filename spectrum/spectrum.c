@@ -74,9 +74,16 @@ int isSpectrumInitialized(Spectrum* spectrum) {
 }
 
 float getSpectrumWindowIntensity(Spectrum* spectrum, int window, Indexer* indexer) {
+    int spectrum_window;
     float intensity;
 
-    intensity = spectrum->samples[indexer->buffer * indexer->sample_size + window];
+    // Increment index buffer and get its mod from amount of buffers to get the
+    // previous buffer already finished
+    spectrum_window = ((indexer->buffer + 1) % indexer->amount_of_buffers) * indexer->sample_size +
+                      window;
+
+    // Calculate the intensity modulus
+    intensity = cabsf(spectrum->samples[spectrum_window]);
 
     return intensity;
 }
