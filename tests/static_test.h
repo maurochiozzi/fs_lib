@@ -17,8 +17,8 @@ static char *static_device_beacon_survey() {
     Device device = {0};
 
     const int buffer_size = 2;
-    const int sample_size = 20;
-    const int sample_rate = 40;
+    const int sample_size = 110;
+    const int sample_rate = 220;
 
     Coordinate origin = {0};
     Coordinate mocked_device_position = {0};
@@ -45,7 +45,7 @@ static char *static_device_beacon_survey() {
     Beacon *mocked_beacons;
 
     const float beacons_source_magnetic_moment = 6.999 * pow(10, -8);
-    const float beacons_source_frequency[] = {2, 4, 6, 8};  //{36, 40, 80, 52};
+    const float beacons_source_frequency[] = {36, 40, 80, 52};
 
     Coordinate mocked_beacons_positions[] = {
         [0] = {.x = -2.0, .y = -1.0, .z = 0},
