@@ -13,18 +13,20 @@
 static char *static_device_beacon_survey() {
     const float error_check = 0.001;
 
+    // Define device and its sensors
+    Device device = {0};
+
     const int buffer_size = 2;
     const int sample_size = 20;
     const int sample_rate = 40;
 
-    // Define and initialize device with its sensors
-    Device device = {0};
     Coordinate origin = {0};
     Coordinate mocked_device_position = {0};
     Coordinate mocked_sensor_position = {0};
 
     const int amount_of_magnetic_sensors = 3;
     MagneticSensor *sensors;
+
     Coordinate sensors_device_position[] = {
         [0] = {.x = -0.5, .y = -0.2886751345948, .z = 0},
         [1] = {.x = +0.0, .y = +0.5773502691869, .z = 0},
@@ -32,6 +34,36 @@ static char *static_device_beacon_survey() {
 
     const int sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
 
+    // Define environment with its beacons. No edges will be used at this moment
+    // Mocked environment will be used to mock beacons and get the magnetic
+    // field intensity from them.
+    Environment environment = {0};
+    Environment mocked_environment = {0};
+
+    const int amount_of_beacons = 4;
+    Beacon *beacons;
+    Beacon *mocked_beacons;
+
+    const float beacons_source_magnetic_moment = 6.999 * pow(10, -8);
+    const float beacons_source_frequency[] = {2, 4, 6, 8};  //{36, 40, 80, 52};
+
+    Coordinate mocked_beacons_positions[] = {
+        [0] = {.x = -2.0, .y = -1.0, .z = 0},
+        [1] = {.x = -1.5, .y = +1.5, .z = 0},
+        [2] = {.x = +2.5, .y = +0.5, .z = 0},
+        [3] = {.x = +1.5, .y = -1.5, .z = 0}};
+
+    const int amount_of_edges = 10;
+    Coordinate *edges;
+
+    // Auxiliary variables to help during simulations
+    MagneticSensor *sensor;
+    float environment_magnetic_field_intensity;
+
+    float delta_time = 1.0 / sample_rate;
+    float time_slice = 0.0;
+
+    // Initialize sensors, devices, beacons and environment
     sensors = (MagneticSensor *)malloc(sizeof(MagneticSensor) * amount_of_magnetic_sensors);
 
     for (int index = 0; index < amount_of_magnetic_sensors; index++) {
@@ -44,28 +76,9 @@ static char *static_device_beacon_survey() {
 
     initDevice(&device, sensors, amount_of_magnetic_sensors);
 
+    // Check if device was correctly initialized
     mu_assert("error, beacon survey - device initialization",
               isDeviceInitialized(&device) == 1);
-
-    // Define and initialize environment with its beacons. No edges will be used
-    // at this moment
-    Environment environment = {0};
-    Environment mocked_environment = {0};
-
-    const int amount_of_beacons = 4;
-    Beacon *beacons;
-    Beacon *mocked_beacons;
-    const float beacons_source_magnetic_moment = 6.999 * pow(10, -8);
-    const float beacons_source_frequency[] = {2, 4, 6, 8};  //{36, 40, 80, 52};
-
-    Coordinate mocked_beacons_positions[] = {
-        [0] = {.x = -2.0, .y = -1.0, .z = 0},
-        [1] = {.x = -1.5, .y = +1.5, .z = 0},
-        [2] = {.x = +2.5, .y = +0.5, .z = 0},
-        [3] = {.x = +1.5, .y = -1.5, .z = 0}};
-
-    const int amount_of_edges = 10;
-    Coordinate *edges;
 
     beacons = (Beacon *)malloc(sizeof(Beacon) * amount_of_beacons);
     mocked_beacons = (Beacon *)malloc(sizeof(Beacon) * amount_of_beacons);
@@ -87,16 +100,11 @@ static char *static_device_beacon_survey() {
     initEnvironment(&environment, beacons, edges, amount_of_beacons, amount_of_edges);
     initEnvironment(&mocked_environment, mocked_beacons, edges, amount_of_beacons, amount_of_edges);
 
+    // Check if environment was correctly initialized
     mu_assert("error, beacon survey - environment initialization",
               isEnvironmentInitialized(&environment) == 1);
 
     // start surveying beacons
-
-    MagneticSensor *sensor;
-    float environment_magnetic_field_intensity;
-
-    float delta_time = 1.0 / sample_rate;
-    float time_slice = 0.0;
 
     for (int index = 0; index < 1 * sample_size; index++) {
         for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
@@ -126,6 +134,7 @@ static char *static_device_beacon_survey() {
     mocked_device_position.y = 1.8;
     mocked_device_position.z = 0.0;
 
+    // Start sampling environment magnetic field from the new position
     for (int index = 0; index < 1 * sample_size; index++) {
         for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
             sensor = &device.magnetic_sensors[sensor_index];
@@ -142,6 +151,7 @@ static char *static_device_beacon_survey() {
         time_slice += delta_time;
     }
 
+    // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
 
     mu_assert("device survey 01 error",
@@ -153,6 +163,7 @@ static char *static_device_beacon_survey() {
     mocked_device_position.y = 1.2;
     mocked_device_position.z = 0.0;
 
+    // Start sampling environment magnetic field from the new position
     for (int index = 0; index < 1 * sample_size; index++) {
         for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
             sensor = &device.magnetic_sensors[sensor_index];
@@ -169,12 +180,18 @@ static char *static_device_beacon_survey() {
         time_slice += delta_time;
     }
 
+    // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
 
     mu_assert("device survey 02 error",
               calculatePositionError(&mocked_device_position,
                                      &device.position) < error_check);
 
+    // Reset global variables and free variables
+    angles_initialized = 0;
+    amount_of_angles = 0;
+
+    free(angles);
     free(sensors);
     free(beacons);
 
