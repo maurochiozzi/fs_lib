@@ -75,6 +75,10 @@ void updateDevicePosition(Device *device, Environment *environment) {
 
     estimateMagneticSensorPosition(device, environment);
 
+    device_position->x = 0;
+    device_position->y = 0;
+    device_position->z = 0;
+
     for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
         sensor_position = &device->magnetic_sensors[sensor_index].local_position;
 
