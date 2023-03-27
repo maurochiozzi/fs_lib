@@ -85,10 +85,13 @@ float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon) {
 }
 
 float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
-    float magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
+    float magnetic_signal_strength;
+    float distance;
 
-    float distance = cbrt(beacon->magnetic_field_source.magnetic_moment_rms /
-                          magnetic_signal_strength * 1000000);
+    magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
+
+    distance = cbrt(beacon->magnetic_field_source.magnetic_moment_rms /
+                    magnetic_signal_strength * 1000000);
 
     return distance;
 }
