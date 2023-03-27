@@ -87,3 +87,11 @@ float getSpectrumWindowIntensity(Spectrum* spectrum, int window, Indexer* indexe
 
     return intensity;
 }
+
+void clearPastSpectrum(Spectrum* spectrum, Indexer* indexer) {
+    int index_base = ((indexer->buffer + 1) % indexer->amount_of_buffers) * indexer->sample_size;
+
+    for (int i = 0; i < indexer->sample_size; i++) {
+        spectrum->samples[index_base + i] = 0;
+    }
+}

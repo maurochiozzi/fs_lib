@@ -34,5 +34,6 @@ void initSpectrumAngles(int sample_size);
 int isSpectrumInitialized(Spectrum *spectrum);
 
 float getSpectrumWindowIntensity(Spectrum *spectrum, int window, Indexer *indexer);
+void clearPastSpectrum(Spectrum *spectrum, Indexer *indexer);
 
 #endif
