@@ -7,7 +7,7 @@
 #include "indexer.h"
 
 static char *test_indexer_initialized() {
-    Indexer indexer;
+    Indexer indexer = {0};
 
     initIndexer(&indexer, 110, 2);
 
@@ -18,7 +18,7 @@ static char *test_indexer_initialized() {
 }
 
 static char *test_indexer_not_initialized() {
-    Indexer indexer;
+    Indexer indexer = {0};
 
     mu_assert("error, indexer initialization misinterpreting",
               isIndexerInitialized(&indexer) == 0);

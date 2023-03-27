@@ -7,18 +7,24 @@
 #include "spectrum.h"
 
 static char *test_spectrum_initialized() {
-    Spectrum spectrum;
+    Spectrum spectrum = {0};
 
     initSpectrum(&spectrum, 110, 2);
 
     mu_assert("error, spectrum initialization",
               isSpectrumInitialized(&spectrum) == 1);
 
+    // Reset global variables and free variables
+    angles_initialized = 0;
+    amount_of_angles = 0;
+
+    free(angles);
+
     return 0;
 }
 
 static char *test_spectrum_not_initialized() {
-    Spectrum spectrum;
+    Spectrum spectrum = {0};
 
     mu_assert("error, spectrum initialization misinterpreting",
               isSpectrumInitialized(&spectrum) == 0);

@@ -9,7 +9,7 @@
 #include "environment.h"
 
 static char *test_environment_initialization() {
-    Environment environment;
+    Environment environment = {0};
 
     int amount_of_beacons = 3;
     Beacon *beacons;
@@ -34,7 +34,7 @@ static char *test_environment_initialization() {
 }
 
 static char *test_environment_not_initialized() {
-    Environment environment;
+    Environment environment = {0};
 
     mu_assert("error, environment initialization misinterpreting",
               isEnvironmentInitialized(&environment) == 0);

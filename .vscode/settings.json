@@ -16,6 +16,8 @@
         "magnetic_field.h": "c",
         "stdio.h": "c",
         "test_indexer.h": "c",
-        "unit_test.h": "c"
+        "unit_test.h": "c",
+        "cmath": "c",
+        "test_navigation.h": "c"
     }
 }

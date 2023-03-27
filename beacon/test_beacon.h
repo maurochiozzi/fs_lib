@@ -8,7 +8,7 @@
 #include "beacon.h"
 
 static char *test_beacon_initialization() {
-    Beacon beacon;
+    Beacon beacon = {0};
 
     initBeacon(&beacon, 0.2, 30, 220, 110);
 
@@ -19,7 +19,7 @@ static char *test_beacon_initialization() {
 }
 
 static char *test_beacon_not_initialized() {
-    Beacon beacon;
+    Beacon beacon = {0};
 
     mu_assert("error, beacon initialization misinterpreting",
               isBeaconInitialized(&beacon) == 0);

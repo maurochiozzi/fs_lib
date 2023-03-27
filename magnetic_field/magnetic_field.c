@@ -42,7 +42,7 @@ int isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
     check_prd *= source->magnetic_moment_rms;
     check_prd *= source->frequency;
 
-    return check_sum == source->check_sum && check_prd == source->check_prd;
+    return check_sum == source->check_sum && check_prd > 0 && check_prd == source->check_prd;
 }
 
 float getMagneticIntensityFromSource(MagneticFieldSource *source, Coordinate *reference) {

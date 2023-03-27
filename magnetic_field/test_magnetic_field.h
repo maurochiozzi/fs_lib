@@ -7,7 +7,7 @@
 #include "magnetic_field.h"
 
 static char *test_magnetic_field_source_initialized() {
-    MagneticFieldSource source;
+    MagneticFieldSource source = {0};
 
     initMagneticFieldSource(&source, 0.2, 30);
 
@@ -18,7 +18,7 @@ static char *test_magnetic_field_source_initialized() {
 }
 
 static char *test_magnetic_field_source_not_initialized() {
-    MagneticFieldSource source;
+    MagneticFieldSource source = {0};
 
     mu_assert("error, magnetic field source initialization misinterpreting",
               isMagneticFieldSourceInitialized(&source) == 0);

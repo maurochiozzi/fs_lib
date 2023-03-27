@@ -9,7 +9,7 @@
 #include "device.h"
 
 static char *test_device_initialization() {
-    Device device;
+    Device device = {0};
 
     const int amount_of_magnetic_sensors = 3;
     MagneticSensor *sensors;
@@ -27,13 +27,23 @@ static char *test_device_initialization() {
     mu_assert("error, device initialization",
               isDeviceInitialized(&device) == 1);
 
+    // Reset global variables and free variables
+    angles_initialized = 0;
+    amount_of_angles = 0;
+
+    free(angles);
+
+    for (int i = 0; i < amount_of_magnetic_sensors; i++) {
+        free(sensors[i].samples);
+    }
+
     free(sensors);
 
     return 0;
 }
 
 static char *test_device_not_initialized() {
-    Device device;
+    Device device = {0};
 
     mu_assert("error, device initialization misinterpreting",
               isDeviceInitialized(&device) == 0);

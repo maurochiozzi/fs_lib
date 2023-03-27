@@ -10,7 +10,7 @@
 
 static char *test_calculate_position_by_trilateration_three_references() {
     Segment segments[3];
-    Coordinate position_estimated;
+    Coordinate position_estimated = {0};
 
     // beacons at (0,0), (4,4) and (8,0) with location at (4,2)
 
