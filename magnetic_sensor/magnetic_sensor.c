@@ -1,3 +1,8 @@
+/**
+ * @file magnetic_sensor.c
+ * @brief Contains functions for interacting with a magnetic sensor.
+ */
+
 #include "magnetic_sensor.h"
 
 #include <math.h>
@@ -8,6 +13,14 @@
 #include "../space/space.h"
 #include "../spectrum/spectrum.h"
 
+/**
+ * @brief Initializes a MagneticSensor struct with the given parameters.
+ *
+ * @param sensor A pointer to the MagneticSensor struct to initialize.
+ * @param sample_size The size of each sample buffer.
+ * @param amount_of_buffers The number of sample buffers.
+ * @param i2c_address The I2C address of the magnetic sensor.
+ */
 void initMagneticSensor(MagneticSensor *sensor,
                         unsigned int sample_size,
                         unsigned int amount_of_buffers,
@@ -29,10 +42,16 @@ void initMagneticSensor(MagneticSensor *sensor,
     sensor->indexer.sample_size = sample_size;
 
     // init sensor connection
-
     sensor->initialized = 1;
 }
 
+/**
+ * @brief Checks if the given MagneticSensor is initialized.
+ *
+ * @param sensor A pointer to the MagneticSensor to check.
+ *
+ * @return 1 if the sensor is initialized, 0 otherwise.
+ */
 int isMagneticSensorInitialized(MagneticSensor *sensor) {
     int check_sum = 0;
 
@@ -63,12 +82,27 @@ int isMagneticSensorInitialized(MagneticSensor *sensor) {
     return check_sum == MAGNETIC_SENSOR_INITIALIZATION_CHECK_SUM;
 }
 
+/**
+ * @brief Samples the magnetic signal from the given MagneticSensor.
+ *
+ * @param sensor The MagneticSensor to sample from.
+ *
+ * @return A Vector struct representing the sampled magnetic signal.
+ */
 Vector sampleMagneticSignal(MagneticSensor sensor) {
     Vector vector = {.x = 0.0, .y = 0.0, .z = 0.0};
 
     return vector;
 }
 
+/**
+ * @brief Adds a sample to the given MagneticSensor's sample buffer.
+ *
+ * @param sensor A pointer to the MagneticSensor to add the sample to.
+ * @param sample The sample to add.
+ *
+ * @return 1 if the sample was added successfully, 0 otherwise.
+ */
 int addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
     int indexer = sensor->indexer.buffer * sensor->indexer.sample_size + sensor->indexer.sample;
 
@@ -79,11 +113,23 @@ int addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
     return incrementIndex(&sensor->indexer);
 }
 
+/**
+ * @brief Gets the magnetic signal strength from the given sensor and beacon.
+ * @param sensor The magnetic sensor to use.
+ * @param beacon The beacon to measure the magnetic signal strength from.
+ * @return The magnetic signal strength.
+ */
 float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon) {
     return getSpectrumWindowIntensity(&sensor->spectrum, beacon->spectrum_window,
                                       &sensor->indexer);
 }
 
+/**
+ * @brief Calculates the distance between the given sensor and beacon.
+ * @param sensor The magnetic sensor to use.
+ * @param beacon The beacon to calculate the distance to.
+ * @return The calculated distance.
+ */
 float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
     float magnetic_signal_strength;
     float distance;
@@ -96,6 +142,11 @@ float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
     return distance;
 }
 
+/**
+ * @brief Updates the spectrum of the given sensor with the provided sample.
+ * @param sensor The magnetic sensor to update the spectrum of.
+ * @param sample The sample to use to update the spectrum.
+ */
 void updateSpectrum(MagneticSensor *sensor, const float sample) {
     Spectrum *spectrum = &sensor->spectrum;
     Indexer *indexer = &sensor->indexer;
@@ -118,7 +169,8 @@ void updateSpectrum(MagneticSensor *sensor, const float sample) {
 }
 
 /**
- * This function will reset the cache of the previous filled cache.
+ * @brief Resets the cache of the previous filled cache.
+ * @param sensor The magnetic sensor to reset the cache of.
  */
 void resetSampleCache(MagneticSensor *sensor) {
     Indexer *indexer = &sensor->indexer;
