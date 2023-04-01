@@ -1,6 +1,8 @@
 /**
- * @file beacon.c
- * @brief Source file for Beacon module.
+ * @file Beacon.c
+ * @brief Implements the Beacon struct and functions for working with beacons.
+ *
+ * @see beacon.h
  */
 
 #include "beacon.h"
