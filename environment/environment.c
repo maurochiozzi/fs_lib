@@ -128,8 +128,5 @@ float mockEnvironmentMagneticField(Environment *environment, Coordinate *referen
             &beacons[beacon_index].magnetic_field_source, reference, timestamp);
     }
 
-    // Output the file name before returning the magnetic field intensity
-    printf("File: %s\n", __FILE__);
-
     return environment_magnetic_field_intensity;
 }
