@@ -1,13 +1,29 @@
+/**
+ * @file station.c
+ * @brief Implementation of the functions for the station module.
+ */
+
 #include "station.h"
 
 #include <stdio.h>
 
 #include "../beacon/beacon.h"
 
+/**
+ * @brief Requests the number of beacons available.
+ *
+ * @return The number of beacons available.
+ */
 int requestStationNumberOfBeacons() {
     return 5;
 }
 
+/**
+ * @brief Requests the information about the available beacons.
+ *
+ * @param beacons Array of Beacon structs where the information will be stored.
+ * @param number_of_beacons The number of beacons available.
+ */
 void requestBeaconsInformation(Beacon* beacons, int number_of_beacons) {
     MagneticFieldSource* source;
 
