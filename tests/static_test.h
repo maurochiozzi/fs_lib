@@ -1,3 +1,13 @@
+/**
+ * @file static_test.h
+ * @brief This file contains test cases for the static condition.
+ *
+ * This file contains test cases for the static condition. The tests
+ * are designed to cover several features and functionalities of
+ * the software.
+ *
+ */
+
 #ifndef STATIC_TEST
 #define STATIC_TEST
 
@@ -10,6 +20,20 @@
 #include "../minunit/minunit.h"
 #include "../navigation/navigation.h"
 
+/**
+ * @brief Test case for the beacon survey feature.
+ *
+ * This function tests the functionality of the beacon survey feature.
+ * The feature estimates the position of beacons using the magnetic field
+ * intensity detected by a set of magnetic sensors mounted on a device. The
+ * function creates a mocked environment with four beacons and a mocked device
+ * with three magnetic sensors. The test generates magnetic field intensity
+ * samples and uses them to estimate the position of each beacon. The estimated
+ * positions are compared to the actual positions of the beacons to check if
+ * the functionality works correctly.
+ *
+ * @return char* - Null if the test passed, an error message otherwise.
+ */
 static char *static_device_beacon_survey() {
     const float error_check = 0.001;
 
@@ -198,6 +222,11 @@ static char *static_device_beacon_survey() {
     return 0;
 }
 
+/**
+ * @brief Runs all static tests
+ *
+ * @return char* NULL
+ */
 static char *all_static_tests() {
     mu_run_test(static_device_beacon_survey);
 

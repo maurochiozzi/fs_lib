@@ -1,3 +1,7 @@
+/**
+ * @file unit_test.h
+ * @brief Header file for running all unit tests.
+ */
 #ifndef UNIT_TEST
 #define UNIT_TEST
 
@@ -11,6 +15,13 @@
 #include "../navigation/test_navigation.h"
 #include "../spectrum/test_spectrum.h"
 
+/**
+ * @brief Runs all unit tests for the entire project.
+ *
+ * This function runs all unit tests for the entire project, including all subsystems.
+ *
+ * @return A character pointer to the result of the test suite.
+ */
 static char *all_unit_tests() {
     mu_run_all_sub_tests(spectrum_all_tests);
     mu_run_all_sub_tests(indexer_all_tests);
