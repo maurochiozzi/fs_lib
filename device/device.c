@@ -1,3 +1,8 @@
+/**
+ * @file device.c
+ * @brief Implementation of the device API.
+ */
+
 #include "device.h"
 
 #include <stdio.h>
@@ -9,6 +14,15 @@
 #include "../navigation/navigation.h"
 #include "../space/space.h"
 
+/**
+ * @brief Initializes the device.
+ *
+ * @param device Pointer to the device to be initialized.
+ * @param magnetic_sensors Array of magnetic sensors to be added to the device.
+ * @param amount_of_magnetic_sensors Number of magnetic sensors in the `magnetic_sensors` array.
+ *
+ * @return None.
+ */
 void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_magnetic_sensors) {
     device->initialized = 0;
 
@@ -35,12 +49,27 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
     device->check_prd *= device->amount_of_magnetic_sensors;
 }
 
+/**
+ * @brief Sets the baseline of the device.
+ *
+ * @param device Pointer to the device.
+ * @param baseline Pointer to the baseline to be set.
+ *
+ * @return None.
+ */
 void setBaseline(Device *device, Baseline *baseline) {
     device->baseline = baseline;
 
     device->baseline_configured = 1;
 }
 
+/**
+ * @brief Checks if the device is initialized.
+ *
+ * @param device Pointer to the device.
+ *
+ * @return 1 if the device is initialized, otherwise 0.
+ */
 int isDeviceInitialized(Device *device) {
     if (device->initialized == 0) return 0;
 
@@ -67,6 +96,14 @@ int isDeviceInitialized(Device *device) {
     return 1;
 }
 
+/**
+ * @brief Updates the device's position.
+ *
+ * @param device Pointer to the device.
+ * @param environment Pointer to the environment.
+ *
+ * @return None.
+ */
 void updateDevicePosition(Device *device, Environment *environment) {
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
 
@@ -88,6 +125,17 @@ void updateDevicePosition(Device *device, Environment *environment) {
     }
 }
 
+/**
+ * @brief Frees the memory allocated for a device's magnetic sensors.
+ *
+ * This function deallocates the memory that was allocated for a device's magnetic sensors.
+ * It takes a pointer to a `Device` struct that represents the device whose magnetic sensors
+ * are being destroyed. The function frees the memory that was allocated for the `magnetic_sensors`
+ * array within the `Device` struct.
+ *
+ * @param device A pointer to a `Device` struct representing the device whose magnetic sensors
+ *               are being destroyed.
+ */
 void destroyDevice(Device *device) {
     free(device->magnetic_sensors);
 }

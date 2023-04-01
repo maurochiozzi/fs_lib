@@ -8,6 +8,11 @@
 #include "../minunit/minunit.h"
 #include "device.h"
 
+/**
+ * @brief Tests the initialization of a device with magnetic sensors.
+ *
+ * @return char* - Returns NULL if test passes, or an error message if it fails.
+ */
 static char *test_device_initialization() {
     Device device = {0};
 
@@ -42,6 +47,11 @@ static char *test_device_initialization() {
     return 0;
 }
 
+/**
+ * @brief Tests that a device is not initialized if it has not been properly initialized.
+ *
+ * @return char* - Returns NULL if test passes, or an error message if it fails.
+ */
 static char *test_device_not_initialized() {
     Device device = {0};
 
@@ -51,6 +61,11 @@ static char *test_device_not_initialized() {
     return 0;
 }
 
+/**
+ * @brief Runs all the tests for the device.
+ *
+ * @return char* - Returns NULL if all tests pass, or an error message if any of the tests fail.
+ */
 static char *device_all_tests() {
     mu_run_test(test_device_not_initialized);
     mu_run_test(test_device_initialization);
