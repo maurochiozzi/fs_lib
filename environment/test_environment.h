@@ -1,3 +1,8 @@
+/**
+ * @file test_environment.h
+ * @brief Unit tests for the environment module
+ */
+
 #ifndef TEST_ENVIRONMENT
 #define TEST_ENVIRONMENT
 
@@ -8,6 +13,13 @@
 #include "../minunit/minunit.h"
 #include "environment.h"
 
+/**
+ * @brief Test environment initialization
+ *
+ * Test if the environment is properly initialized with the given parameters
+ *
+ * @return char* - NULL if the test passed, an error message otherwise
+ */
 static char *test_environment_initialization() {
     Environment environment = {0};
 
@@ -33,6 +45,13 @@ static char *test_environment_initialization() {
     return 0;
 }
 
+/**
+ * @brief Test environment not initialized
+ *
+ * Test if the environment is not initialized when its variables are set to 0
+ *
+ * @return char* - NULL if the test passed, an error message otherwise
+ */
 static char *test_environment_not_initialized() {
     Environment environment = {0};
 
@@ -42,6 +61,13 @@ static char *test_environment_not_initialized() {
     return 0;
 }
 
+/**
+ * @brief Run all environment tests
+ *
+ * Run all unit tests for the environment module
+ *
+ * @return char* - NULL
+ */
 static char *environment_all_tests() {
     mu_run_test(test_environment_not_initialized);
     mu_run_test(test_environment_initialization);
