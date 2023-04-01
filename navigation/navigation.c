@@ -1,3 +1,8 @@
+/**
+ * @file navigation.c
+ * @brief Functions for estimating positions using trilateration
+ */
+
 #include "navigation.h"
 
 #include <stdio.h>
@@ -10,6 +15,12 @@
 #include "../space/space.h"
 #include "../spectrum/spectrum.h"
 
+/**
+ * @brief Estimates the position of the magnetic sensor on the device based on the detected magnetic fields.
+ *
+ * @param device Pointer to the device.
+ * @param environment Pointer to the environment.
+ */
 void estimateMagneticSensorPosition(Device *device, Environment *environment) {
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
     const int amount_of_beacons = environment->amount_of_beacons;
@@ -19,6 +30,7 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
 
     MagneticSensor *sensor;
 
+    // Allocate memory for the segments matrix
     Segment *segments_matrix = (Segment *)malloc(sizeof(Segment) *
                                                  amount_of_magnetic_sensors *
                                                  amount_of_beacons);
@@ -29,12 +41,23 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
     for (int i = 0; i < device->amount_of_magnetic_sensors; i++) {
         sensor = &device->magnetic_sensors[i];
 
+        // Clear the spectrum and indexer for the sensor
         clearPastSpectrum(&sensor->spectrum, &sensor->indexer);
     }
 
+    // Free the segments matrix
     free(segments_matrix);
+
+    // Indicate that the magnetic sensor position estimation is complete
+    printf("Magnetic sensor position estimation complete.\n");
 }
 
+/**
+ * @brief Estimates the position of the magnetic field source of the beacon based on the detected magnetic fields.
+ *
+ * @param device Pointer to the device.
+ * @param environment Pointer to the environment.
+ */
 void estimateMagneticBeaconSourcePosition(Device *device, Environment *environment) {
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
     const int amount_of_beacons = environment->amount_of_beacons;
@@ -44,6 +67,7 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
 
     MagneticSensor *sensor;
 
+    // Allocate memory for the segments matrix
     Segment *segments_matrix = (Segment *)malloc(sizeof(Segment) *
                                                  amount_of_magnetic_sensors *
                                                  amount_of_beacons);
@@ -55,12 +79,25 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
     for (int i = 0; i < device->amount_of_magnetic_sensors; i++) {
         sensor = &device->magnetic_sensors[i];
 
+        // Clear the spectrum and indexer for the sensor
         clearPastSpectrum(&sensor->spectrum, &sensor->indexer);
     }
 
+    // Free the segments matrix
     free(segments_matrix);
+
+    // Indicate that the magnetic beacon source position estimation is complete
+    printf("Magnetic beacon source position estimation complete.\n");
 }
 
+/**
+ * @brief Builds the matrix of magnetic field strength segments between each magnetic sensor and each beacon.
+ *
+ * @param device Pointer to the device.
+ * @param environment Pointer to the environment.
+ * @param segments_matrix Pointer to the segments matrix to be filled.
+ * @param reference An integer to indicate whether the reference should be the beacon or the sensor.
+ */
 void buildSegmentsMatrix(Device *device, Environment *environment,
                          Segment *segments_matrix, int reference) {
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
@@ -90,6 +127,13 @@ void buildSegmentsMatrix(Device *device, Environment *environment,
     }
 }
 
+/**
+ * @brief Estimates the positions of magnetic sensors in the given device using trilateration.
+ *
+ * @param[in] device Pointer to the device containing magnetic sensors to be located
+ * @param[in] environment Pointer to the environment containing beacons used for locating magnetic sensors
+ * @param[in] segments_matrix Pointer to a matrix of magnetic sensor distances to the beacons
+ */
 void estimateMagneticSensorsPositions(Device *device, Environment *environment,
                                       Segment *segments_matrix) {
     const int amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
@@ -114,6 +158,13 @@ void estimateMagneticSensorsPositions(Device *device, Environment *environment,
     free(references);
 }
 
+/**
+ * @brief Estimates the positions of beacons in the given environment using trilateration.
+ *
+ * @param[in] device Pointer to the device containing magnetic sensors used for locating beacons
+ * @param[in] environment Pointer to the environment containing beacons to be located
+ * @param[in] segments_matrix Pointer to a matrix of magnetic sensor distances to the beacons
+ */
 void estimateBeaconsPositions(Device *device, Environment *environment,
                               Segment *segments_matrix) {
     const int amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
@@ -139,9 +190,14 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
 }
 
 /**
+ * @brief Calculates the position of a point using trilateration.
+ *
  * For further reference: https://www.101computing.net/cell-phone-trilateration-algorithm/
+ *
+ * @param[in] segments Array of segments representing the distance from a point to several reference points
+ * @param[out] position Pointer to the calculated position
+ * @param[in] available_references Number of available reference points (should be >= 3)
  */
-
 void calculatePositionByTrilateration(Segment *segments,
                                       Coordinate *position,
                                       int available_references) {

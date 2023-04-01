@@ -1,3 +1,8 @@
+/**
+ * @file test_navigation.h
+ * @brief This file contains the unit tests for the navigation module.
+ */
+
 #ifndef NAVIGATION_TEST
 #define NAVIGATION_TEST
 
@@ -8,6 +13,12 @@
 #include "../space/space.h"
 #include "navigation.h"
 
+/**
+ * @brief Test for the function `calculatePositionByTrilateration` with three references.
+ *
+ * This test checks if the `calculatePositionByTrilateration` function calculates the position correctly
+ * using three references.
+ */
 static char *test_calculate_position_by_trilateration_three_references() {
     Segment segments[3];
     Coordinate position_estimated = {0};
@@ -63,6 +74,9 @@ static char *test_calculate_position_by_trilateration_three_references() {
     return 0;
 }
 
+/**
+ * @brief Runs all navigation module unit tests.
+ */
 static char *navigation_all_tests() {
     mu_run_test(test_calculate_position_by_trilateration_three_references);
 
