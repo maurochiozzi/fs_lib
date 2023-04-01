@@ -16,7 +16,7 @@ static char *static_device_beacon_survey() {
     // Define device and its sensors
     Device device = {0};
 
-    const int buffer_size = 2;
+    const int amount_of_buffers = 2;
     const int sample_size = 110;
     const int sample_rate = 220;
 
@@ -61,7 +61,7 @@ static char *static_device_beacon_survey() {
     float environment_magnetic_field_intensity;
 
     float delta_time = 1.0 / sample_rate;
-    float time_slice = 0.0;
+    float timestamp = 0.0;
 
     // Initialize sensors, devices, beacons and environment
     sensors = (MagneticSensor *)malloc(sizeof(MagneticSensor) * amount_of_magnetic_sensors);
@@ -70,7 +70,7 @@ static char *static_device_beacon_survey() {
         sensors[index].device_position = sensors_device_position[index];
 
         initMagneticSensor(&sensors[index],
-                           sample_size, buffer_size,
+                           sample_size, amount_of_buffers,
                            sensors_i2c_address[index]);
     }
 
@@ -111,12 +111,12 @@ static char *static_device_beacon_survey() {
             sensor = &device.magnetic_sensors[sensor_index];
 
             environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(&mocked_environment, &sensor->device_position, time_slice);
+                mockEnvironmentMagneticField(&mocked_environment, &sensor->device_position, timestamp);
 
             addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
         }
 
-        time_slice += delta_time;
+        timestamp += delta_time;
     }
 
     estimateMagneticBeaconSourcePosition(&device, &environment);
@@ -143,12 +143,12 @@ static char *static_device_beacon_survey() {
                                 &mocked_sensor_position);
 
             environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(&environment, &mocked_sensor_position, time_slice);
+                mockEnvironmentMagneticField(&environment, &mocked_sensor_position, timestamp);
 
             addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
         }
 
-        time_slice += delta_time;
+        timestamp += delta_time;
     }
 
     // Update device position with sensors estimations
@@ -172,12 +172,12 @@ static char *static_device_beacon_survey() {
                                 &mocked_sensor_position);
 
             environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(&environment, &mocked_sensor_position, time_slice);
+                mockEnvironmentMagneticField(&environment, &mocked_sensor_position, timestamp);
 
             addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
         }
 
-        time_slice += delta_time;
+        timestamp += delta_time;
     }
 
     // Update device position with sensors estimations
@@ -188,10 +188,10 @@ static char *static_device_beacon_survey() {
                                      &device.position) < error_check);
 
     // Reset global variables and free variables
-    angles_initialized = 0;
-    amount_of_angles = 0;
+    phases_initialized = 0;
+    amount_of_phases = 0;
 
-    free(angles);
+    free(phases);
     free(sensors);
     free(beacons);
 

@@ -15,10 +15,10 @@ static char *test_magnetic_sensor_initialized() {
               isMagneticSensorInitialized(&sensor) == 1);
 
     // Reset global variables and free variables
-    angles_initialized = 0;
-    amount_of_angles = 0;
+    phases_initialized = 0;
+    amount_of_phases = 0;
 
-    free(angles);
+    free(phases);
     free(sensor.samples);
 
     return 0;

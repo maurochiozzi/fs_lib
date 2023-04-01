@@ -10,9 +10,9 @@
 #include "../indexer/indexer.h"
 #include "../spectrum/spectrum.h"
 
-float complex* angles;
-int angles_initialized;
-int amount_of_angles;
+float complex* phases;
+int phases_initialized;
+int amount_of_phases;
 
 void initSpectrum(Spectrum* spectrum, int sample_size, int amount_of_buffers) {
     if (sample_size <= 10 || amount_of_buffers < 1) return;
@@ -36,29 +36,29 @@ void initSpectrum(Spectrum* spectrum, int sample_size, int amount_of_buffers) {
 }
 
 void initSpectrumAngles(int sample_size) {
-    if (angles_initialized == 0) {
-        amount_of_angles = sample_size;
+    if (phases_initialized == 0) {
+        amount_of_phases = sample_size;
 
-        angles = (float complex*)malloc(
+        phases = (float complex*)malloc(
             sizeof(float complex) *
-            amount_of_angles * amount_of_angles);
+            amount_of_phases * amount_of_phases);
 
-        for (int i = 0; i < amount_of_angles; i++) {  // this will be the current_index
-            for (int j = 0; j < amount_of_angles; j++) {
-                angles[i * amount_of_angles + j] =
-                    cexp(-(2 * i * j * (M_PI)*I) / amount_of_angles);
+        for (int i = 0; i < amount_of_phases; i++) {  // this will be the current_index
+            for (int j = 0; j < amount_of_phases; j++) {
+                phases[i * amount_of_phases + j] =
+                    cexp(-(2 * i * j * (M_PI)*I) / amount_of_phases);
             }
         }
 
-        angles_initialized = 1;
-    } else if (amount_of_angles != sample_size)
+        phases_initialized = 1;
+    } else if (amount_of_phases != sample_size)
         return;
 }
 
 int isSpectrumInitialized(Spectrum* spectrum) {
     int check_sum = 0;
 
-    if (angles_initialized == 1) {
+    if (phases_initialized == 1) {
         check_sum++;
     }
 

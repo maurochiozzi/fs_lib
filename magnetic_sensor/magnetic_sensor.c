@@ -100,20 +100,20 @@ void updateSpectrum(MagneticSensor *sensor, const float sample) {
     Spectrum *spectrum = &sensor->spectrum;
     Indexer *indexer = &sensor->indexer;
 
-    float complex angle;
+    float complex phase;
 
     for (int i = 0; i < indexer->sample + 1; i++) {
-        angle = angles[indexer->sample * indexer->sample_size + i];
+        phase = phases[indexer->sample * indexer->sample_size + i];
 
         spectrum->samples[indexer->buffer * indexer->sample_size + i] +=
-            spectrum->double_per_sample_size * (sample * (angle));
+            spectrum->double_per_sample_size * (sample * (phase));
     }
 
     for (int i = 0; i < indexer->sample; i++) {
-        angle = angles[indexer->sample * indexer->sample_size + i];
+        phase = phases[indexer->sample * indexer->sample_size + i];
 
         spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample] +=
-            spectrum->double_per_sample_size * (sensor->samples[indexer->buffer * indexer->sample_size + i] * (angle));
+            spectrum->double_per_sample_size * (sensor->samples[indexer->buffer * indexer->sample_size + i] * (phase));
     }
 }
 

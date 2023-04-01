@@ -28,10 +28,10 @@ static char *test_device_initialization() {
               isDeviceInitialized(&device) == 1);
 
     // Reset global variables and free variables
-    angles_initialized = 0;
-    amount_of_angles = 0;
+    phases_initialized = 0;
+    amount_of_phases = 0;
 
-    free(angles);
+    free(phases);
 
     for (int i = 0; i < amount_of_magnetic_sensors; i++) {
         free(sensors[i].samples);

@@ -11,9 +11,9 @@
 
 #define SPECTRUM_INITIALIZATION_CHECK_SUM 3
 
-extern float complex *angles;
-extern int angles_initialized;
-extern int amount_of_angles;
+extern float complex *phases;
+extern int phases_initialized;
+extern int amount_of_phases;
 
 typedef struct
 {

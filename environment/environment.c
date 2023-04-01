@@ -70,20 +70,20 @@ int isPointInsideEnvironment(Environment *environment, Coordinate *point) {
     return 0;
 }
 
-float mockMagneticSourceIntensityFromSource(MagneticFieldSource *source, Coordinate *reference, float time_slice) {
+float mockMagneticSourceIntensityFromSource(MagneticFieldSource *source, Coordinate *reference, float timestamp) {
     float intensity = getMagneticIntensityFromSource(source, reference);
 
-    return intensity * cos(2 * M_PI * source->frequency * time_slice);
+    return intensity * cos(2 * M_PI * source->frequency * timestamp);
 }
 
-float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference, float time_slice) {
+float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference, float timestamp) {
     float environment_magnetic_field_intensity = 0;
 
     Beacon *beacons = environment->beacons;
 
     for (int beacon_index = 0; beacon_index < environment->amount_of_beacons; beacon_index++) {
         environment_magnetic_field_intensity += mockMagneticSourceIntensityFromSource(
-            &beacons[beacon_index].magnetic_field_source, reference, time_slice);
+            &beacons[beacon_index].magnetic_field_source, reference, timestamp);
     }
 
     return environment_magnetic_field_intensity;
