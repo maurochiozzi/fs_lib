@@ -34,7 +34,7 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
     device->baseline_configured = 0;
 
     setCoordinate(&device->position, 0.0, 0.0, 0.0);
-    setVector(&device->heading, 0.0, 0.0, 0.0);
+    setVector(&device->attitude, 0.0, 0.0, 0.0);
 
     device->amount_of_magnetic_sensors = amount_of_magnetic_sensors;
     device->magnetic_sensors = magnetic_sensors;
@@ -123,6 +123,26 @@ void updateDevicePosition(Device *device, Environment *environment) {
         device_position->y += sensor_position->y / amount_of_magnetic_sensors;
         device_position->z += sensor_position->z / amount_of_magnetic_sensors;
     }
+
+    // Update device attitude if the baseline is configured
+    if (device->baseline_configured == 1) {
+        updateDeviceAttitude(device);
+    }
+}
+
+void updateDeviceAttitude(Device *device) {
+    Baseline *baseline = device->baseline;
+    Vector attitude = device->attitude;
+    double attitude_norm;
+
+    attitude.x = baseline->ending_point.x - baseline->initial_point.x;
+    attitude.y = baseline->ending_point.y - baseline->initial_point.y;
+    attitude.z = 0;  // 2 d plane first
+
+    attitude_norm = norm(attitude);
+
+    attitude.x /= attitude_norm;
+    attitude.y /= attitude_norm;
 }
 
 /**

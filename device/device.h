@@ -17,7 +17,7 @@
 typedef struct
 {
     Coordinate position; /**< The current position of the device. */
-    Vector heading;      /**< The current heading of the device. */
+    Vector attitude;     /**< The current attitude of the device. */
 
     Baseline *baseline; /**< The baseline to use for position estimation. */
 
@@ -60,21 +60,14 @@ void setBaseline(Device *Device, Baseline *baseline);
 int isDeviceInitialized(Device *device);
 
 /**
- * @brief Updates the position and heading of the given device.
- *
- * @param device The device to update.
- * @param position The new position of the device.
- * @param heading The new heading of the device.
- */
-void updatePosition(Device *device, Coordinate position, Vector heading);
-
-/**
- * @brief Updates the position and heading of the given device based on the given environment.
+ * @brief Updates the position, attitude and heading of the given device based on the given environment.
  *
  * @param device The device to update.
  * @param environment The environment to use for position estimation.
  */
 void updateDevicePosition(Device *device, Environment *environment);
+
+void updateDeviceAttitude(Device *device);
 
 /**
  * @brief Calculates the coordinates of the given device based on the given environment and reference.
