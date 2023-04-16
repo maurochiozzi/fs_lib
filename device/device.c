@@ -127,6 +127,7 @@ void updateDevicePosition(Device *device, Environment *environment) {
     // Update device attitude if the baseline is configured
     if (device->baseline_configured == 1) {
         updateDeviceAttitude(device);
+        updateDeviceHeading(device);
     }
 }
 
@@ -143,6 +144,15 @@ void updateDeviceAttitude(Device *device) {
 
     attitude.x /= attitude_norm;
     attitude.y /= attitude_norm;
+}
+
+void updateDeviceHeading(Device *device) {
+    Vector attitude = device->attitude;
+    double theta;
+
+    theta = atan2(attitude.x, attitude.y);
+
+    device->heading = theta;
 }
 
 /**
