@@ -67,6 +67,8 @@ static char *static_device_beacon_survey() {
 
     // Define device and its sensors
     Device device = {0};
+    Vector device_velocity = {0};
+
     Baseline baseline = {0};
 
     const int amount_of_magnetic_sensors = 3;
@@ -159,9 +161,8 @@ static char *static_device_beacon_survey() {
 
     // Start sampling environment magnetic field from the new position
     mockMagneticFieldSampleRun(
-        &device, device_heading,
-        &environment,
-        &mocked_device_position,
+        &device, device_velocity, device_heading,
+        &environment, &mocked_device_position,
         sample_rate, sample_size);
 
     // Update device position with sensors estimations
@@ -178,9 +179,8 @@ static char *static_device_beacon_survey() {
 
     // Start sampling environment magnetic field from the new position
     mockMagneticFieldSampleRun(
-        &device, device_heading,
-        &environment,
-        &mocked_device_position,
+        &device, device_velocity, device_heading,
+        &environment, &mocked_device_position,
         sample_rate, sample_size);
 
     // Update device position with sensors estimations
@@ -195,9 +195,8 @@ static char *static_device_beacon_survey() {
 
     // Start sampling environment magnetic field from the new position
     mockMagneticFieldSampleRun(
-        &device, device_heading,
-        &environment,
-        &mocked_device_position,
+        &device, device_velocity, device_heading,
+        &environment, &mocked_device_position,
         sample_rate, sample_size);
 
     // Update device position with sensors estimations
