@@ -18,6 +18,7 @@
 #include "../device/device.h"
 #include "../magnetic_sensor/magnetic_sensor.h"
 #include "../minunit/minunit.h"
+#include "../mock/mock.h"
 #include "../navigation/navigation.h"
 
 /**
