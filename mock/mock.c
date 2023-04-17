@@ -3,8 +3,10 @@
 #include <math.h>
 
 #include "../beacon/beacon.h"
+#include "../device/device.h"
 #include "../environment/environment.h"
 #include "../magnetic_field/magnetic_field.h"
+#include "../magnetic_sensor/magnetic_sensor.h"
 #include "../space/space.h"
 
 #ifndef M_PI
@@ -44,4 +46,39 @@ float mockEnvironmentMagneticField(Environment *environment, Coordinate *referen
     }
 
     return environment_magnetic_field_intensity;
+}
+
+void mockMagneticSampleRun(
+    Device *device,
+    int sample_rate, int sample_size,
+    Environment *environment,
+    Coordinate *mocked_device_position,
+    Coordinate *mocked_sensor_position) {
+    MagneticSensor *sensor;
+
+    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
+    double environment_magnetic_field_intensity;
+
+    float delta_time = 1.0 / sample_rate;
+    float timestamp = 0.0;
+
+    // Start sampling environment magnetic field
+    for (int index = 0; index < 1 * sample_size; index++) {
+        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+            sensor = &device->magnetic_sensors[sensor_index];
+
+            sumCoordinateOffset(&sensor->device_position, mocked_device_position,
+                                mocked_sensor_position);
+
+            environment_magnetic_field_intensity =
+                mockEnvironmentMagneticField(
+                    environment,
+                    mocked_sensor_position,
+                    timestamp);
+
+            addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
+        }
+
+        timestamp += delta_time;
+    }
 }
