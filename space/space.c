@@ -74,7 +74,7 @@ float euclideanDistance2(Coordinate *start, Coordinate *end) {
  * @param offset A pointer to the second Coordinate struct to be added
  * @param result A pointer to the Coordinate struct to store the result in
  */
-void sumCoordinateOffset(Coordinate *point, Coordinate *offset, Coordinate *result) {
+void translate(Coordinate *point, Coordinate *offset, Coordinate *result) {
     result->x = point->x + offset->x;
     result->y = point->y + offset->y;
     result->z = point->z + offset->z;

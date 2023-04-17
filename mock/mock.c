@@ -94,8 +94,8 @@ void mockMagneticFieldSampleRun(
         for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
             sensor = &device->magnetic_sensors[sensor_index];
 
-            sumCoordinateOffset(&sensor->device_position, mocked_device_position,
-                                mocked_sensor_position);
+            translate(&sensor->device_position, mocked_device_position,
+                      mocked_sensor_position);
 
             environment_magnetic_field_intensity =
                 mockEnvironmentMagneticField(
