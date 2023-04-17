@@ -1,6 +1,7 @@
 #include "mock.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 #include "../beacon/beacon.h"
 #include "../device/device.h"

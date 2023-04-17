@@ -127,7 +127,6 @@ void updateDevicePosition(Device *device, Environment *environment) {
 
     // Update device attitude if the baseline is configured
     if (device->baseline_configured == 1) {
-        // printf("here?\r\n");
         updateDeviceAttitude(device);
         updateDeviceHeading(device);
     }
