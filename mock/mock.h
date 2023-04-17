@@ -24,7 +24,13 @@ float mockEnvironmentMagneticField(
     Environment *environment,
     Coordinate *reference, float timestamp);
 
-void mockMagneticSampleRun(
+void mockBeaconSurveyRun(
+    Device *device,
+    int sample_rate, int sample_size,
+    Environment *environment,
+    Environment *mocked_environment);
+
+void mockMagneticFieldSampleRun(
     Device *device,
     int sample_rate, int sample_size,
     Environment *environment,

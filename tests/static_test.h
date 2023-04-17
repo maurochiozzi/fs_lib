@@ -130,19 +130,11 @@ static char *static_device_beacon_survey() {
               isEnvironmentInitialized(&environment) == 1);
 
     // start surveying beacons
-
-    for (int index = 0; index < 1 * sample_size; index++) {
-        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
-            sensor = &device.magnetic_sensors[sensor_index];
-
-            environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(&mocked_environment, &sensor->device_position, timestamp);
-
-            addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
-        }
-
-        timestamp += delta_time;
-    }
+    mockBeaconSurveyRun(
+        &device,
+        sample_rate, sample_size,
+        &environment,
+        &mocked_environment);
 
     estimateMagneticBeaconSourcePosition(&device, &environment);
 
@@ -160,21 +152,12 @@ static char *static_device_beacon_survey() {
     mocked_device_position.z = 0.0;
 
     // Start sampling environment magnetic field from the new position
-    for (int index = 0; index < 1 * sample_size; index++) {
-        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
-            sensor = &device.magnetic_sensors[sensor_index];
-
-            sumCoordinateOffset(&sensor->device_position, &mocked_device_position,
-                                &mocked_sensor_position);
-
-            environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(&environment, &mocked_sensor_position, timestamp);
-
-            addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
-        }
-
-        timestamp += delta_time;
-    }
+    mockMagneticFieldSampleRun(
+        &device,
+        sample_rate, sample_size,
+        &environment,
+        &mocked_device_position,
+        &mocked_sensor_position);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
@@ -189,21 +172,12 @@ static char *static_device_beacon_survey() {
     mocked_device_position.z = 0.0;
 
     // Start sampling environment magnetic field from the new position
-    for (int index = 0; index < 1 * sample_size; index++) {
-        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
-            sensor = &device.magnetic_sensors[sensor_index];
-
-            sumCoordinateOffset(&sensor->device_position, &mocked_device_position,
-                                &mocked_sensor_position);
-
-            environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(&environment, &mocked_sensor_position, timestamp);
-
-            addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
-        }
-
-        timestamp += delta_time;
-    }
+    mockMagneticFieldSampleRun(
+        &device,
+        sample_rate, sample_size,
+        &environment,
+        &mocked_device_position,
+        &mocked_sensor_position);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);

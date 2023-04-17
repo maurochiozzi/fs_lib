@@ -48,7 +48,34 @@ float mockEnvironmentMagneticField(Environment *environment, Coordinate *referen
     return environment_magnetic_field_intensity;
 }
 
-void mockMagneticSampleRun(
+void mockBeaconSurveyRun(
+    Device *device,
+    int sample_rate, int sample_size,
+    Environment *environment,
+    Environment *mocked_environment) {
+    MagneticSensor *sensor;
+
+    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
+    double environment_magnetic_field_intensity;
+
+    float delta_time = 1.0 / sample_rate;
+    float timestamp = 0.0;
+
+    for (int index = 0; index < 1 * sample_size; index++) {
+        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+            sensor = &device->magnetic_sensors[sensor_index];
+
+            environment_magnetic_field_intensity =
+                mockEnvironmentMagneticField(mocked_environment, &sensor->device_position, timestamp);
+
+            addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
+        }
+
+        timestamp += delta_time;
+    }
+}
+
+void mockMagneticFieldSampleRun(
     Device *device,
     int sample_rate, int sample_size,
     Environment *environment,
