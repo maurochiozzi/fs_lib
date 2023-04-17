@@ -10,6 +10,10 @@
 #include <math.h>
 #include <stdio.h>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 /**
  * @brief Sets the x, y, and z coordinates of a Coordinate struct
  *
@@ -74,6 +78,19 @@ void sumCoordinateOffset(Coordinate *point, Coordinate *offset, Coordinate *resu
     result->x = point->x + offset->x;
     result->y = point->y + offset->y;
     result->z = point->z + offset->z;
+}
+
+void rotate2d(Coordinate *point, float angle) {
+    // Convert the angle to radians
+    angle = angle * M_PI / 180.0;
+
+    // Calculate the sin and cosine values of the angle
+    double sinAngle = sin(angle);
+    double cosAngle = cos(angle);
+
+    // Rotate the point around the Z axis
+    double rotatedX = point->x * cosAngle - point->y * sinAngle;
+    double rotatedY = point->x * sinAngle + point->y * cosAngle;
 }
 
 /**

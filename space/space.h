@@ -87,6 +87,7 @@ float euclideanDistance2(Coordinate *start, Coordinate *end);
  * @param result Pointer to the result of the addition.
  */
 void sumCoordinateOffset(Coordinate *point, Coordinate *offset, Coordinate *result);
+void rotate2d(Coordinate *point, float angle);
 
 /**
  * @brief Calculates the position error between a reference point and a real point.
