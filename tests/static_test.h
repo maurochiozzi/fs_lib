@@ -40,6 +40,8 @@ static char *static_device_beacon_survey() {
 
     // Define device and its sensors
     Device device = {0};
+    Baseline baseline = {0};
+    float heading = 0.0;
 
     const int amount_of_buffers = 2;
     const int sample_size = 110;
@@ -99,7 +101,11 @@ static char *static_device_beacon_survey() {
                            sensors_i2c_address[index]);
     }
 
+    baseline.initial_point = &sensors[0].local_position;
+    baseline.ending_point = &sensors[2].local_position;
+
     initDevice(&device, sensors, amount_of_magnetic_sensors);
+    setBaseline(&device, &baseline);
 
     // Check if device was correctly initialized
     mu_assert("error, beacon survey - device initialization",
@@ -131,10 +137,9 @@ static char *static_device_beacon_survey() {
 
     // start surveying beacons
     mockBeaconSurveyRun(
-        &device,
-        sample_rate, sample_size,
-        &environment,
-        &mocked_environment);
+        &device, &environment,
+        &mocked_environment,
+        sample_rate, sample_size);
 
     estimateMagneticBeaconSourcePosition(&device, &environment);
 
@@ -153,11 +158,10 @@ static char *static_device_beacon_survey() {
 
     // Start sampling environment magnetic field from the new position
     mockMagneticFieldSampleRun(
-        &device,
-        sample_rate, sample_size,
+        &device, heading,
         &environment,
         &mocked_device_position,
-        &mocked_sensor_position);
+        sample_rate, sample_size);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
@@ -173,11 +177,10 @@ static char *static_device_beacon_survey() {
 
     // Start sampling environment magnetic field from the new position
     mockMagneticFieldSampleRun(
-        &device,
-        sample_rate, sample_size,
+        &device, heading,
         &environment,
         &mocked_device_position,
-        &mocked_sensor_position);
+        sample_rate, sample_size);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
@@ -185,6 +188,30 @@ static char *static_device_beacon_survey() {
     mu_assert("device survey 02 error",
               calculatePositionError(&mocked_device_position,
                                      &device.position) < error_check);
+
+    // Rotate device position to check attitude and heading
+
+    heading = 45;
+
+    // Start sampling environment magnetic field from the new position
+    mockMagneticFieldSampleRun(
+        &device, heading,
+        &environment,
+        &mocked_device_position,
+        sample_rate, sample_size);
+
+    // Update device position with sensors estimations
+    updateDevicePosition(&device, &environment);
+
+    mu_assert("device survey 03 position error",
+              calculatePositionError(&mocked_device_position,
+                                     &device.position) < error_check);
+
+    mu_assert("device survey 03 heading error",
+              calculateError(heading,
+                             device.heading) < error_check);
+
+    printf("%f\n\r", device.heading);
 
     // Reset global variables and free variables
     phases_initialized = 0;

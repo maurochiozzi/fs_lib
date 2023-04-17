@@ -36,8 +36,8 @@ typedef struct Segment {
  * @brief Represents a line segment defined by its two endpoints.
  */
 typedef struct Baseline {
-    Coordinate initial_point; /**< The starting point of the line segment. */
-    Coordinate ending_point;  /**< The ending point of the line segment. */
+    Coordinate *initial_point; /**< The starting point of the line segment. */
+    Coordinate *ending_point;  /**< The ending point of the line segment. */
 } Baseline;
 
 /**
@@ -87,7 +87,7 @@ float euclideanDistance2(Coordinate *start, Coordinate *end);
  * @param result Pointer to the result of the addition.
  */
 void translate(Coordinate *point, Coordinate *offset, Coordinate *result);
-void rotate2d(Coordinate *point, float angle);
+void rotate2d(Coordinate *point, float angle, Coordinate *result);
 
 /**
  * @brief Calculates the position error between a reference point and a real point.
@@ -98,6 +98,7 @@ void rotate2d(Coordinate *point, float angle);
  * @return The position error between the two points.
  */
 float calculatePositionError(Coordinate *reference, Coordinate *real);
+float calculateError(float reference, float real);
 
 /**
  * @brief Prints the coordinates of a point to the console.

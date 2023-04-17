@@ -80,7 +80,7 @@ void translate(Coordinate *point, Coordinate *offset, Coordinate *result) {
     result->z = point->z + offset->z;
 }
 
-void rotate2d(Coordinate *point, float angle) {
+void rotate2d(Coordinate *point, float angle, Coordinate *result) {
     // Convert the angle to radians
     angle = angle * M_PI / 180.0;
 
@@ -89,8 +89,9 @@ void rotate2d(Coordinate *point, float angle) {
     double cosAngle = cos(angle);
 
     // Rotate the point around the Z axis
-    double rotatedX = point->x * cosAngle - point->y * sinAngle;
-    double rotatedY = point->x * sinAngle + point->y * cosAngle;
+    result->x = point->x * cosAngle - point->y * sinAngle;
+    result->y = point->x * sinAngle + point->y * cosAngle;
+    result->z = 0;
 }
 
 /**
@@ -108,6 +109,10 @@ float calculatePositionError(Coordinate *reference, Coordinate *real) {
     error.z = (reference->z - real->z);
 
     return norm(error);
+}
+
+float calculateError(float reference, float real) {
+    return (reference - real) / reference;
 }
 
 /**

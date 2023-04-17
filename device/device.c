@@ -127,33 +127,36 @@ void updateDevicePosition(Device *device, Environment *environment) {
 
     // Update device attitude if the baseline is configured
     if (device->baseline_configured == 1) {
+        // printf("here?\r\n");
         updateDeviceAttitude(device);
         updateDeviceHeading(device);
     }
 }
 
 void updateDeviceAttitude(Device *device) {
-    Baseline *baseline = device->baseline;
-    Vector attitude = device->attitude;
+    Coordinate *initial_point = device->baseline->initial_point;
+    Coordinate *ending_point = device->baseline->ending_point;
+
+    Vector *attitude = &device->attitude;
     double attitude_norm;
 
-    attitude.x = baseline->ending_point.x - baseline->initial_point.x;
-    attitude.y = baseline->ending_point.y - baseline->initial_point.y;
-    attitude.z = 0;  // 2 d plane first
+    attitude->x = ending_point->x - initial_point->x;
+    attitude->y = ending_point->y - initial_point->y;
+    attitude->z = 0;  // 2 d plane first
 
-    attitude_norm = norm(attitude);
+    attitude_norm = norm(*attitude);
 
-    attitude.x /= attitude_norm;
-    attitude.y /= attitude_norm;
+    attitude->x /= attitude_norm;
+    attitude->y /= attitude_norm;
 }
 
 void updateDeviceHeading(Device *device) {
     Vector attitude = device->attitude;
-    double theta;
+    double heading;
 
-    theta = atan2(attitude.x, attitude.y);
+    heading = atan2(attitude.x, attitude.y) * 180.0 / M_PI;
 
-    device->heading = theta;
+    device->heading = heading;
 }
 
 /**
