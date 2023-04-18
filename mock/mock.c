@@ -77,10 +77,10 @@ void mockBeaconSurveyRun(
 }
 
 void mockMagneticFieldSampleRun(
-    Device *device, Vector device_velocity,
-    Coordinate *final_device_position, float heading,
-    Environment *environment, Vector *device_position_offset,
-    int sample_rate, int sample_size) {
+    Device *device, Vector device_velocity, float heading,
+    Coordinate *final_device_position, Vector *device_position_offset,
+    Coordinate *est_final_device_position, Vector *est_device_position_offset,
+    Environment *environment, int sample_rate, int sample_size) {
     MagneticSensor *sensor;
     Coordinate mocked_sensor_position = {0};
 
@@ -92,12 +92,12 @@ void mockMagneticFieldSampleRun(
 
     // Start sampling environment magnetic field
     for (int index = 0; index < 1 * sample_size; index++) {
-        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
-            // update mocked device offset from its original position
-            device_position_offset->x += device_velocity.x * timestamp;
-            device_position_offset->y += device_velocity.y * timestamp;
-            device_position_offset->z += device_velocity.z * timestamp;
+        // update mocked device offset from its original position
+        device_position_offset->x += device_velocity.x * delta_time;
+        device_position_offset->y += device_velocity.y * delta_time;
+        device_position_offset->z += device_velocity.z * delta_time;
 
+        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
             sensor = &device->magnetic_sensors[sensor_index];
 
             mocked_sensor_position = sensor->device_position;
