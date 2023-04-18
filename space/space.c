@@ -123,3 +123,12 @@ float calculateError(float reference, float real) {
 void printCoordinate(Coordinate *point) {
     printf("(%3.6f, %3.6f, %3.6f)\n", point->x, point->y, point->z);
 }
+
+/**
+ * @brief Prints the x, y, and z coordinates of a Vector struct to stdout
+ *
+ * @param vector A pointer to the Coordinate struct to be printed
+ */
+void printVector(Vector *vector) {
+    printf("(%3.6f, %3.6f, %3.6f)\n", vector->x, vector->y, vector->z);
+}

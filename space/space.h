@@ -107,4 +107,11 @@ float calculateError(float reference, float real);
  */
 void printCoordinate(Coordinate *point);
 
+/**
+ * @brief Prints the coordinates of a vector to the console.
+ *
+ * @param vector Vector to the vector being printed.
+ */
+void printVector(Vector *vector);
+
 #endif
