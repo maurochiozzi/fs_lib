@@ -55,9 +55,6 @@ static char *static_device_beacon_survey() {
     Vector device_position_offset = {0};
     Coordinate final_device_position = {0};
 
-    Vector est_device_position_offset = {0};
-    Coordinate est_final_device_position = {0};
-
     // Mocked environment will be used to mock beacons and get the magnetic
     // field intensity from them.
     Environment mocked_environment = {0};
@@ -166,7 +163,6 @@ static char *static_device_beacon_survey() {
     mockMagneticFieldSampleRun(
         &device, device_velocity, device_heading,
         &final_device_position, &device_position_offset,
-        &est_final_device_position, &est_device_position_offset,
         &environment, sample_rate, sample_size);
 
     // Update device position with sensors estimations
@@ -185,7 +181,6 @@ static char *static_device_beacon_survey() {
     mockMagneticFieldSampleRun(
         &device, device_velocity, device_heading,
         &final_device_position, &device_position_offset,
-        &est_final_device_position, &est_device_position_offset,
         &environment, sample_rate, sample_size);
 
     // Update device position with sensors estimations
@@ -202,7 +197,6 @@ static char *static_device_beacon_survey() {
     mockMagneticFieldSampleRun(
         &device, device_velocity, device_heading,
         &final_device_position, &device_position_offset,
-        &est_final_device_position, &est_device_position_offset,
         &environment, sample_rate, sample_size);
 
     // Update device position with sensors estimations
