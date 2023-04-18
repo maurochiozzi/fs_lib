@@ -1,15 +1,7 @@
-/**
- * @file static_test.h
- * @brief This file contains test cases for the static condition.
- *
- * This file contains test cases for the static condition. The tests
- * are designed to cover several features and functionalities of
- * the software.
- *
- */
 
-#ifndef STATIC_TEST
-#define STATIC_TEST
+
+#ifndef DYNAMIC_TEST
+#define DYNAMIC_TEST
 
 #include <math.h>
 #include <stdio.h>
@@ -21,21 +13,7 @@
 #include "../mock/mock.h"
 #include "../navigation/navigation.h"
 
-/**
- * @brief Test case for the beacon survey feature.
- *
- * This function tests the functionality of the beacon survey feature.
- * The feature estimates the position of beacons using the magnetic field
- * intensity detected by a set of magnetic sensors mounted on a device. The
- * function creates a mocked environment with four beacons and a mocked device
- * with three magnetic sensors. The test generates magnetic field intensity
- * samples and uses them to estimate the position of each beacon. The estimated
- * positions are compared to the actual positions of the beacons to check if
- * the functionality works correctly.
- *
- * @return char* - Null if the test passed, an error message otherwise.
- */
-static char *static_device_beacon_survey() {
+static char *dynamic_device_beacon_survey() {
     // Auxiliary variables to help during simulations
     MagneticSensor *sensor;
     float device_heading = 0.0;
@@ -51,7 +29,10 @@ static char *static_device_beacon_survey() {
 
     const float error_check = 0.001;
 
-    Vector device_velocity = {0};
+    // Device velocity, in m/s
+    // 1.0 m/s in direction (0.2, 1.2)
+    // final position should be (0.2, 1.2) after 1 s or (0.1, 0.6) after 0.5 s
+    Vector device_velocity = {.x = 0.02, .y = 0.12, .z = 0};
     Vector device_position_offset = {0};
     Coordinate final_device_position = {0};
 
@@ -157,64 +138,27 @@ static char *static_device_beacon_survey() {
                                          &beacons[index].magnetic_field_source.position) < error_check);
     }
 
-    // now update device position after move
-    device_position_offset.x = 2.4;
-    device_position_offset.y = 1.8;
-    device_position_offset.z = 0.0;
+    for (int interation = 0; interation < 10; interation++) {
+        printVector(&device_position_offset);
+        printVector(&est_device_position_offset);
 
-    // Start sampling environment magnetic field from the new position
-    mockMagneticFieldSampleRun(
-        &device, device_velocity, device_heading,
-        &final_device_position, &device_position_offset,
-        &est_final_device_position, &est_device_position_offset,
-        &environment, sample_rate, sample_size);
+        // Start sampling environment magnetic field from the new position
+        mockMagneticFieldSampleRun(
+            &device, device_velocity, device_heading,
+            &final_device_position, &device_position_offset,
+            &est_final_device_position, &est_device_position_offset,
+            &environment, sample_rate, sample_size);
 
-    // Update device position with sensors estimations
-    updateDevicePosition(&device, &environment);
+        // Update device position with sensors estimations
+        updateDevicePosition(&device, &environment);
 
-    mu_assert("device survey 01 error",
-              calculatePositionError(&final_device_position,
-                                     &device.position) < error_check);
-
-    // now update device position after move
-    device_position_offset.x = 0.2;
-    device_position_offset.y = 1.2;
-    device_position_offset.z = 0.0;
-
-    // Start sampling environment magnetic field from the new position
-    mockMagneticFieldSampleRun(
-        &device, device_velocity, device_heading,
-        &final_device_position, &device_position_offset,
-        &est_final_device_position, &est_device_position_offset,
-        &environment, sample_rate, sample_size);
-
-    // Update device position with sensors estimations
-    updateDevicePosition(&device, &environment);
-
-    mu_assert("device survey 02 error",
-              calculatePositionError(&final_device_position,
-                                     &device.position) < error_check);
-
-    // Rotate device position to check attitude and heading
-    device_heading = 45;
-
-    // Start sampling environment magnetic field from the new position
-    mockMagneticFieldSampleRun(
-        &device, device_velocity, device_heading,
-        &final_device_position, &device_position_offset,
-        &est_final_device_position, &est_device_position_offset,
-        &environment, sample_rate, sample_size);
-
-    // Update device position with sensors estimations
-    updateDevicePosition(&device, &environment);
-
-    mu_assert("device survey 03 position error",
-              calculatePositionError(&final_device_position,
-                                     &device.position) < error_check);
-
-    mu_assert("device survey 03 heading error",
-              calculateError(device_heading,
-                             device.heading) < error_check);
+        // printCoordinate(&final_device_position);
+        // printCoordinate(&device.position);
+        // printf("%f %f %f\r\n",
+        //        calculatePositionError(&final_device_position, &device.position),
+        //        calculateError(final_device_position.x, device.position.x) * 100,
+        //        calculateError(final_device_position.y, device.position.y) * 100);
+    }
 
     // Reset global variables and free variables
     phases_initialized = 0;
@@ -228,12 +172,12 @@ static char *static_device_beacon_survey() {
 }
 
 /**
- * @brief Runs all static tests
+ * @brief Runs all dynamic tests
  *
  * @return char* NULL
  */
-static char *all_static_tests() {
-    mu_run_test(static_device_beacon_survey);
+static char *all_dynamic_tests() {
+    mu_run_test(dynamic_device_beacon_survey);
 
     return 0;
 }
