@@ -86,7 +86,7 @@ float euclideanDistance2(Coordinate *start, Coordinate *end);
  * @param offset Pointer to the offset to be added to the point.
  * @param result Pointer to the result of the addition.
  */
-void translate(Coordinate *point, Coordinate *offset, Coordinate *result);
+void translate(Coordinate *point, Vector *offset, Coordinate *result);
 void rotate2d(Coordinate *point, float angle, Coordinate *result);
 
 /**

@@ -77,8 +77,9 @@ void mockBeaconSurveyRun(
 }
 
 void mockMagneticFieldSampleRun(
-    Device *device, Vector device_velocity, float heading,
-    Environment *environment, Coordinate *mocked_device_position,
+    Device *device, Vector device_velocity,
+    Coordinate *final_device_position, float heading,
+    Environment *environment, Vector *device_position_offset,
     int sample_rate, int sample_size) {
     MagneticSensor *sensor;
     Coordinate mocked_sensor_position = {0};
@@ -92,13 +93,18 @@ void mockMagneticFieldSampleRun(
     // Start sampling environment magnetic field
     for (int index = 0; index < 1 * sample_size; index++) {
         for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+            // update mocked device offset from its original position
+            device_position_offset->x += device_velocity.x * timestamp;
+            device_position_offset->y += device_velocity.y * timestamp;
+            device_position_offset->z += device_velocity.z * timestamp;
+
             sensor = &device->magnetic_sensors[sensor_index];
 
             mocked_sensor_position = sensor->device_position;
 
             rotate2d(&sensor->device_position, heading, &mocked_sensor_position);
 
-            translate(&mocked_sensor_position, mocked_device_position,
+            translate(&mocked_sensor_position, device_position_offset,
                       &mocked_sensor_position);
 
             environment_magnetic_field_intensity =
@@ -112,4 +118,9 @@ void mockMagneticFieldSampleRun(
 
         timestamp += delta_time;
     }
+
+    // update mocked device final position
+    final_device_position->x = device_position_offset->x;
+    final_device_position->y = device_position_offset->y;
+    final_device_position->z = device_position_offset->z;
 }
