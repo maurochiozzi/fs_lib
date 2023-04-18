@@ -105,13 +105,13 @@ float calculateError(float reference, float real);
  *
  * @param point Pointer to the point being printed.
  */
-void printCoordinate(Coordinate *point);
+void printCoordinate(Coordinate *point, int end_char);
 
 /**
  * @brief Prints the coordinates of a vector to the console.
  *
  * @param vector Vector to the vector being printed.
  */
-void printVector(Vector *vector);
+void printVector(Vector *vector, int end_char);
 
 #endif
