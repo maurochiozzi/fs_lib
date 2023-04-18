@@ -33,7 +33,6 @@ void mockBeaconSurveyRun(
 void mockMagneticFieldSampleRun(
     Device *device, Vector device_velocity, float heading,
     Coordinate *final_device_position, Vector *device_position_offset,
-    Coordinate *est_final_device_position, Vector *est_device_position_offset,
     Environment *environment, int sample_rate, int sample_size);
 
 #endif
