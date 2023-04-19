@@ -121,12 +121,12 @@ float calculateError(float reference, float real) {
  * @param point A pointer to the Coordinate struct to be printed
  */
 void printCoordinate(Coordinate *point, int end_char) {
-    printf("%3.6f, %3.6f, %3.6f", point->x, point->y, point->z);
+    printf("%+07.3f, %+07.3f, %+07.3f", point->x, point->y, point->z);
 
     if (end_char == 0) {
         printf("\n");
     } else {
-        printf("; ");
+        printf(", ");
     }
 }
 
@@ -136,11 +136,11 @@ void printCoordinate(Coordinate *point, int end_char) {
  * @param vector A pointer to the Coordinate struct to be printed
  */
 void printVector(Vector *vector, int end_char) {
-    printf("%3.6f, %3.6f, %3.6f", vector->x, vector->y, vector->z);
+    printf("%+07.3f, %+07.3f, %+07.3f", vector->x, vector->y, vector->z);
 
     if (end_char == 0) {
         printf("\n");
     } else {
-        printf("; ");
+        printf(", ");
     }
 }

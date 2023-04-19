@@ -13,10 +13,12 @@
 #include "../mock/mock.h"
 #include "../navigation/navigation.h"
 
+#define OUTPUT_RESULTS 0
+
 static char *dynamic_device_beacon_survey() {
     // Auxiliary variables to help during simulations
     MagneticSensor *sensor;
-    float device_heading = 0.0;
+    float device_heading = 45.0;
 
     float environment_magnetic_field_intensity;
 
@@ -28,16 +30,16 @@ static char *dynamic_device_beacon_survey() {
     float timestamp = 0.0;
 
     const float error_check = 0.001;
+    float norm_est;
+    float norm_real;
+
+    Coordinate origin = {0};
 
     // Device velocity, in m/s
-    // 1.0 m/s in direction (0.2, 1.2)
-    // final position should be (0.2, 1.2) after 1 s or (0.1, 0.6) after 0.5 s
-    Vector device_velocity = {.x = 0.02, .y = 0.12, .z = 0};
+    Vector velocity_step = {.x = -0.02, .y = 0.03, .z = 0};
+    Vector device_velocity = {.x = 0.0, .y = 0.0, .z = 0};
     Vector device_position_offset = {0};
     Coordinate final_device_position = {0};
-
-    Vector est_device_position_offset = {0};
-    Coordinate est_final_device_position = {0};
 
     // Mocked environment will be used to mock beacons and get the magnetic
     // field intensity from them.
@@ -138,26 +140,54 @@ static char *dynamic_device_beacon_survey() {
                                          &beacons[index].magnetic_field_source.position) < error_check);
     }
 
-    for (int interation = 0; interation < 10; interation++) {
-        printVector(&device_position_offset);
-        printVector(&est_device_position_offset);
+    if (OUTPUT_RESULTS == 1) {
+        printf("interation, vx, vy, vz, attitude_x, attitude_y, attitude_z, heading, heading_error, est_position_x, est_position_y, est_position_z, real_position_x, real_position_y, real_position_z, norm_est, norm_real, norm_error, error\r\n");
+    }
 
-        // Start sampling environment magnetic field from the new position
-        mockMagneticFieldSampleRun(
-            &device, device_velocity, device_heading,
-            &final_device_position, &device_position_offset,
-            &est_final_device_position, &est_device_position_offset,
-            &environment, sample_rate, sample_size);
+    for (int velocity_increase = 1; velocity_increase < 10; velocity_increase++) {
+        device_velocity.x += velocity_step.x;
+        device_velocity.y += velocity_step.y;
+        device_velocity.z += velocity_step.z;
 
-        // Update device position with sensors estimations
-        updateDevicePosition(&device, &environment);
+        // final_device_position.x = 0;
+        // final_device_position.y = 0;
+        // final_device_position.z = 0;
 
-        // printCoordinate(&final_device_position);
-        // printCoordinate(&device.position);
-        // printf("%f %f %f\r\n",
-        //        calculatePositionError(&final_device_position, &device.position),
-        //        calculateError(final_device_position.x, device.position.x) * 100,
-        //        calculateError(final_device_position.y, device.position.y) * 100);
+        device_position_offset.x = 0;
+        device_position_offset.y = 0;
+        device_position_offset.z = 0;
+
+        for (int interation = 0; interation < 50; interation++) {
+            // Start sampling environment magnetic field from the new position
+            mockMagneticFieldSampleRun(
+                &device, device_velocity, device_heading,
+                &final_device_position, &device_position_offset,
+                &environment, sample_rate, sample_size);
+
+            // Update device position with sensors estimations
+            updateDevicePosition(&device, &environment);
+
+            norm_est = euclideanDistance2(&origin, &device.position);
+            norm_real = euclideanDistance2(&origin, &final_device_position);
+
+            if (OUTPUT_RESULTS == 1) {
+                printf("%02d, ", interation);
+
+                printVector(&device_velocity, 1);
+                printVector(&device.attitude, 1);
+                printf("%+07.3f, %+07.3f, ", device.heading,
+                       calculateError(device_heading,
+                                      device.heading) *
+                           100);
+
+                printCoordinate(&device.position, 1);
+                printCoordinate(&final_device_position, 1);
+
+                printf("%+07.3f, %+07.3f, %+07.3f, %+07.3f\n", norm_est, norm_real,
+                       calculatePositionError(&final_device_position, &device.position),
+                       calculateError(norm_real, norm_est) * 100);
+            }
+        }
     }
 
     // Reset global variables and free variables
