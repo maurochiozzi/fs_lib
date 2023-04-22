@@ -32,6 +32,11 @@ typedef struct Segment {
     float magnitude;      /**< The magnitude (length) of the line segment. */
 } Segment;
 
+typedef struct FloatRange {
+    float lower;
+    float upper;
+} FloatRange;
+
 /**
  * @brief Represents a line segment defined by its two endpoints.
  */
