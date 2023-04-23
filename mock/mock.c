@@ -38,7 +38,7 @@ float mockMagneticSourceIntensityFromSourceWithErrors(
     intensity = mockMagneticSourceIntensityFromSource(source, reference, timestamp);
 
     // add error to it
-    intensity += noise() * sensor_characteristic->noise_amplitude * sensor_characteristic->resolution;
+    intensity += unsigned_noise() * sensor_characteristic->noise_amplitude * sensor_characteristic->resolution;
 
     // check overflow
     if (intensity > upper_value) {
