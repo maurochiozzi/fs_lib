@@ -4,5 +4,6 @@
 void initNoiseGenerator();
 
 float noise();
+float unsigned_noise();
 
 #endif

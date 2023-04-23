@@ -10,3 +10,7 @@ void initNoiseGenerator() {
 float noise() {
     return ((float)rand() / RAND_MAX) * 2 - 1;
 }
+
+float unsigned_noise() {
+    return ((float)rand() / RAND_MAX);
+}
