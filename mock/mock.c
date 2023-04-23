@@ -8,6 +8,7 @@
 #include "../environment/environment.h"
 #include "../magnetic_field/magnetic_field.h"
 #include "../magnetic_sensor/magnetic_sensor.h"
+#include "../noise/noise.h"
 #include "../space/space.h"
 
 #ifndef M_PI
@@ -28,6 +29,34 @@ float mockMagneticSourceIntensityFromSource(MagneticFieldSource *source, Coordin
     return intensity * cos(2 * M_PI * source->frequency * timestamp);
 }
 
+float mockMagneticSourceIntensityFromSourceWithErrors(
+    MagneticFieldSource *source, Coordinate *reference,
+    MagneticSensorCharacteristic *sensor_characteristic, float timestamp) {
+    float upper_value = sensor_characteristic->range.upper;
+    float intensity;
+
+    intensity = mockMagneticSourceIntensityFromSource(source, reference, timestamp);
+
+    // add error to it
+    intensity += noise() * sensor_characteristic->noise_amplitude * sensor_characteristic->resolution;
+
+    // check overflow
+    if (intensity > upper_value) {
+        if (sensor_characteristic->overflow_mode == 0) {
+            intensity = upper_value;
+        } else {
+            float scale_factor = (intensity / upper_value);
+
+            intensity = (scale_factor - (int)scale_factor) * upper_value;
+        }
+    }
+
+    // correct it with resolution
+    intensity = ((int)(intensity / sensor_characteristic->resolution)) * sensor_characteristic->resolution;
+
+    return intensity;
+}
+
 /**
  * @brief Calculates the total magnetic field intensity at a given reference coordinate and timestamp.
  *
@@ -36,14 +65,23 @@ float mockMagneticSourceIntensityFromSource(MagneticFieldSource *source, Coordin
  * @param timestamp The timestamp.
  * @return The total magnetic field intensity.
  */
-float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference, float timestamp) {
+float mockEnvironmentMagneticField(Environment *environment, Coordinate *reference,
+                                   MagneticSensorCharacteristic *sensor_characteristic,
+                                   float timestamp, int with_error) {
     float environment_magnetic_field_intensity = 0;
 
     Beacon *beacons = environment->beacons;
 
-    for (int beacon_index = 0; beacon_index < environment->amount_of_beacons; beacon_index++) {
-        environment_magnetic_field_intensity += mockMagneticSourceIntensityFromSource(
-            &beacons[beacon_index].magnetic_field_source, reference, timestamp);
+    if (with_error == 0) {
+        for (int beacon_index = 0; beacon_index < environment->amount_of_beacons; beacon_index++) {
+            environment_magnetic_field_intensity += mockMagneticSourceIntensityFromSource(
+                &beacons[beacon_index].magnetic_field_source, reference, timestamp);
+        }
+    } else {
+        for (int beacon_index = 0; beacon_index < environment->amount_of_beacons; beacon_index++) {
+            environment_magnetic_field_intensity += mockMagneticSourceIntensityFromSourceWithErrors(
+                &beacons[beacon_index].magnetic_field_source, reference, sensor_characteristic, timestamp);
+        }
     }
 
     return environment_magnetic_field_intensity;
@@ -53,7 +91,7 @@ void mockBeaconSurveyRun(
     Device *device,
     Environment *environment,
     Environment *mocked_environment,
-    int sample_rate, int sample_size) {
+    int sample_rate, int sample_size, int with_errors) {
     MagneticSensor *sensor;
 
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
@@ -67,7 +105,8 @@ void mockBeaconSurveyRun(
             sensor = &device->magnetic_sensors[sensor_index];
 
             environment_magnetic_field_intensity =
-                mockEnvironmentMagneticField(mocked_environment, &sensor->device_position, timestamp);
+                mockEnvironmentMagneticField(mocked_environment, &sensor->device_position,
+                                             &sensor->characteristic, timestamp, with_errors);
 
             addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
         }
@@ -79,7 +118,7 @@ void mockBeaconSurveyRun(
 void mockMagneticFieldSampleRun(
     Device *device, Vector device_velocity, float heading,
     Coordinate *final_device_position, Vector *device_position_offset,
-    Environment *environment, int sample_rate, int sample_size) {
+    Environment *environment, int sample_rate, int sample_size, int with_error) {
     MagneticSensor *sensor;
     Coordinate mocked_sensor_position = {0};
 
@@ -110,7 +149,8 @@ void mockMagneticFieldSampleRun(
                 mockEnvironmentMagneticField(
                     environment,
                     &mocked_sensor_position,
-                    timestamp);
+                    &sensor->characteristic,
+                    timestamp, with_error);
 
             addSampleMagneticSignal(sensor, environment_magnetic_field_intensity);
         }

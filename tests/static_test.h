@@ -37,6 +37,8 @@
  */
 static char *static_device_beacon_survey() {
     // Auxiliary variables to help during simulations
+    int with_error = 0;
+
     MagneticSensor *sensor;
     float device_heading = 0.0;
 
@@ -142,7 +144,7 @@ static char *static_device_beacon_survey() {
     mockBeaconSurveyRun(
         &device, &environment,
         &mocked_environment,
-        sample_rate, sample_size);
+        sample_rate, sample_size, with_error);
 
     estimateMagneticBeaconSourcePosition(&device, &environment);
 
@@ -163,7 +165,7 @@ static char *static_device_beacon_survey() {
     mockMagneticFieldSampleRun(
         &device, device_velocity, device_heading,
         &final_device_position, &device_position_offset,
-        &environment, sample_rate, sample_size);
+        &environment, sample_rate, sample_size, with_error);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
@@ -181,7 +183,7 @@ static char *static_device_beacon_survey() {
     mockMagneticFieldSampleRun(
         &device, device_velocity, device_heading,
         &final_device_position, &device_position_offset,
-        &environment, sample_rate, sample_size);
+        &environment, sample_rate, sample_size, with_error);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);
@@ -197,7 +199,7 @@ static char *static_device_beacon_survey() {
     mockMagneticFieldSampleRun(
         &device, device_velocity, device_heading,
         &final_device_position, &device_position_offset,
-        &environment, sample_rate, sample_size);
+        &environment, sample_rate, sample_size, with_error);
 
     // Update device position with sensors estimations
     updateDevicePosition(&device, &environment);

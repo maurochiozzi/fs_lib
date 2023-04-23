@@ -10,6 +10,7 @@
                 "${workspaceFolder}\\*.c",
                 "${workspaceFolder}\\mock\\*.c",
                 "${workspaceFolder}\\tests\\*.c",
+                "${workspaceFolder}\\noise\\*.c",
                 "${workspaceFolder}\\space\\*.c",
                 "${workspaceFolder}\\beacon\\*.c",
                 "${workspaceFolder}\\device\\*.c",

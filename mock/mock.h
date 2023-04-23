@@ -21,18 +21,23 @@ float mockMagneticSourceIntensityFromSource(
  * @return Returns the calculated magnetic field in the environment.
  */
 float mockEnvironmentMagneticField(
-    Environment *environment,
-    Coordinate *reference, float timestamp);
+    Environment *environment, Coordinate *reference,
+    MagneticSensorCharacteristic *sensor_characteristic,
+    float timestamp, int with_error);
+
+float mockMagneticSourceIntensityFromSourceWithErrors(
+    MagneticFieldSource *source, Coordinate *reference,
+    MagneticSensorCharacteristic *sensor_characteristic, float timestamp);
 
 void mockBeaconSurveyRun(
     Device *device,
     Environment *environment,
     Environment *mocked_environment,
-    int sample_rate, int sample_size);
+    int sample_rate, int sample_size, int with_error);
 
 void mockMagneticFieldSampleRun(
     Device *device, Vector device_velocity, float heading,
     Coordinate *final_device_position, Vector *device_position_offset,
-    Environment *environment, int sample_rate, int sample_size);
+    Environment *environment, int sample_rate, int sample_size, int with_error);
 
 #endif
