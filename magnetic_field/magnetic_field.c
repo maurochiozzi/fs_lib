@@ -12,6 +12,10 @@
 #include "../space/space.h"
 #include "math.h"
 
+#ifndef M_QUARTER_PI
+#define M_QUARTER_PI 0.0795774715459
+#endif
+
 /**
  * @brief Initializes a MagneticFieldSource object.
  *
@@ -75,7 +79,7 @@ int isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
 float getMagneticIntensityFromSource(MagneticFieldSource *source, Coordinate *reference) {
     float distance = euclideanDistance2(&source->position, reference);
 
-    float intensity = source->magnetic_moment_rms / (distance * distance * distance) * 1000000;
+    float intensity = M_QUARTER_PI * source->magnetic_moment_rms / (distance * distance * distance) * 10000;
 
     return intensity;
 }
@@ -89,6 +93,7 @@ float getMagneticIntensityFromSource(MagneticFieldSource *source, Coordinate *re
  * @return The distance from the source required to generate the specified intensity.
  */
 float getMagneticSourceDistanceByIntensity(MagneticFieldSource *source, float intensity) {
-    float distance = cbrt(source->magnetic_moment_rms / intensity * 1000000);
+    float distance = cbrt(M_QUARTER_PI * source->magnetic_moment_rms / intensity * 10000);
+
     return distance;
 }
