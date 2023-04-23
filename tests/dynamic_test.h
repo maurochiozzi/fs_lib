@@ -68,6 +68,7 @@ static char *dynamic_device_beacon_survey() {
         [2] = {.x = +0.5, .y = -0.2886751345948, .z = 0}};
 
     const int sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
+    const int sensors_i2c_interface[] = {0xE1, 0xE2, 0xE3};
 
     // Define environment with its beacons. No edges will be used at this moment
     Environment environment = {0};
@@ -87,9 +88,8 @@ static char *dynamic_device_beacon_survey() {
     for (int index = 0; index < amount_of_magnetic_sensors; index++) {
         device_sensors[index].device_position = device_sensors_position[index];
 
-        initMagneticSensor(&device_sensors[index],
-                           sample_size, amount_of_buffers,
-                           sensors_i2c_address[index]);
+        initMagneticSensor(&device_sensors[index], sample_size, amount_of_buffers,
+                           sensors_i2c_address[index], sensors_i2c_interface[index]);
     }
 
     baseline.initial_point = &device_sensors[0].local_position;
