@@ -7,6 +7,6 @@ void initNoiseGenerator() {
     srand(time(NULL));
 }
 
-void noise() {
+float noise() {
     return ((float)rand() / RAND_MAX) * 2 - 1;
 }
