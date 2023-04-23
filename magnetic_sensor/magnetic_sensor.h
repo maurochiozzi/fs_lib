@@ -13,11 +13,22 @@
 
 #define MAGNETIC_SENSOR_INITIALIZATION_CHECK_SUM 6
 
+typedef struct MagneticSensorCharacteristic {
+    FloatRange range;
+    float resolution;
+    float noise_amplitude;
+
+    // If 0, doesn't increase; If 1, cycle value
+    int overflow_mode;
+
+} MagneticSensorCharacteristic;
+
 /**
  * @brief A struct that represents a magnetic sensor.
  */
 typedef struct MagneticSensor {
     int address; /**< The address of the sensor. */
+    int interface;
 
     /**
      * @brief The position of the sensor inside the device.
@@ -35,6 +46,8 @@ typedef struct MagneticSensor {
 
     Spectrum spectrum; /**< A spectrum object. */
     Indexer indexer;   /**< An indexer object. */
+
+    MagneticSensorCharacteristic characteristic;
 
     int initialized; /**< Whether the sensor has been initialized or not. */
 
