@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include "../indexer/indexer.h"
+#include "../magnetic_field/magnetic_field.h"
 #include "../space/space.h"
 #include "../spectrum/spectrum.h"
 
@@ -24,7 +25,8 @@
 void initMagneticSensor(MagneticSensor *sensor,
                         unsigned int sample_size,
                         unsigned int amount_of_buffers,
-                        int i2c_address) {
+                        int i2c_address,
+                        int i2c_interface) {
     sensor->initialized = 0;
     sensor->address = -1;
 
@@ -33,6 +35,7 @@ void initMagneticSensor(MagneticSensor *sensor,
     sensor->sample_size = sample_size;
     sensor->amount_of_buffers = amount_of_buffers;
     sensor->address = i2c_address;
+    sensor->interface = i2c_interface;
 
     initIndexer(&sensor->indexer, sample_size, amount_of_buffers);
     initSpectrum(&sensor->spectrum, sample_size, amount_of_buffers);
@@ -136,8 +139,12 @@ float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
 
     magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
 
-    distance = cbrt(beacon->magnetic_field_source.magnetic_moment_rms /
-                    magnetic_signal_strength * 1000000);
+    distance = getMagneticSourceDistanceByIntensity(
+        &beacon->magnetic_field_source,
+        magnetic_signal_strength);
+
+    // cbrt(beacon->magnetic_field_source.magnetic_moment_rms /
+    //                 magnetic_signal_strength * 1000000);
 
     return distance;
 }

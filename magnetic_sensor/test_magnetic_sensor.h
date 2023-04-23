@@ -19,7 +19,7 @@
 static char *test_magnetic_sensor_initialized() {
     MagneticSensor sensor = {0};
 
-    initMagneticSensor(&sensor, 110, 2, 0xE2);
+    initMagneticSensor(&sensor, 110, 2, 0xE2, 2);
 
     mu_assert("error, sensor initialization",
               isMagneticSensorInitialized(&sensor) == 1);

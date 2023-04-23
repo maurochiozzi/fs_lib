@@ -47,6 +47,7 @@ typedef struct MagneticSensor {
     Spectrum spectrum; /**< A spectrum object. */
     Indexer indexer;   /**< An indexer object. */
 
+    // This is a optional information so it will not be inside the init
     MagneticSensorCharacteristic characteristic;
 
     int initialized; /**< Whether the sensor has been initialized or not. */
@@ -64,7 +65,8 @@ typedef struct MagneticSensor {
 void initMagneticSensor(MagneticSensor *sensor,
                         unsigned int sample_size,
                         unsigned int amount_of_buffers,
-                        int i2c);
+                        int i2c_address,
+                        int i2c_interface);
 
 /**
  * @brief Checks if a magnetic sensor has been initialized.
