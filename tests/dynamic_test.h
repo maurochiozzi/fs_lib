@@ -1,5 +1,3 @@
-
-
 #ifndef DYNAMIC_TEST
 #define DYNAMIC_TEST
 
@@ -7,11 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../device/device.h"
-#include "../magnetic_sensor/magnetic_sensor.h"
-#include "../minunit/minunit.h"
-#include "../mock/mock.h"
-#include "../navigation/navigation.h"
+#include "../lib/device/device.h"
+#include "../lib/magnetic_sensor/magnetic_sensor.h"
+#include "../lib/minunit/minunit.h"
+#include "../lib/mock/mock.h"
+#include "../lib/navigation/navigation.h"
 
 #define OUTPUT_RESULTS 0
 

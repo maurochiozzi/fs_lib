@@ -1,23 +1,26 @@
 {
-    "files.associations": {
-        "space.h": "c",
-        "device.h": "c",
-        "station_communication.h": "c",
-        "beacon.h": "c",
-        "station.h": "c",
-        "indexer.h": "c",
-        "stdlib.h": "c",
-        "magnetic_sensor.h": "c",
-        "math.h": "c",
-        "environment.h": "c",
-        "spectrum.h": "c",
-        "test_magnetic_sensor.h": "c",
-        "minunit.h": "c",
-        "magnetic_field.h": "c",
-        "stdio.h": "c",
-        "test_indexer.h": "c",
-        "unit_test.h": "c",
-        "cmath": "c",
-        "test_navigation.h": "c"
-    }
+  "files.associations": {
+    "space.h": "c",
+    "device.h": "c",
+    "station_communication.h": "c",
+    "beacon.h": "c",
+    "station.h": "c",
+    "indexer.h": "c",
+    "stdlib.h": "c",
+    "magnetic_sensor.h": "c",
+    "math.h": "c",
+    "environment.h": "c",
+    "spectrum.h": "c",
+    "test_magnetic_sensor.h": "c",
+    "minunit.h": "c",
+    "magnetic_field.h": "c",
+    "stdio.h": "c",
+    "test_indexer.h": "c",
+    "unit_test.h": "c",
+    "cmath": "c",
+    "test_navigation.h": "c",
+    "dynamic_test.h": "c",
+    "static_test.h": "c",
+    "test_beacon.h": "c"
+  }
 }

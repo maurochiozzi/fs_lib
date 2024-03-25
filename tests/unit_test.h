@@ -5,15 +5,15 @@
 #ifndef UNIT_TEST
 #define UNIT_TEST
 
-#include "../beacon/test_beacon.h"
-#include "../device/test_device.h"
-#include "../environment/test_environment.h"
-#include "../indexer/test_indexer.h"
-#include "../magnetic_field/test_magnetic_field.h"
-#include "../magnetic_sensor/test_magnetic_sensor.h"
-#include "../minunit/minunit.h"
-#include "../navigation/test_navigation.h"
-#include "../spectrum/test_spectrum.h"
+#include "../lib/beacon/test_beacon.h"
+#include "../lib/device/test_device.h"
+#include "../lib/environment/test_environment.h"
+#include "../lib/indexer/test_indexer.h"
+#include "../lib/magnetic_field/test_magnetic_field.h"
+#include "../lib/magnetic_sensor/test_magnetic_sensor.h"
+#include "../lib/minunit/minunit.h"
+#include "../lib/navigation/test_navigation.h"
+#include "../lib/spectrum/test_spectrum.h"
 
 /**
  * @brief Runs all unit tests for the entire project.

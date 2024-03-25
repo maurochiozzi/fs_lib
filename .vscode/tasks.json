@@ -1,41 +1,38 @@
 {
-    "tasks": [
-        {
-            "type": "cppbuild",
-            "label": "C/C++: gcc.exe arquivo de build ativo",
-            "command": "C:\\msys64\\mingw64\\bin\\gcc.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${workspaceFolder}\\*.c",
-                "${workspaceFolder}\\mock\\*.c",
-                "${workspaceFolder}\\tests\\*.c",
-                "${workspaceFolder}\\noise\\*.c",
-                "${workspaceFolder}\\space\\*.c",
-                "${workspaceFolder}\\beacon\\*.c",
-                "${workspaceFolder}\\device\\*.c",
-                "${workspaceFolder}\\indexer\\*.c",
-                "${workspaceFolder}\\station\\*.c",
-                "${workspaceFolder}\\spectrum\\*.c",
-                "${workspaceFolder}\\navigation\\*.c",
-                "${workspaceFolder}\\environment\\*.c",
-                "${workspaceFolder}\\magnetic_field\\*.c",
-                "${workspaceFolder}\\magnetic_sensor\\*.c",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Tarefa gerada pelo Depurador."
-        }
-    ],
-    "version": "2.0.0"
+  "tasks": [
+    {
+      "type": "cppbuild",
+      "label": "C/C++: gcc.exe arquivo de build ativo",
+      "command": "C:\\msys64\\mingw64\\bin\\gcc.exe",
+      "args": [
+        "-fdiagnostics-color=always",
+        "-g",
+        "${workspaceFolder}\\tests\\*.c",
+        "${workspaceFolder}\\lib\\mock\\*.c",
+        "${workspaceFolder}\\lib\\noise\\*.c",
+        "${workspaceFolder}\\lib\\space\\*.c",
+        "${workspaceFolder}\\lib\\beacon\\*.c",
+        "${workspaceFolder}\\lib\\device\\*.c",
+        "${workspaceFolder}\\lib\\indexer\\*.c",
+        "${workspaceFolder}\\lib\\station\\*.c",
+        "${workspaceFolder}\\lib\\spectrum\\*.c",
+        "${workspaceFolder}\\lib\\navigation\\*.c",
+        "${workspaceFolder}\\lib\\environment\\*.c",
+        "${workspaceFolder}\\lib\\magnetic_field\\*.c",
+        "${workspaceFolder}\\lib\\magnetic_sensor\\*.c",
+        "-o",
+        "${fileDirname}\\${fileBasenameNoExtension}.exe"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Tarefa gerada pelo Depurador."
+    }
+  ],
+  "version": "2.0.0"
 }

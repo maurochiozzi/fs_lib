@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#include "../minunit/minunit.h"
+#include "../lib/minunit/minunit.h"
 #include "dynamic_test.h"
 #include "static_test.h"
 #include "unit_test.h"
