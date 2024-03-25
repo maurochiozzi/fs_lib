@@ -21,6 +21,9 @@
     "test_navigation.h": "c",
     "dynamic_test.h": "c",
     "static_test.h": "c",
-    "test_beacon.h": "c"
+    "test_beacon.h": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c"
   }
 }
