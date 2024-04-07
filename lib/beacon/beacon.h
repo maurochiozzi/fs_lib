@@ -7,6 +7,10 @@
 #ifndef BEACON_H
 #define BEACON_H
 
+#ifndef TRUNCATION
+#define TRUNCATION 1000.0
+#endif
+
 #include "../magnetic_field/magnetic_field.h"
 #include "../space/space.h"
 
@@ -32,6 +36,7 @@ typedef struct Beacon {
     /**
      * @brief Level of precision required for detecting the beacon.
      */
+    // TODO what is this?
     float precision;
 
     /**

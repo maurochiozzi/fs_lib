@@ -39,7 +39,7 @@ void initBeacon(Beacon *beacon,
     initMagneticFieldSource(&beacon->magnetic_field_source, magnetic_moment_rms, frequency);
 
     // Calculate the spectrum window based on the magnetic field source frequency and the given sample rate and size
-    beacon->spectrum_window = beacon->magnetic_field_source.frequency / (sample_rate / sample_size);
+    beacon->spectrum_window = (TRUNCATION * beacon->magnetic_field_source.frequency / (sample_rate / (float)sample_size)) / TRUNCATION;
 
     // Set the survey status to 0 (undiscovered)
     beacon->survey_status = 0;
