@@ -24,6 +24,14 @@
     "test_beacon.h": "c",
     "array": "c",
     "string": "c",
-    "string_view": "c"
+    "string_view": "c",
+    "test_magnetic_field.h": "c",
+    "test_spectrum.h": "c",
+    "test_current_sensor.h": "c",
+    "complex.h": "c",
+    "current_sensor.h": "c",
+    "functional": "c",
+    "sine_wave.h": "c",
+    "transmitter.h": "c"
   }
 }
