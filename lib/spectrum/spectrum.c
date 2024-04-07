@@ -16,7 +16,9 @@
 #include "../indexer/indexer.h"
 #include "../spectrum/spectrum.h"
 
-float complex* phases;  /**< Array of complex phase values used in the FFT calculation. */
+// TODO refactor phases global to allow different setups for spectrum
+// Although they will not be used in the same application (transmitter x receiver)
+float complex* phases;  /**< Array of complex phase values used in the DFT calculation. */
 int phases_initialized; /**< Flag indicating whether the phases array has been initialized. */
 int amount_of_phases;   /**< Number of elements in the phases array. */
 
@@ -43,10 +45,10 @@ void initSpectrum(Spectrum* spectrum, int sample_size, int amount_of_buffers) {
         spectrum->samples[index] = 0.0;
     }
 
-    // Calculate a constant used in the FFT calculation.
+    // Calculate a constant used in the DFT calculation.
     spectrum->double_per_sample_size = 2.0 / sample_size;
 
-    // Initialize the phases array used in the FFT calculation.
+    // Initialize the phases array used in the DFT calculation.
     initSpectrumAngles(sample_size);
 
     // Set the initialization flag to indicate that the Spectrum data structure is properly initialized.
@@ -54,7 +56,7 @@ void initSpectrum(Spectrum* spectrum, int sample_size, int amount_of_buffers) {
 }
 
 /**
- * @brief Initializes the phases array used in the FFT calculation with the specified sample size.
+ * @brief Initializes the phases array used in the DFT calculation with the specified sample size.
  *
  * @param sample_size Size of the sample buffer.
  */

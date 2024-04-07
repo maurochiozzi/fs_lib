@@ -17,7 +17,7 @@
 
 #define SPECTRUM_INITIALIZATION_CHECK_SUM 3 /**< Constant used to check if the Spectrum struct is properly initialized */
 
-extern float complex *phases;  /**< Array of complex numbers representing phases of sine waves used in the FFT algorithm */
+extern float complex *phases;  /**< Array of complex numbers representing phases of sine waves used in the DFT algorithm */
 extern int phases_initialized; /**< Flag indicating whether the phases array is initialized or not */
 extern int amount_of_phases;   /**< Total number of phases stored in the phases array */
 
@@ -31,7 +31,7 @@ typedef struct
     int amount_of_buffers; /**< Number of buffers in the signal */
     int sample_size;       /**< Number of samples per buffer */
 
-    float complex double_per_sample_size; /**< Constant used in the FFT algorithm */
+    float complex double_per_sample_size; /**< Constant used in the DFT algorithm */
     int initialized;                      /**< Flag indicating whether the Spectrum struct is properly initialized */
 
 } Spectrum;
@@ -46,7 +46,7 @@ typedef struct
 void initSpectrum(Spectrum *spectrum, int sample_size, int amount_of_buffers);
 
 /**
- * @brief Initializes the phases array for the FFT algorithm.
+ * @brief Initializes the phases array for the DFT algorithm.
  *
  * @param sample_size The number of samples per buffer in the audio signal.
  */
