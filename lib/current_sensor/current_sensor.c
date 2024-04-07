@@ -160,9 +160,6 @@ void updateCurrentSpectrum(CurrentSensor *sensor, const float sample) {
 void resetCurrentSampleCache(CurrentSensor *sensor) {
     Indexer *indexer = &sensor->indexer;
 
-    const int previous_cache_index = (indexer->buffer + 1) %
-                                     sensor->amount_of_buffers;
-
     for (int signal_index = indexer->buffer * sensor->sample_size;
          signal_index < (indexer->buffer + 1) * sensor->sample_size; signal_index++) {
         sensor->samples[signal_index] = 0.0;

@@ -180,9 +180,6 @@ void updateSpectrum(MagneticSensor *sensor, const float sample) {
 void resetSampleCache(MagneticSensor *sensor) {
     Indexer *indexer = &sensor->indexer;
 
-    const int previous_cache_index = (indexer->buffer + 1) %
-                                     sensor->amount_of_buffers;
-
     for (int index = indexer->buffer * sensor->sample_size;
          index < (indexer->buffer + 1) * sensor->sample_size; index++) {
         sensor->samples[index] = 0.0;

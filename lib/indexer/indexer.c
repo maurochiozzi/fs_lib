@@ -76,7 +76,6 @@ int isIndexerInitialized(Indexer *indexer) {
 int incrementIndex(Indexer *indexer) {
     const int sample = indexer->sample;
     const int sample_size = indexer->sample_size;
-    const int amount_of_buffers = indexer->amount_of_buffers;
 
     indexer->sample = (sample + 1) % sample_size;
 
