@@ -19,13 +19,13 @@ static char *test_device_initialization() {
     const int amount_of_magnetic_sensors = 3;
     MagneticSensor *sensors;
 
-    const int sensors_i2c_adress[] = {0xE1, 0xE2, 0xE3};
+    const int sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
     const int sensors_i2c_interface[] = {0xE1, 0xE2, 0xE3};
 
     sensors = (MagneticSensor *)malloc(sizeof(MagneticSensor) * amount_of_magnetic_sensors);
 
     for (int index = 0; index < amount_of_magnetic_sensors; index++) {
-        initMagneticSensor(&sensors[index], 110, 2, sensors_i2c_adress[index],
+        initMagneticSensor(&sensors[index], 110, 2, sensors_i2c_address[index],
                            sensors_i2c_interface[index]);
     }
 
