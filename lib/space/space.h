@@ -103,7 +103,6 @@ void rotate2d(Coordinate *point, float angle, Coordinate *result);
  * @return The position error between the two points.
  */
 float calculatePositionError(Coordinate *reference, Coordinate *real);
-float calculateError(float reference, float real);
 
 /**
  * @brief Prints the coordinates of a point to the console.

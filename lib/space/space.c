@@ -111,10 +111,6 @@ float calculatePositionError(Coordinate *reference, Coordinate *real) {
     return norm(error);
 }
 
-float calculateError(float reference, float real) {
-    return (reference - real) / reference;
-}
-
 /**
  * @brief Prints the x, y, and z coordinates of a Coordinate struct to stdout
  *
