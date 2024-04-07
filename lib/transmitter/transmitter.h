@@ -26,7 +26,7 @@ typedef struct Transmitter {
     /**
      * @brief Flag indicating whether the Transmitter has been properly initialized.
      */
-    int initialized;
+    short int initialized;
 } Transmitter;
 
 int initTransmitter(Transmitter *transmitter, SineWave *wave,

@@ -2,16 +2,8 @@
 #ifndef SINE_WAVE_H
 #define SINE_WAVE_H
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846 /**< Definition of Pi constant */
-#endif
-
 typedef struct SineWave {
-    float amplitude;  // > 0
-    float frequency;  // Hertz
-    float phase;      // radians
-    float offset;     // >= 0
-    short int mode;   // 0 -> zero-floating symmetry, 1 -> amplitude positive-offset
+    short int mode;  // 0 -> zero-floating symmetry, 1 -> amplitude positive-offset
 
     int resolution;
     float *shape;
@@ -20,7 +12,7 @@ typedef struct SineWave {
     /**
      * @brief Flag indicating whether the SineWave has been properly initialized.
      */
-    int initialized;
+    short int initialized;
 
 } SineWave;
 

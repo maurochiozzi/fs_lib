@@ -9,10 +9,6 @@ void initSineWave(SineWave *wave, float amplitude,
                   int resolution) {
     wave->initialized = 0;
 
-    wave->amplitude = amplitude;
-    wave->frequency = frequency;
-    wave->phase = phase;
-    wave->offset = offset;
     wave->mode = mode;
     wave->resolution = resolution;
 

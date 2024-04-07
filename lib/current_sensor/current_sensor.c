@@ -22,10 +22,10 @@
  * @param i2c_address The I2C address of the current sensor.
  */
 void initCurrentSensor(CurrentSensor *sensor,
-                       unsigned int sample_size,
-                       unsigned int amount_of_buffers,
-                       int i2c_address,
-                       int i2c_interface) {
+                       short int sample_size,
+                       short int amount_of_buffers,
+                       short int i2c_address,
+                       short int i2c_interface) {
     sensor->initialized = 0;
     sensor->address = -1;
 

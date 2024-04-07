@@ -24,12 +24,12 @@ typedef struct CurrentSensorCharacteristic {
  * @brief A struct that represents a current sensor.
  */
 typedef struct CurrentSensor {
-    int address; /**< The address of the sensor. */
-    int interface;
+    short int address; /**< The address of the sensor. */
+    short int interface;
 
-    int amount_of_buffers; /**< The number of buffers. */
-    int sample_size;       /**< The size of each sample. */
-    float *samples;        /**< An array of samples. */
+    short int amount_of_buffers; /**< The number of buffers. */
+    short int sample_size;       /**< The size of each sample. */
+    float *samples;              /**< An array of samples. */
 
     Spectrum spectrum; /**< A spectrum object. */
     Indexer indexer;   /**< An indexer object. */
@@ -37,7 +37,7 @@ typedef struct CurrentSensor {
     // This is a optional information so it will not be inside the init
     CurrentSensorCharacteristic characteristic;
 
-    int initialized; /**< Whether the sensor has been initialized or not. */
+    short int initialized; /**< Whether the sensor has been initialized or not. */
 
 } CurrentSensor;
 
@@ -50,10 +50,10 @@ typedef struct CurrentSensor {
  * @param i2c The I2C interface to use.
  */
 void initCurrentSensor(CurrentSensor *sensor,
-                       unsigned int sample_size,
-                       unsigned int amount_of_buffers,
-                       int i2c_address,
-                       int i2c_interface);
+                       short int sample_size,
+                       short int amount_of_buffers,
+                       short int i2c_address,
+                       short int i2c_interface);
 
 /**
  * @brief Checks if a current sensor has been initialized.
