@@ -10,6 +10,7 @@
 #include "../lib/minunit/minunit.h"
 #include "../lib/mock/mock.h"
 #include "../lib/navigation/navigation.h"
+#include "../lib/utils/utils.h"
 
 #define OUTPUT_RESULTS 0
 
