@@ -92,6 +92,7 @@ int isMagneticSensorInitialized(MagneticSensor *sensor) {
  *
  * @return A Vector struct representing the sampled magnetic signal.
  */
+// TODO
 Vector sampleMagneticSignal(MagneticSensor sensor) {
     Vector vector = {.x = 0.0, .y = 0.0, .z = 0.0};
 
@@ -142,9 +143,6 @@ float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
     distance = getMagneticSourceDistanceByIntensity(
         &beacon->magnetic_field_source,
         magnetic_signal_strength);
-
-    // cbrt(beacon->magnetic_field_source.magnetic_moment_rms /
-    //                 magnetic_signal_strength * 1000000);
 
     return distance;
 }
