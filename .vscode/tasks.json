@@ -7,7 +7,7 @@
       "args": [
         "-fdiagnostics-color=always",
         "-g",
-        "${workspaceFolder}\\tests\\*.c",
+        "${workspaceFolder}\\*.c",
         "${workspaceFolder}\\lib\\mock\\*.c",
         "${workspaceFolder}\\lib\\utils\\*.c",
         "${workspaceFolder}\\lib\\noise\\*.c",

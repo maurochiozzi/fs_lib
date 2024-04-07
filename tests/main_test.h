@@ -1,3 +1,5 @@
+#ifndef MAIN_TEST
+#define MAIN_TEST
 
 #include <stdio.h>
 
@@ -31,3 +33,5 @@ int main_test(int argc, char **argv) {
 
     return result != 0;
 }
+
+#endif

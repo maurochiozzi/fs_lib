@@ -32,6 +32,7 @@
     "current_sensor.h": "c",
     "functional": "c",
     "sine_wave.h": "c",
-    "transmitter.h": "c"
+    "transmitter.h": "c",
+    "main_test.h": "c"
   }
 }
