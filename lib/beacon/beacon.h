@@ -31,33 +31,33 @@ typedef struct Beacon {
     /**
      * @brief Size of the spectrum window used to analyze the magnetic field.
      */
-    int spectrum_window;
+    short int spectrum_window;
 
     /**
      * @brief Level of precision required for detecting the beacon.
      */
     // TODO what is this?
-    float precision;
+    // float precision;
 
     /**
      * @brief Status of the beacon survey: 0 for undiscovered, 1 for discovered.
      */
-    int survey_status;
+    short int survey_status;
 
     /**
      * @brief Checksum period used to verify that a Beacon has been properly initialized.
      */
-    float check_prd;
+    short int check_prd;
 
     /**
      * @brief Checksum value used to verify that a Beacon has been properly initialized.
      */
-    float check_sum;
+    short int check_sum;
 
     /**
      * @brief Flag indicating whether the Beacon has been properly initialized.
      */
-    int initialized;
+    short int initialized;
 } Beacon;
 
 /**
