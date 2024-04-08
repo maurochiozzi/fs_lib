@@ -14,11 +14,11 @@
  */
 typedef struct MagneticFieldSource {
     float magnetic_moment_rms;  ///< Root-mean-square value of the magnetic moment.
-    float frequency;            ///< Frequency of the magnetic field source.
+    short int frequency;        ///< Frequency of the magnetic field source.
     Coordinate position;        ///< Position of the magnetic field source.
-    float check_prd;            ///< Check period.
-    float check_sum;            ///< Check sum.
-    int initialized;            ///< Initialization status (0 for not initialized, 1 for initialized).
+    short int check_prd;        ///< Check period.
+    short int check_sum;        ///< Check sum.
+    short int initialized;      ///< Initialization status (0 for not initialized, 1 for initialized).
 } MagneticFieldSource;
 
 /**
@@ -27,7 +27,7 @@ typedef struct MagneticFieldSource {
  * @param magnetic_moment_rms Root-mean-square value of the magnetic moment.
  * @param frequency Frequency of the magnetic field source.
  */
-void initMagneticFieldSource(MagneticFieldSource *source, float magnetic_moment_rms, float frequency);
+void initMagneticFieldSource(MagneticFieldSource *source, short int magnetic_moment_rms, short int frequency);
 
 /**
  * @brief Determines whether the given magnetic field source is initialized.
