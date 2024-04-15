@@ -25,9 +25,6 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
     const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
     const int amount_of_beacons = environment->amount_of_beacons;
 
-    Coordinate *device_position = &device->position;
-    Coordinate *sensor_position;
-
     MagneticSensor *sensor;
 
     // Allocate memory for the segments matrix
