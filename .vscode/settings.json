@@ -33,6 +33,7 @@
     "functional": "c",
     "sine_wave.h": "c",
     "transmitter.h": "c",
-    "main_test.h": "c"
+    "main_test.h": "c",
+    "transmitter_test.h": "c"
   }
 }

@@ -23,7 +23,7 @@
  * @param magnetic_moment_rms The RMS magnetic moment of the source.
  * @param frequency The frequency of the magnetic field.
  */
-void initMagneticFieldSource(MagneticFieldSource *source, short int magnetic_moment_rms, float frequency) {
+void initMagneticFieldSource(MagneticFieldSource *source, float magnetic_moment_rms, float frequency) {
     source->initialized = 0;
 
     source->check_sum = 0;
@@ -54,8 +54,8 @@ void initMagneticFieldSource(MagneticFieldSource *source, short int magnetic_mom
  * @return 1 if the object has been initialized correctly, 0 otherwise.
  */
 int isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
-    short int check_sum = 0;
-    short int check_prd = 1;
+    float check_sum = 0;
+    float check_prd = 1;
 
     check_sum += source->initialized;
     check_sum += source->magnetic_moment_rms;
