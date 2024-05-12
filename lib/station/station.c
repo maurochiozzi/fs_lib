@@ -5,6 +5,7 @@
 
 #include "station.h"
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../beacon/beacon.h"
@@ -14,7 +15,7 @@
  *
  * @return The number of beacons available.
  */
-int requestStationNumberOfBeacons() {
+int32_t requestStationNumberOfBeacons() {
     return 5;
 }
 
@@ -24,7 +25,7 @@ int requestStationNumberOfBeacons() {
  * @param beacons Array of Beacon structs where the information will be stored.
  * @param number_of_beacons The number of beacons available.
  */
-void requestBeaconsInformation(Beacon* beacons, int number_of_beacons) {
+void requestBeaconsInformation(Beacon* beacons, int32_t number_of_beacons) {
     MagneticFieldSource* source;
 
     const float beacons_data[5][2] = {
@@ -34,7 +35,7 @@ void requestBeaconsInformation(Beacon* beacons, int number_of_beacons) {
         {36.0, 0.2},
         {64.0, 0.3}};
 
-    for (int index = 0; index < number_of_beacons; index++) {
+    for (int32_t index = 0; index < number_of_beacons; index++) {
         source = &beacons[index].magnetic_field_source;
 
         source->frequency = beacons_data[index][0];

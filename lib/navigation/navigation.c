@@ -5,6 +5,7 @@
 
 #include "navigation.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,12 +19,12 @@
 /**
  * @brief Estimates the position of the magnetic sensor on the device based on the detected magnetic fields.
  *
- * @param device Pointer to the device.
- * @param environment Pointer to the environment.
+ * @param device pointer to the device.
+ * @param environment pointer to the environment.
  */
 void estimateMagneticSensorPosition(Device *device, Environment *environment) {
-    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
-    const int amount_of_beacons = environment->amount_of_beacons;
+    const int32_t amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
+    const int32_t amount_of_beacons = environment->amount_of_beacons;
 
     MagneticSensor *sensor;
 
@@ -38,7 +39,7 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
     estimateMagneticSensorsPositions(device, environment, segments_matrix);
 
     // Loop through all magnetic sensors and clear their past spectrum and indexer
-    for (int i = 0; i < device->amount_of_magnetic_sensors; i++) {
+    for (int32_t i = 0; i < device->amount_of_magnetic_sensors; i++) {
         sensor = &device->magnetic_sensors[i];
 
         // Clear the spectrum and indexer for the sensor
@@ -52,14 +53,14 @@ void estimateMagneticSensorPosition(Device *device, Environment *environment) {
 /**
  * @brief Estimates the position of the magnetic field source of the beacon based on the detected magnetic fields.
  *
- * @param device Pointer to the device.
- * @param environment Pointer to the environment.
+ * @param device pointer to the device.
+ * @param environment pointer to the environment.
  *
  * Note: This function assumes that the magnetic sensor positions have already been estimated using estimateMagneticSensorPosition().
  */
 void estimateMagneticBeaconSourcePosition(Device *device, Environment *environment) {
-    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
-    const int amount_of_beacons = environment->amount_of_beacons;
+    const int32_t amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
+    const int32_t amount_of_beacons = environment->amount_of_beacons;
 
     MagneticSensor *sensor;
 
@@ -75,7 +76,7 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
     estimateBeaconsPositions(device, environment, segments_matrix);
 
     // Clear the past spectrum and indexer for each magnetic sensor
-    for (int i = 0; i < device->amount_of_magnetic_sensors; i++) {
+    for (int32_t i = 0; i < device->amount_of_magnetic_sensors; i++) {
         sensor = &device->magnetic_sensors[i];
 
         // Clear the spectrum and indexer for the sensor
@@ -89,27 +90,27 @@ void estimateMagneticBeaconSourcePosition(Device *device, Environment *environme
 /**
  * @brief Builds the matrix of magnetic field strength segments between each magnetic sensor and each beacon.
  *
- * @param device Pointer to the device.
- * @param environment Pointer to the environment.
- * @param segments_matrix Pointer to the segments matrix to be filled.
- * @param reference An integer to indicate whether the reference should be the beacon or the sensor.
+ * @param device pointer to the device.
+ * @param environment pointer to the environment.
+ * @param segments_matrix pointer to the segments matrix to be filled.
+ * @param reference An int32_teger to indicate whether the reference should be the beacon or the sensor.
  */
 void buildSegmentsMatrix(Device *device, Environment *environment,
-                         Segment *segments_matrix, int reference) {
-    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
-    const int amount_of_beacons = environment->amount_of_beacons;
+                         Segment *segments_matrix, int32_t reference) {
+    const int32_t amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
+    const int32_t amount_of_beacons = environment->amount_of_beacons;
 
     Segment *current_segment;
     Beacon *current_beacon;
     MagneticSensor *current_sensor;
 
     // Loop through each magnetic sensor
-    for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+    for (int32_t sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
         current_sensor = &device->magnetic_sensors[sensor_index];
 
         // Loop through each beacon
-        for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
-            int indexer = sensor_index * amount_of_beacons + beacon_index;
+        for (int32_t beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+            int32_t indexer = sensor_index * amount_of_beacons + beacon_index;
 
             current_beacon = &environment->beacons[beacon_index];
 
@@ -130,14 +131,14 @@ void buildSegmentsMatrix(Device *device, Environment *environment,
 /**
  * @brief Estimates the positions of magnetic sensors in the given device using trilateration.
  *
- * @param[in] device Pointer to the device containing magnetic sensors to be located
- * @param[in] environment Pointer to the environment containing beacons used for locating magnetic sensors
- * @param[in] segments_matrix Pointer to a matrix of magnetic sensor distances to the beacons
+ * @param[in] device pointer to the device containing magnetic sensors to be located
+ * @param[in] environment pointer to the environment containing beacons used for locating magnetic sensors
+ * @param[in] segments_matrix pointer to a matrix of magnetic sensor distances to the beacons
  */
 void estimateMagneticSensorsPositions(Device *device, Environment *environment,
                                       Segment *segments_matrix) {
-    const int amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
-    const int amount_of_beacons = environment->amount_of_beacons;
+    const int32_t amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
+    const int32_t amount_of_beacons = environment->amount_of_beacons;
 
     Segment *references;
 
@@ -145,10 +146,10 @@ void estimateMagneticSensorsPositions(Device *device, Environment *environment,
     references = (Segment *)malloc(sizeof(Segment) * amount_of_beacons);
 
     // Loop through each magnetic sensor
-    for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
+    for (int32_t sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
         // Loop through each beacon
-        for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
-            int indexer = sensor_index * amount_of_beacons + beacon_index;
+        for (int32_t beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+            int32_t indexer = sensor_index * amount_of_beacons + beacon_index;
 
             // Copy the segment for the current sensor and beacon pair to the references array
             references[beacon_index] = segments_matrix[indexer];
@@ -168,14 +169,14 @@ void estimateMagneticSensorsPositions(Device *device, Environment *environment,
 /**
  * @brief Estimates the positions of beacons in the given environment using trilateration.
  *
- * @param[in] device Pointer to the device containing magnetic sensors used for locating beacons
- * @param[in] environment Pointer to the environment containing beacons to be located
- * @param[in] segments_matrix Pointer to a matrix of magnetic sensor distances to the beacons
+ * @param[in] device pointer to the device containing magnetic sensors used for locating beacons
+ * @param[in] environment pointer to the environment containing beacons to be located
+ * @param[in] segments_matrix pointer to a matrix of magnetic sensor distances to the beacons
  */
 void estimateBeaconsPositions(Device *device, Environment *environment,
                               Segment *segments_matrix) {
-    const int amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
-    const int amount_of_beacons = environment->amount_of_beacons;
+    const int32_t amount_of_magnetic_sensor = device->amount_of_magnetic_sensors;
+    const int32_t amount_of_beacons = environment->amount_of_beacons;
 
     Segment *references;
 
@@ -183,11 +184,11 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
     references = (Segment *)malloc(sizeof(Segment) * amount_of_magnetic_sensor);
 
     // For each beacon in the environment
-    for (int beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
+    for (int32_t beacon_index = 0; beacon_index < amount_of_beacons; beacon_index++) {
         // For each magnetic sensor in the device
-        for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
+        for (int32_t sensor_index = 0; sensor_index < amount_of_magnetic_sensor; sensor_index++) {
             // Calculate the index of the segment in the matrix
-            int indexer = sensor_index * amount_of_beacons + beacon_index;
+            int32_t indexer = sensor_index * amount_of_beacons + beacon_index;
 
             // Copy the segment to the references matrix
             references[sensor_index] = segments_matrix[indexer];
@@ -210,12 +211,12 @@ void estimateBeaconsPositions(Device *device, Environment *environment,
  * For further reference: https://www.101computing.net/cell-phone-trilateration-algorithm/
  *
  * @param[in] segments Array of segments representing the distance from a point to several reference points
- * @param[out] position Pointer to the calculated position
+ * @param[out] position pointer to the calculated position
  * @param[in] available_references Number of available reference points (should be >= 3)
  */
 void calculatePositionByTrilateration(Segment *segments,
                                       Coordinate *position,
-                                      int available_references) {
+                                      int32_t available_references) {
     // Check if at least three references are available for trilateration
     if (available_references >= 3) {
         float A;

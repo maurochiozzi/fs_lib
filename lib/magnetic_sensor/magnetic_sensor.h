@@ -6,6 +6,8 @@
 #ifndef MAGNETIC_SENSOR_H
 #define MAGNETIC_SENSOR_H
 
+#include <stdint.h>
+
 #include "../beacon/beacon.h"
 #include "../indexer/indexer.h"
 #include "../space/space.h"
@@ -19,7 +21,7 @@ typedef struct MagneticSensorCharacteristic {
     float noise_amplitude;
 
     // If 0, doesn't increase; If 1, cycle value
-    int overflow_mode;
+    int32_t overflow_mode;
 
 } MagneticSensorCharacteristic;
 
@@ -27,8 +29,8 @@ typedef struct MagneticSensorCharacteristic {
  * @brief A struct that represents a magnetic sensor.
  */
 typedef struct MagneticSensor {
-    int address; /**< The address of the sensor. */
-    int interface;
+    int32_t address; /**< The address of the sensor. */
+    int32_t int32_terface;
 
     /**
      * @brief The position of the sensor inside the device.
@@ -40,9 +42,9 @@ typedef struct MagneticSensor {
      */
     Coordinate local_position;
 
-    int amount_of_buffers; /**< The number of buffers. */
-    int sample_size;       /**< The size of each sample. */
-    float *samples;        /**< An array of samples. */
+    int32_t amount_of_buffers; /**< The number of buffers. */
+    int32_t sample_size;       /**< The size of each sample. */
+    float *samples;            /**< An array of samples. */
 
     Spectrum spectrum; /**< A spectrum object. */
     Indexer indexer;   /**< An indexer object. */
@@ -50,7 +52,7 @@ typedef struct MagneticSensor {
     // This is a optional information so it will not be inside the init
     MagneticSensorCharacteristic characteristic;
 
-    int initialized; /**< Whether the sensor has been initialized or not. */
+    int32_t initialized; /**< Whether the sensor has been initialized or not. */
 
 } MagneticSensor;
 
@@ -60,13 +62,13 @@ typedef struct MagneticSensor {
  * @param sensor A pointer to the magnetic sensor to initialize.
  * @param sample_size The size of each sample.
  * @param amount_of_buffers The number of buffers.
- * @param i2c The I2C interface to use.
+ * @param i2c The I2C int32_terface to use.
  */
 void initMagneticSensor(MagneticSensor *sensor,
-                        unsigned int sample_size,
-                        unsigned int amount_of_buffers,
-                        int i2c_address,
-                        int i2c_interface);
+                        uint32_t sample_size,
+                        uint32_t amount_of_buffers,
+                        int32_t i2c_address,
+                        int32_t i2c_int32_terface);
 
 /**
  * @brief Checks if a magnetic sensor has been initialized.
@@ -75,7 +77,7 @@ void initMagneticSensor(MagneticSensor *sensor,
  *
  * @return 1 if the sensor has been initialized, 0 otherwise.
  */
-int isMagneticSensorInitialized(MagneticSensor *sensor);
+int32_t isMagneticSensorInitialized(MagneticSensor *sensor);
 
 /**
  * @brief Samples the magnetic signal from a magnetic sensor.
@@ -94,7 +96,7 @@ Vector sampleMagneticSignal(MagneticSensor sensor);
  *
  * @return 1 if the sample was added successfully, 0 otherwise.
  */
-int addSampleMagneticSignal(MagneticSensor *sensor, float magnetic_sample);
+int32_t addSampleMagneticSignal(MagneticSensor *sensor, float magnetic_sample);
 
 /**
  * @brief Updates the spectrum of a magnetic sensor.

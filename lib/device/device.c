@@ -6,6 +6,7 @@
 #include "device.h"
 
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,13 +19,13 @@
 /**
  * @brief Initializes the device.
  *
- * @param device Pointer to the device to be initialized.
+ * @param device pointer to the device to be initialized.
  * @param magnetic_sensors Array of magnetic sensors to be added to the device.
  * @param amount_of_magnetic_sensors Number of magnetic sensors in the `magnetic_sensors` array.
  *
  * @return None.
  */
-void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_magnetic_sensors) {
+void initDevice(Device *device, MagneticSensor *magnetic_sensors, int32_t amount_of_magnetic_sensors) {
     device->initialized = 0;
 
     if (amount_of_magnetic_sensors < 1) return;
@@ -53,8 +54,8 @@ void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_
 /**
  * @brief Sets the baseline of the device.
  *
- * @param device Pointer to the device.
- * @param baseline Pointer to the baseline to be set.
+ * @param device pointer to the device.
+ * @param baseline pointer to the baseline to be set.
  *
  * @return None.
  */
@@ -67,11 +68,11 @@ void setBaseline(Device *device, Baseline *baseline) {
 /**
  * @brief Checks if the device is initialized.
  *
- * @param device Pointer to the device.
+ * @param device pointer to the device.
  *
  * @return 1 if the device is initialized, otherwise 0.
  */
-int isDeviceInitialized(Device *device) {
+int32_t isDeviceInitialized(Device *device) {
     if (device->initialized == 0) return 0;
 
     float check_sum = 0;
@@ -86,7 +87,7 @@ int isDeviceInitialized(Device *device) {
     if (!(check_sum == device->check_sum && check_prd == device->check_prd)) return 0;
 
     // Check if all magnetic sensors are correctly initialized
-    for (int index = 0; index < device->amount_of_magnetic_sensors; index++) {
+    for (int32_t index = 0; index < device->amount_of_magnetic_sensors; index++) {
         if (isMagneticSensorInitialized(&device->magnetic_sensors[index]) == 0) {
             // If at least one sensor is wrongly initialized, device is not ready
 
@@ -100,13 +101,13 @@ int isDeviceInitialized(Device *device) {
 /**
  * @brief Updates the device's position.
  *
- * @param device Pointer to the device.
- * @param environment Pointer to the environment.
+ * @param device pointer to the device.
+ * @param environment pointer to the environment.
  *
  * @return None.
  */
 void updateDevicePosition(Device *device, Environment *environment) {
-    const int amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
+    const int32_t amount_of_magnetic_sensors = device->amount_of_magnetic_sensors;
 
     Coordinate *device_position = &device->position;
     Coordinate *sensor_position;
@@ -117,7 +118,7 @@ void updateDevicePosition(Device *device, Environment *environment) {
     device_position->y = 0;
     device_position->z = 0;
 
-    for (int sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
+    for (int32_t sensor_index = 0; sensor_index < amount_of_magnetic_sensors; sensor_index++) {
         sensor_position = &device->magnetic_sensors[sensor_index].local_position;
 
         device_position->x += sensor_position->x / amount_of_magnetic_sensors;

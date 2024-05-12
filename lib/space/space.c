@@ -8,6 +8,7 @@
 #include "space.h"
 
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 
 #ifndef M_PI
@@ -112,11 +113,11 @@ float calculatePositionError(Coordinate *reference, Coordinate *real) {
 }
 
 /**
- * @brief Prints the x, y, and z coordinates of a Coordinate struct to stdout
+ * @brief prints the x, y, and z coordinates of a Coordinate struct to stdout
  *
  * @param point A pointer to the Coordinate struct to be printed
  */
-void printCoordinate(Coordinate *point, int end_char) {
+void printCoordinate(Coordinate *point, int32_t end_char) {
     printf("%+07.3f, %+07.3f, %+07.3f", point->x, point->y, point->z);
 
     if (end_char == 0) {
@@ -127,11 +128,11 @@ void printCoordinate(Coordinate *point, int end_char) {
 }
 
 /**
- * @brief Prints the x, y, and z coordinates of a Vector struct to stdout
+ * @brief prints the x, y, and z coordinates of a Vector struct to stdout
  *
  * @param vector A pointer to the Coordinate struct to be printed
  */
-void printVector(Vector *vector, int end_char) {
+void printVector(Vector *vector, int32_t end_char) {
     printf("%+07.3f, %+07.3f, %+07.3f", vector->x, vector->y, vector->z);
 
     if (end_char == 0) {

@@ -2,6 +2,7 @@
 #define DYNAMIC_TEST
 
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,16 +17,16 @@
 
 static char *dynamic_device_beacon_survey() {
     // Auxiliary variables to help during simulations
-    int with_error = 0;
+    int32_t with_error = 0;
 
     MagneticSensor *sensor;
     float device_heading = 45.0;
 
-    float environment_magnetic_field_intensity;
+    float environment_magnetic_field_int32_tensity;
 
-    const int amount_of_buffers = 2;
-    const int sample_size = 110;
-    const int sample_rate = 220;
+    const int32_t amount_of_buffers = 2;
+    const int32_t sample_size = 110;
+    const int32_t sample_rate = 220;
 
     float delta_time = 1.0 / sample_rate;
     float timestamp = 0.0;
@@ -43,7 +44,7 @@ static char *dynamic_device_beacon_survey() {
     Coordinate final_device_position = {0};
 
     // Mocked environment will be used to mock beacons and get the magnetic
-    // field intensity from them.
+    // field int32_tensity from them.
     Environment mocked_environment = {0};
     Beacon *mocked_beacons;
 
@@ -58,7 +59,7 @@ static char *dynamic_device_beacon_survey() {
 
     Baseline baseline = {0};
 
-    const int amount_of_magnetic_sensors = 3;
+    const int32_t amount_of_magnetic_sensors = 3;
     MagneticSensor *device_sensors;
 
     Coordinate device_sensors_position[] = {
@@ -66,29 +67,29 @@ static char *dynamic_device_beacon_survey() {
         [1] = {.x = +0.0, .y = +0.5773502691869, .z = 0},
         [2] = {.x = +0.5, .y = -0.2886751345948, .z = 0}};
 
-    const int sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
-    const int sensors_i2c_interface[] = {0xE1, 0xE2, 0xE3};
+    const int32_t sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
+    const int32_t sensors_i2c_int32_terface[] = {0xE1, 0xE2, 0xE3};
 
     // Define environment with its beacons. No edges will be used at this moment
     Environment environment = {0};
 
-    const int amount_of_beacons = 4;
+    const int32_t amount_of_beacons = 4;
     Beacon *beacons;
 
     const float beacons_source_magnetic_moment = 6.999 * pow(10, -8);
     const float beacons_source_frequency[] = {36, 40, 80, 52};
 
-    const int amount_of_edges = 10;
+    const int32_t amount_of_edges = 10;
     Coordinate *edges;
 
     // Initialize sensors, devices, beacons and environment
     device_sensors = (MagneticSensor *)malloc(sizeof(MagneticSensor) * amount_of_magnetic_sensors);
 
-    for (int index = 0; index < amount_of_magnetic_sensors; index++) {
+    for (int32_t index = 0; index < amount_of_magnetic_sensors; index++) {
         device_sensors[index].device_position = device_sensors_position[index];
 
         initMagneticSensor(&device_sensors[index], sample_size, amount_of_buffers,
-                           sensors_i2c_address[index], sensors_i2c_interface[index]);
+                           sensors_i2c_address[index], sensors_i2c_int32_terface[index]);
     }
 
     baseline.initial_point = &device_sensors[0].local_position;
@@ -104,7 +105,7 @@ static char *dynamic_device_beacon_survey() {
     beacons = (Beacon *)malloc(sizeof(Beacon) * amount_of_beacons);
     mocked_beacons = (Beacon *)malloc(sizeof(Beacon) * amount_of_beacons);
 
-    for (int index = 0; index < amount_of_beacons; index++) {
+    for (int32_t index = 0; index < amount_of_beacons; index++) {
         initBeacon(&beacons[index],
                    beacons_source_magnetic_moment,
                    beacons_source_frequency[index],
@@ -135,17 +136,17 @@ static char *dynamic_device_beacon_survey() {
 
     // check beacons surveyed
 
-    for (int index = 0; index < amount_of_beacons; index++) {
+    for (int32_t index = 0; index < amount_of_beacons; index++) {
         mu_assert("beacon survey error",
                   calculatePositionError(&mocked_beacons[index].magnetic_field_source.position,
                                          &beacons[index].magnetic_field_source.position) < error_check);
     }
 
     if (OUTPUT_RESULTS == 1) {
-        printf("interation, vx, vy, vz, attitude_x, attitude_y, attitude_z, heading, heading_error, est_position_x, est_position_y, est_position_z, real_position_x, real_position_y, real_position_z, norm_est, norm_real, norm_error, error\r\n");
+        printf("int32_teration, vx, vy, vz, attitude_x, attitude_y, attitude_z, heading, heading_error, est_position_x, est_position_y, est_position_z, real_position_x, real_position_y, real_position_z, norm_est, norm_real, norm_error, error\r\n");
     }
 
-    for (int velocity_increase = 1; velocity_increase < 10; velocity_increase++) {
+    for (int32_t velocity_increase = 1; velocity_increase < 10; velocity_increase++) {
         device_velocity.x += velocity_step.x;
         device_velocity.y += velocity_step.y;
         device_velocity.z += velocity_step.z;
@@ -158,7 +159,7 @@ static char *dynamic_device_beacon_survey() {
         device_position_offset.y = 0;
         device_position_offset.z = 0;
 
-        for (int interation = 0; interation < 50; interation++) {
+        for (int32_t int32_teration = 0; int32_teration < 50; int32_teration++) {
             // Start sampling environment magnetic field from the new position
             mockMagneticFieldSampleRun(
                 &device, device_velocity, device_heading,
@@ -172,7 +173,7 @@ static char *dynamic_device_beacon_survey() {
             norm_real = euclideanDistance2(&origin, &final_device_position);
 
             if (OUTPUT_RESULTS == 1) {
-                printf("%02d, ", interation);
+                printf("%02d, ", int32_teration);
 
                 printVector(&device_velocity, 1);
                 printVector(&device.attitude, 1);

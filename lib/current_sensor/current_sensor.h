@@ -6,6 +6,8 @@
 #ifndef CURRENT_SENSOR_H
 #define CURRENT_SENSOR_H
 
+#include <stdint.h>
+
 #include "../beacon/beacon.h"
 #include "../indexer/indexer.h"
 #include "../space/space.h"
@@ -24,12 +26,12 @@ typedef struct CurrentSensorCharacteristic {
  * @brief A struct that represents a current sensor.
  */
 typedef struct CurrentSensor {
-    short int address; /**< The address of the sensor. */
-    short int interface;
+    int8_t address; /**< The address of the sensor. */
+    int8_t int32_terface;
 
-    short int amount_of_buffers; /**< The number of buffers. */
-    short int sample_size;       /**< The size of each sample. */
-    float *samples;              /**< An array of samples. */
+    int8_t amount_of_buffers; /**< The number of buffers. */
+    int8_t sample_size;       /**< The size of each sample. */
+    float *samples;           /**< An array of samples. */
 
     Spectrum spectrum; /**< A spectrum object. */
     Indexer indexer;   /**< An indexer object. */
@@ -37,7 +39,7 @@ typedef struct CurrentSensor {
     // This is a optional information so it will not be inside the init
     CurrentSensorCharacteristic characteristic;
 
-    short int initialized; /**< Whether the sensor has been initialized or not. */
+    int8_t initialized; /**< Whether the sensor has been initialized or not. */
 
 } CurrentSensor;
 
@@ -47,13 +49,13 @@ typedef struct CurrentSensor {
  * @param sensor A pointer to the current sensor to initialize.
  * @param sample_size The size of each sample.
  * @param amount_of_buffers The number of buffers.
- * @param i2c The I2C interface to use.
+ * @param i2c The I2C int32_terface to use.
  */
 void initCurrentSensor(CurrentSensor *sensor,
-                       short int sample_size,
-                       short int amount_of_buffers,
-                       short int i2c_address,
-                       short int i2c_interface);
+                       int8_t sample_size,
+                       int8_t amount_of_buffers,
+                       int8_t i2c_address,
+                       int8_t i2c_int32_terface);
 
 /**
  * @brief Checks if a current sensor has been initialized.
@@ -62,7 +64,7 @@ void initCurrentSensor(CurrentSensor *sensor,
  *
  * @return 1 if the sensor has been initialized, 0 otherwise.
  */
-int isCurrentSensorInitialized(CurrentSensor *sensor);
+int32_t isCurrentSensorInitialized(CurrentSensor *sensor);
 
 /**
  * @brief Samples the current  from a current sensor.
@@ -81,7 +83,7 @@ float sampleCurrent(CurrentSensor sensor);
  *
  * @return 1 if the sample was added successfully, 0 otherwise.
  */
-int addSampleCurrent(CurrentSensor *sensor, float current_sample);
+int32_t addSampleCurrent(CurrentSensor *sensor, float current_sample);
 
 /**
  * @brief Updates the spectrum of a current sensor.
@@ -99,7 +101,7 @@ void updateCurrentSpectrum(CurrentSensor *sensor, const float sample);
  *
  * @return The current signal strength.
  */
-float getCurrentIntensity(CurrentSensor *sensor, Beacon *beacon);
+float getCurrentint32_tensity(CurrentSensor *sensor, Beacon *beacon);
 
 /**
  * @brief Resets a current sensor's sample buffer.

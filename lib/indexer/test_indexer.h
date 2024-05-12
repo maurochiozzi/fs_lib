@@ -7,6 +7,7 @@
 #ifndef TEST_INDEXER
 #define TEST_INDEXER
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../minunit/minunit.h"
@@ -42,7 +43,7 @@ static char *test_indexer_initialized() {
 static char *test_indexer_not_initialized() {
     Indexer indexer = {0};
 
-    mu_assert("error, indexer initialization misinterpreting",
+    mu_assert("error, indexer initialization misint32_terpreting",
               isIndexerInitialized(&indexer) == 0);
 
     return 0;

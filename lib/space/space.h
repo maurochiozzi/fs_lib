@@ -6,6 +6,8 @@
 #ifndef SPACE_H
 #define SPACE_H
 
+#include <stdint.h>
+
 /**
  * @brief Represents a point in a 3D space.
  */
@@ -48,7 +50,7 @@ typedef struct Baseline {
 /**
  * @brief Sets the coordinates of a point.
  *
- * @param point Pointer to the point whose coordinates are being set.
+ * @param point pointer to the point whose coordinates are being set.
  * @param x The x-coordinate of the point.
  * @param y The y-coordinate of the point.
  * @param z The z-coordinate of the point.
@@ -58,7 +60,7 @@ void setCoordinate(Coordinate *point, float x, float y, float z);
 /**
  * @brief Sets the components of a vector.
  *
- * @param vector Pointer to the vector whose components are being set.
+ * @param vector pointer to the vector whose components are being set.
  * @param x The x-component of the vector.
  * @param y The y-component of the vector.
  * @param z The z-component of the vector.
@@ -77,8 +79,8 @@ float norm(Vector vector);
 /**
  * @brief Calculates the Euclidean distance between two points.
  *
- * @param start Pointer to the starting point.
- * @param end Pointer to the ending point.
+ * @param start pointer to the starting point.
+ * @param end pointer to the ending point.
  *
  * @return The Euclidean distance between the two points.
  */
@@ -87,9 +89,9 @@ float euclideanDistance2(Coordinate *start, Coordinate *end);
 /**
  * @brief Calculates the result of adding an offset to a point.
  *
- * @param point Pointer to the point being offset.
- * @param offset Pointer to the offset to be added to the point.
- * @param result Pointer to the result of the addition.
+ * @param point pointer to the point being offset.
+ * @param offset pointer to the offset to be added to the point.
+ * @param result pointer to the result of the addition.
  */
 void translate(Coordinate *point, Vector *offset, Coordinate *result);
 void rotate2d(Coordinate *point, float angle, Coordinate *result);
@@ -97,25 +99,25 @@ void rotate2d(Coordinate *point, float angle, Coordinate *result);
 /**
  * @brief Calculates the position error between a reference point and a real point.
  *
- * @param reference Pointer to the reference point.
- * @param real Pointer to the real point.
+ * @param reference pointer to the reference point.
+ * @param real pointer to the real point.
  *
  * @return The position error between the two points.
  */
 float calculatePositionError(Coordinate *reference, Coordinate *real);
 
 /**
- * @brief Prints the coordinates of a point to the console.
+ * @brief prints the coordinates of a point to the console.
  *
- * @param point Pointer to the point being printed.
+ * @param point pointer to the point being printed.
  */
-void printCoordinate(Coordinate *point, int end_char);
+void printCoordinate(Coordinate *point, int32_t end_char);
 
 /**
- * @brief Prints the coordinates of a vector to the console.
+ * @brief prints the coordinates of a vector to the console.
  *
  * @param vector Vector to the vector being printed.
  */
-void printVector(Vector *vector, int end_char);
+void printVector(Vector *vector, int32_t end_char);
 
 #endif

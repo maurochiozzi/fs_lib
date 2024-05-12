@@ -6,6 +6,7 @@
 #ifndef TEST_MAGNETIC_SENSOR
 #define TEST_MAGNETIC_SENSOR
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../minunit/minunit.h"
@@ -42,7 +43,7 @@ static char *test_magnetic_sensor_initialized() {
 static char *test_magnetic_sensor_not_initialized() {
     MagneticSensor sensor = {0};
 
-    mu_assert("error, sensor initialization misinterpreting",
+    mu_assert("error, sensor initialization misint32_terpreting",
               isMagneticSensorInitialized(&sensor) == 0);
 
     return 0;

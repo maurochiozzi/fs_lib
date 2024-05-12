@@ -5,6 +5,8 @@
 
 #include "environment.h"
 
+#include <stdint.h>
+
 #include "../beacon/beacon.h"
 #include "../magnetic_field/magnetic_field.h"
 #include "../space/space.h"
@@ -12,14 +14,14 @@
 /**
  * @brief Initializes the environment with the given beacons and edges.
  *
- * @param environment Pointer to the environment to be initialized.
- * @param beacons Pointer to the array of beacons in the environment.
- * @param edges Pointer to the array of edges in the environment.
+ * @param environment pointer to the environment to be initialized.
+ * @param beacons pointer to the array of beacons in the environment.
+ * @param edges pointer to the array of edges in the environment.
  * @param amount_of_beacons The number of beacons in the environment.
  * @param amount_of_edges The number of edges in the environment.
  */
 void initEnvironment(Environment *environment, Beacon *beacons,
-                     Coordinate *edges, int amount_of_beacons, int amount_of_edges) {
+                     Coordinate *edges, int32_t amount_of_beacons, int32_t amount_of_edges) {
     environment->initialized = 0;
 
     if (amount_of_edges <= 0 || amount_of_beacons <= 0) return;
@@ -48,10 +50,10 @@ void initEnvironment(Environment *environment, Beacon *beacons,
 /**
  * @brief Determines if the environment is initialized and ready for use.
  *
- * @param environment Pointer to the environment to be checked.
+ * @param environment pointer to the environment to be checked.
  * @return 1 if the environment is initialized, 0 otherwise.
  */
-int isEnvironmentInitialized(Environment *environment) {
+int32_t isEnvironmentInitialized(Environment *environment) {
     if (environment->initialized == 0) return 0;
 
     float check_sum = 0;
@@ -68,7 +70,7 @@ int isEnvironmentInitialized(Environment *environment) {
     if (!(check_sum == environment->check_sum && check_prd == environment->check_prd)) return 0;
 
     // Check if all beacons sensors are correctly initialized
-    for (int index = 0; index < environment->amount_of_beacons; index++) {
+    for (int32_t index = 0; index < environment->amount_of_beacons; index++) {
         if (isBeaconInitialized(&environment->beacons[index]) == 0) {
             // If at least one beacon is wrongly initialized, environment is not ready
             return 0;
@@ -81,10 +83,10 @@ int isEnvironmentInitialized(Environment *environment) {
 /**
  * @brief Determines if the given point is inside the environment.
  *
- * @param environment Pointer to the environment to be checked.
- * @param point Pointer to the point to be checked.
+ * @param environment pointer to the environment to be checked.
+ * @param point pointer to the point to be checked.
  * @return 1 if the point is inside the environment, 0 otherwise.
  */
-int isPointInsideEnvironment(Environment *environment, Coordinate *point) {
+int32_t ispointInsideEnvironment(Environment *environment, Coordinate *point) {
     return 0;
 }

@@ -6,6 +6,7 @@
 #ifndef TEST_MAGNETIC_FIELD
 #define TEST_MAGNETIC_FIELD
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../minunit/minunit.h"
@@ -41,7 +42,7 @@ static char *test_magnetic_field_source_initialized() {
 static char *test_magnetic_field_source_not_initialized() {
     MagneticFieldSource source = {0};
 
-    mu_assert("error, magnetic field source initialization misinterpreting",
+    mu_assert("error, magnetic field source initialization misint32_terpreting",
               isMagneticFieldSourceInitialized(&source) == 0);
 
     return 0;

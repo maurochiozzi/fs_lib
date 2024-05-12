@@ -9,6 +9,7 @@
 
 #include "indexer.h"
 
+#include <stdint.h>
 #include <stdio.h>
 
 /**
@@ -21,7 +22,7 @@
  * @param sample_size The size of each buffer in the slot indexer.
  * @param amount_of_buffers The total number of buffers in the slot indexer.
  */
-void initIndexer(Indexer *indexer, int sample_size, int amount_of_buffers) {
+void initIndexer(Indexer *indexer, int32_t sample_size, int32_t amount_of_buffers) {
     if (sample_size <= 10 || amount_of_buffers < 1) return;
 
     indexer->sample_size = sample_size;
@@ -44,8 +45,8 @@ void initIndexer(Indexer *indexer, int sample_size, int amount_of_buffers) {
  * @param indexer The indexer to check.
  * @return 1 if the indexer has been initialized, 0 otherwise.
  */
-int isIndexerInitialized(Indexer *indexer) {
-    int check_sum = 0;
+int32_t isIndexerInitialized(Indexer *indexer) {
+    int32_t check_sum = 0;
 
     if (indexer->initialized == 1) {
         check_sum++;
@@ -73,13 +74,13 @@ int isIndexerInitialized(Indexer *indexer) {
  * @param indexer The indexer to increment.
  * @return 1 if the buffer index was incremented, 0 otherwise.
  */
-int incrementIndex(Indexer *indexer) {
-    const int sample = indexer->sample;
-    const int sample_size = indexer->sample_size;
+int32_t incrementIndex(Indexer *indexer) {
+    const int32_t sample = indexer->sample;
+    const int32_t sample_size = indexer->sample_size;
 
     indexer->sample = (sample + 1) % sample_size;
 
-    int increment_buffer = indexer->sample == 0;
+    int32_t increment_buffer = indexer->sample == 0;
 
     if (increment_buffer) {
         mutexSampleCache(indexer);

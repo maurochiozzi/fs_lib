@@ -1,11 +1,12 @@
 /**
  * @file current_sensor.c
- * @brief Contains functions for interacting with a current sensor.
+ * @brief Contains functions for int32_teracting with a current sensor.
  */
 
 #include "current_sensor.h"
 
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,10 +23,10 @@
  * @param i2c_address The I2C address of the current sensor.
  */
 void initCurrentSensor(CurrentSensor *sensor,
-                       short int sample_size,
-                       short int amount_of_buffers,
-                       short int i2c_address,
-                       short int i2c_interface) {
+                       int8_t sample_size,
+                       int8_t amount_of_buffers,
+                       int8_t i2c_address,
+                       int8_t i2c_int32_terface) {
     sensor->initialized = 0;
     sensor->address = -1;
 
@@ -34,7 +35,7 @@ void initCurrentSensor(CurrentSensor *sensor,
     sensor->sample_size = sample_size;
     sensor->amount_of_buffers = amount_of_buffers;
     sensor->address = i2c_address;
-    sensor->interface = i2c_interface;
+    sensor->int32_terface = i2c_int32_terface;
 
     initIndexer(&sensor->indexer, sample_size, amount_of_buffers);
     initSpectrum(&sensor->spectrum, sample_size, amount_of_buffers);
@@ -54,8 +55,8 @@ void initCurrentSensor(CurrentSensor *sensor,
  *
  * @return 1 if the sensor is initialized, 0 otherwise.
  */
-int isCurrentSensorInitialized(CurrentSensor *sensor) {
-    int check_sum = 0;
+int32_t isCurrentSensorInitialized(CurrentSensor *sensor) {
+    int32_t check_sum = 0;
 
     if (sensor->initialized == 1) {
         check_sum++;
@@ -104,8 +105,8 @@ float sampleCurrentSignal(CurrentSensor sensor) {
  *
  * @return 1 if the sample was added successfully, 0 otherwise.
  */
-int addSampleCurrent(CurrentSensor *sensor, float sample) {
-    int indexer = sensor->indexer.buffer * sensor->indexer.sample_size + sensor->indexer.sample;
+int32_t addSampleCurrent(CurrentSensor *sensor, float sample) {
+    int32_t indexer = sensor->indexer.buffer * sensor->indexer.sample_size + sensor->indexer.sample;
 
     sensor->samples[indexer] = sample;
 
@@ -115,16 +116,16 @@ int addSampleCurrent(CurrentSensor *sensor, float sample) {
 }
 
 /**
- * @brief Gets the current intensity of the given sensor and beacon.
+ * @brief Gets the current int32_tensity of the given sensor and beacon.
  *
  * @param sensor The current sensor to use.
- * @param beacon The beacon to measure the current intensity.
+ * @param beacon The beacon to measure the current int32_tensity.
  *
  * @return The current signal strength.
  */
-float getCurrentIntensity(CurrentSensor *sensor, Beacon *beacon) {
-    return getSpectrumWindowIntensity(&sensor->spectrum, beacon->spectrum_window,
-                                      &sensor->indexer);
+float getCurrentint32_tensity(CurrentSensor *sensor, Beacon *beacon) {
+    return getSpectrumWindowint32_tensity(&sensor->spectrum, beacon->spectrum_window,
+                                          &sensor->indexer);
 }
 
 /**
@@ -138,14 +139,14 @@ void updateCurrentSpectrum(CurrentSensor *sensor, const float sample) {
 
     float complex phase;
 
-    for (int i = 0; i < indexer->sample + 1; i++) {
+    for (int32_t i = 0; i < indexer->sample + 1; i++) {
         phase = phases[indexer->sample * indexer->sample_size + i];
 
         spectrum->samples[indexer->buffer * indexer->sample_size + i] +=
             spectrum->double_per_sample_size * (sample * (phase));
     }
 
-    for (int i = 0; i < indexer->sample; i++) {
+    for (int32_t i = 0; i < indexer->sample; i++) {
         phase = phases[indexer->sample * indexer->sample_size + i];
 
         spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample] +=
@@ -160,7 +161,7 @@ void updateCurrentSpectrum(CurrentSensor *sensor, const float sample) {
 void resetCurrentSampleCache(CurrentSensor *sensor) {
     Indexer *indexer = &sensor->indexer;
 
-    for (int signal_index = indexer->buffer * sensor->sample_size;
+    for (int32_t signal_index = indexer->buffer * sensor->sample_size;
          signal_index < (indexer->buffer + 1) * sensor->sample_size; signal_index++) {
         sensor->samples[signal_index] = 0.0;
     }

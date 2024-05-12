@@ -1,4 +1,5 @@
 // Ref https://jera.com/techinfo/jtns/jtn002
+#include <stdint.h>
 
 #define mu_assert(message, test)     \
     do {                             \
@@ -16,4 +17,4 @@
         if (message) return message; \
     } while (0)
 
-extern int tests_run;
+extern int32_t tests_run;

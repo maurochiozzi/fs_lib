@@ -1,6 +1,7 @@
 #ifndef TEST_DEVICE
 #define TEST_DEVICE
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,17 +17,17 @@
 static char *test_device_initialization() {
     Device device = {0};
 
-    const int amount_of_magnetic_sensors = 3;
+    const int32_t amount_of_magnetic_sensors = 3;
     MagneticSensor *sensors;
 
-    const int sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
-    const int sensors_i2c_interface[] = {0xE1, 0xE2, 0xE3};
+    const int32_t sensors_i2c_address[] = {0xE1, 0xE2, 0xE3};
+    const int32_t sensors_i2c_int32_terface[] = {0xE1, 0xE2, 0xE3};
 
     sensors = (MagneticSensor *)malloc(sizeof(MagneticSensor) * amount_of_magnetic_sensors);
 
-    for (int index = 0; index < amount_of_magnetic_sensors; index++) {
+    for (int32_t index = 0; index < amount_of_magnetic_sensors; index++) {
         initMagneticSensor(&sensors[index], 110, 2, sensors_i2c_address[index],
-                           sensors_i2c_interface[index]);
+                           sensors_i2c_int32_terface[index]);
     }
 
     initDevice(&device, sensors, amount_of_magnetic_sensors);
@@ -40,7 +41,7 @@ static char *test_device_initialization() {
 
     free(phases);
 
-    for (int i = 0; i < amount_of_magnetic_sensors; i++) {
+    for (int32_t i = 0; i < amount_of_magnetic_sensors; i++) {
         free(sensors[i].samples);
     }
 
@@ -57,7 +58,7 @@ static char *test_device_initialization() {
 static char *test_device_not_initialized() {
     Device device = {0};
 
-    mu_assert("error, device initialization misinterpreting",
+    mu_assert("error, device initialization misint32_terpreting",
               isDeviceInitialized(&device) == 0);
 
     return 0;

@@ -6,6 +6,7 @@
 #ifndef TEST_ENVIRONMENT
 #define TEST_ENVIRONMENT
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,15 +24,15 @@
 static char *test_environment_initialization() {
     Environment environment = {0};
 
-    int amount_of_beacons = 3;
+    int32_t amount_of_beacons = 3;
     Beacon *beacons;
 
-    int amount_of_edges = 10;
+    int32_t amount_of_edges = 10;
     Coordinate *edges;
 
     beacons = (Beacon *)malloc(sizeof(Beacon) * amount_of_beacons);
 
-    for (int index = 0; index < amount_of_beacons; index++) {
+    for (int32_t index = 0; index < amount_of_beacons; index++) {
         initBeacon(&beacons[index], 0.1, 55.0, 220, 110);
     }
 
@@ -55,7 +56,7 @@ static char *test_environment_initialization() {
 static char *test_environment_not_initialized() {
     Environment environment = {0};
 
-    mu_assert("error, environment initialization misinterpreting",
+    mu_assert("error, environment initialization misint32_terpreting",
               isEnvironmentInitialized(&environment) == 0);
 
     return 0;

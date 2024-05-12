@@ -3,6 +3,7 @@
 
 #include <complex.h>
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,25 +16,25 @@
 
 static char *transmitter_dft() {
     CurrentSensor sensor;
-    const int amount_of_buffers = 2;
-    const int sample_size = 110;
-    const int sample_rate = 110;
-    const int i2c_address = 0xE1;
-    const int i2c_interface = 0xE1;
+    const int32_t amount_of_buffers = 2;
+    const int32_t sample_size = 110;
+    const int32_t sample_rate = 110;
+    const int32_t i2c_address = 0xE1;
+    const int32_t i2c_int32_terface = 0xE1;
 
-    initCurrentSensor(&sensor, sample_size, amount_of_buffers, i2c_address, i2c_interface);
+    initCurrentSensor(&sensor, sample_size, amount_of_buffers, i2c_address, i2c_int32_terface);
 
     // Check if device was correctly initialized
     mu_assert("error, beacon transmitter - current sensor initialization",
               isCurrentSensorInitialized(&sensor) == 1);
 
     SineWave wave;
-    const short int amplitude = 2;  // > 0
-    const short int frequency = 5;  // Hertz
-    const short int phase = 0;      // radians
-    const short int offset = 0;     // 0 to 1
-    const short mode = 0;           // 0- zero-floating symmetry, 1 -> half-amplitude positive-offset
-    const int resolution = 110;
+    const int8_t amplitude = 2;  // > 0
+    const int8_t frequency = 5;  // Hertz
+    const int8_t phase = 0;      // radians
+    const int8_t offset = 0;     // 0 to 1
+    const short mode = 0;        // 0- zero-floating symmetry, 1 -> half-amplitude positive-offset
+    const int32_t resolution = 110;
 
     initSineWave(&wave, amplitude, frequency, phase, offset, mode, resolution);
 
@@ -47,8 +48,8 @@ static char *transmitter_dft() {
               isBeaconInitialized(&beacon) == 1);
 
     Transmitter transmitter;
-    const int out_put_pin = 10;
-    const int signal_direction_pin = 10;
+    const int32_t out_put_pin = 10;
+    const int32_t signal_direction_pin = 10;
 
     initTransmitter(&transmitter, &wave, out_put_pin, signal_direction_pin);
 
@@ -58,7 +59,7 @@ static char *transmitter_dft() {
 
     setCurrentSensor(&transmitter, &sensor);
 
-    int index;
+    int32_t index;
 
     float trunc = 1000.0;
     float error = 0.001;
@@ -69,17 +70,17 @@ static char *transmitter_dft() {
     printf("%d %d %d %d\n", sizeof(transmitter), sizeof(beacon), sizeof(wave), sizeof(wave.shape) * resolution);
     printf("Window: %d\n", beacon.spectrum_window);
 
-    int current_sensor_sample_period = 1000 / sample_rate;
-    int magnetic_source_update_period = 1000 / frequency;
+    int32_t current_sensor_sample_period = 1000 / sample_rate;
+    int32_t magnetic_source_update_period = 1000 / frequency;
 
-    int waveform_index = 0;
+    int32_t waveform_index = 0;
     float current = 0;
 
-    int time_run = 1000 / sample_rate;
+    int32_t time_run = 1000 / sample_rate;
 
     printf("Window: %d\n", beacon.spectrum_window);
 
-    for (int tk = 0; tk < sample_size; tk++) {
+    for (int32_t tk = 0; tk < sample_size; tk++) {
         current = update(&transmitter);
 
         // printf("index %03d, signal %02d, original %2.4f, current %2.4f\n",
@@ -93,11 +94,11 @@ static char *transmitter_dft() {
     Spectrum spectrum = sensor.spectrum;
     float complex *samples = spectrum.samples;
 
-    // for (int i = 0; i < sample_size; i++) {
+    // for (int32_t i = 0; i < sample_size; i++) {
     //     printf("(%d, %.4f)\n", i, fabs(sensor.spectrum.samples[i]));
     // }
 
-    calculated_amplitude = getCurrentIntensity(&sensor, &beacon);
+    calculated_amplitude = getCurrentint32_tensity(&sensor, &beacon);
 
     printf("Final current: %f, error: %f\n", calculated_amplitude, calculateError(amplitude, calculated_amplitude));
 

@@ -1,11 +1,12 @@
 /**
  * @file magnetic_sensor.c
- * @brief Contains functions for interacting with a magnetic sensor.
+ * @brief Contains functions for int32_teracting with a magnetic sensor.
  */
 
 #include "magnetic_sensor.h"
 
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,10 +24,10 @@
  * @param i2c_address The I2C address of the magnetic sensor.
  */
 void initMagneticSensor(MagneticSensor *sensor,
-                        unsigned int sample_size,
-                        unsigned int amount_of_buffers,
-                        int i2c_address,
-                        int i2c_interface) {
+                        uint32_t sample_size,
+                        uint32_t amount_of_buffers,
+                        int32_t i2c_address,
+                        int32_t i2c_int32_terface) {
     sensor->initialized = 0;
     sensor->address = -1;
 
@@ -35,7 +36,7 @@ void initMagneticSensor(MagneticSensor *sensor,
     sensor->sample_size = sample_size;
     sensor->amount_of_buffers = amount_of_buffers;
     sensor->address = i2c_address;
-    sensor->interface = i2c_interface;
+    sensor->int32_terface = i2c_int32_terface;
 
     initIndexer(&sensor->indexer, sample_size, amount_of_buffers);
     initSpectrum(&sensor->spectrum, sample_size, amount_of_buffers);
@@ -55,8 +56,8 @@ void initMagneticSensor(MagneticSensor *sensor,
  *
  * @return 1 if the sensor is initialized, 0 otherwise.
  */
-int isMagneticSensorInitialized(MagneticSensor *sensor) {
-    int check_sum = 0;
+int32_t isMagneticSensorInitialized(MagneticSensor *sensor) {
+    int32_t check_sum = 0;
 
     if (sensor->initialized == 1) {
         check_sum++;
@@ -107,8 +108,8 @@ Vector sampleMagneticSignal(MagneticSensor sensor) {
  *
  * @return 1 if the sample was added successfully, 0 otherwise.
  */
-int addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
-    int indexer = sensor->indexer.buffer * sensor->indexer.sample_size + sensor->indexer.sample;
+int32_t addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
+    int32_t indexer = sensor->indexer.buffer * sensor->indexer.sample_size + sensor->indexer.sample;
 
     sensor->samples[indexer] = sample;
 
@@ -124,8 +125,8 @@ int addSampleMagneticSignal(MagneticSensor *sensor, float sample) {
  * @return The magnetic signal strength.
  */
 float getMagneticSignalStrength(MagneticSensor *sensor, Beacon *beacon) {
-    return getSpectrumWindowIntensity(&sensor->spectrum, beacon->spectrum_window,
-                                      &sensor->indexer);
+    return getSpectrumWindowint32_tensity(&sensor->spectrum, beacon->spectrum_window,
+                                          &sensor->indexer);
 }
 
 /**
@@ -140,7 +141,7 @@ float calculateDistanceFromBeacon(MagneticSensor *sensor, Beacon *beacon) {
 
     magnetic_signal_strength = getMagneticSignalStrength(sensor, beacon);
 
-    distance = getMagneticSourceDistanceByIntensity(
+    distance = getMagneticSourceDistanceByint32_tensity(
         &beacon->magnetic_field_source,
         magnetic_signal_strength);
 
@@ -158,14 +159,14 @@ void updateSpectrum(MagneticSensor *sensor, const float sample) {
 
     float complex phase;
 
-    for (int i = 0; i < indexer->sample + 1; i++) {
+    for (int32_t i = 0; i < indexer->sample + 1; i++) {
         phase = phases[indexer->sample * indexer->sample_size + i];
 
         spectrum->samples[indexer->buffer * indexer->sample_size + i] +=
             spectrum->double_per_sample_size * (sample * (phase));
     }
 
-    for (int i = 0; i < indexer->sample; i++) {
+    for (int32_t i = 0; i < indexer->sample; i++) {
         phase = phases[indexer->sample * indexer->sample_size + i];
 
         spectrum->samples[indexer->buffer * indexer->sample_size + indexer->sample] +=
@@ -180,7 +181,7 @@ void updateSpectrum(MagneticSensor *sensor, const float sample) {
 void resetSampleCache(MagneticSensor *sensor) {
     Indexer *indexer = &sensor->indexer;
 
-    for (int index = indexer->buffer * sensor->sample_size;
+    for (int32_t index = indexer->buffer * sensor->sample_size;
          index < (indexer->buffer + 1) * sensor->sample_size; index++) {
         sensor->samples[index] = 0.0;
     }

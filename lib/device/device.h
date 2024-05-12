@@ -6,6 +6,8 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#include <stdint.h>
+
 #include "../beacon/beacon.h"
 #include "../environment/environment.h"
 #include "../magnetic_sensor/magnetic_sensor.h"
@@ -22,15 +24,15 @@ typedef struct
 
     Baseline *baseline; /**< The baseline to use for position estimation. */
 
-    MagneticSensor *magnetic_sensors; /**< An array of magnetic sensors. */
-    int amount_of_magnetic_sensors;   /**< The number of magnetic sensors in the array. */
+    MagneticSensor *magnetic_sensors;   /**< An array of magnetic sensors. */
+    int32_t amount_of_magnetic_sensors; /**< The number of magnetic sensors in the array. */
 
-    int baseline_configured; /**< Flag indicating whether the baseline has been configured. */
+    int32_t baseline_configured; /**< Flag indicating whether the baseline has been configured. */
 
-    int check_prd; /**< Parity check of device ID. */
-    int check_sum; /**< Parity check of baseline values. */
+    int32_t check_prd; /**< Parity check of device ID. */
+    int32_t check_sum; /**< Parity check of baseline values. */
 
-    int initialized; /**< Flag indicating whether the device has been initialized. */
+    int32_t initialized; /**< Flag indicating whether the device has been initialized. */
 
 } Device;
 
@@ -41,7 +43,7 @@ typedef struct
  * @param magnetic_sensors An array of magnetic sensors.
  * @param amount_of_magnetic_sensors The number of magnetic sensors in the array.
  */
-void initDevice(Device *device, MagneticSensor *magnetic_sensors, int amount_of_magnetic_sensors);
+void initDevice(Device *device, MagneticSensor *magnetic_sensors, int32_t amount_of_magnetic_sensors);
 
 /**
  * @brief Sets the baseline for the given device.
@@ -58,7 +60,7 @@ void setBaseline(Device *Device, Baseline *baseline);
  *
  * @return 1 if the device has been initialized, otherwise 0.
  */
-int isDeviceInitialized(Device *device);
+int32_t isDeviceInitialized(Device *device);
 
 /**
  * @brief Updates the position, attitude and heading of the given device based on the given environment.
@@ -78,7 +80,7 @@ void updateDeviceHeading(Device *device);
  * @param environment The environment to use for position estimation.
  * @param reference The reference to use for position estimation.
  */
-void getCoordinates(Device *device, Environment *environment, int reference);
+void getCoordinates(Device *device, Environment *environment, int32_t reference);
 
 /**
  * @brief Estimates the position of the given device based on the given environment.

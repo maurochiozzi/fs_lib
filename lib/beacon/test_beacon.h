@@ -3,6 +3,7 @@
  * @brief This file contains the unit tests for the beacon.h and beacon.c files.
  */
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -35,7 +36,7 @@ static char *test_beacon_not_initialized() {
     Beacon beacon = {0};
 
     // Check that the uninitialized Beacon is detected correctly
-    mu_assert("error, beacon initialization misinterpreting",
+    mu_assert("error, beacon initialization misint32_terpreting",
               isBeaconInitialized(&beacon) == 0);
 
     return 0;

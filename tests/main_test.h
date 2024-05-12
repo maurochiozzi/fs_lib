@@ -1,6 +1,7 @@
 #ifndef MAIN_TEST
 #define MAIN_TEST
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../lib/minunit/minunit.h"
@@ -9,7 +10,7 @@
 #include "transmitter_test.h"
 #include "unit_test.h"
 
-int tests_run = 0;
+int32_t tests_run = 0;
 
 static char *all_tests() {
     mu_run_all_sub_tests(all_unit_tests);
@@ -20,7 +21,7 @@ static char *all_tests() {
     return 0;
 }
 
-int main_test(int argc, char **argv) {
+int32_t main_test(int32_t argc, char **argv) {
     char *result = all_tests();
 
     if (result != 0) {

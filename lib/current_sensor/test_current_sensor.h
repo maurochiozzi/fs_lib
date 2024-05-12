@@ -6,6 +6,7 @@
 #ifndef TEST_CURRENT_SENSOR
 #define TEST_CURRENT_SENSOR
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../minunit/minunit.h"
@@ -43,7 +44,7 @@ static char *test_current_sensor_initialized() {
 static char *test_current_sensor_not_initialized() {
     CurrentSensor sensor = {0};
 
-    mu_assert("error, sensor initialization misinterpreting",
+    mu_assert("error, sensor initialization misint32_terpreting",
               isCurrentSensorInitialized(&sensor) == 0);
 
     return 0;

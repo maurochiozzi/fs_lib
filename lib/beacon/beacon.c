@@ -7,6 +7,7 @@
 
 #include "beacon.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,7 +27,7 @@
  */
 void initBeacon(Beacon *beacon,
                 float magnetic_moment_rms, float frequency,
-                int sample_rate, int sample_size) {
+                int32_t sample_rate, int32_t sample_size) {
     beacon->initialized = 0;
 
     // Return early if sample_rate or sample_size are invalid
@@ -67,7 +68,7 @@ void initBeacon(Beacon *beacon,
  * This function checks if a Beacon object has been properly initialized by comparing
  * the calculated check sum and product to the stored values.
  */
-int isBeaconInitialized(Beacon *beacon) {
+int32_t isBeaconInitialized(Beacon *beacon) {
     // Return 0 if the beacon is NULL or not initialized
     if (beacon && beacon->initialized == 0) return 0;
 

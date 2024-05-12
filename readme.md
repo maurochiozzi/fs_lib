@@ -1,7 +1,7 @@
 '''
 #include "tests/main_test.h"
 
-int main(int argc, char \*\*argv) {
+int32_t main(int32_t argc, char \*\*argv) {
 main_test(argc, argv);
 
     return 0;

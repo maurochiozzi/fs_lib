@@ -5,6 +5,7 @@
 
 #include "magnetic_field.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -53,7 +54,7 @@ void initMagneticFieldSource(MagneticFieldSource *source, float magnetic_moment_
  *
  * @return 1 if the object has been initialized correctly, 0 otherwise.
  */
-int isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
+int32_t isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
     float check_sum = 0;
     float check_prd = 1;
 
@@ -69,31 +70,31 @@ int isMagneticFieldSourceInitialized(MagneticFieldSource *source) {
 }
 
 /**
- * @brief Calculates the magnetic field intensity at a given reference point.
+ * @brief Calculates the magnetic field int32_tensity at a given reference point.
  *
  * @param source A pointer to the MagneticFieldSource object representing the magnetic field source.
  * @param reference A pointer to the Coordinate object representing the reference point.
  *
- * @return The magnetic field intensity at the reference point.
+ * @return The magnetic field int32_tensity at the reference point.
  */
-float getMagneticIntensityFromSource(MagneticFieldSource *source, Coordinate *reference) {
+float getMagneticint32_tensityFromSource(MagneticFieldSource *source, Coordinate *reference) {
     float distance = euclideanDistance2(&source->position, reference);
 
-    float intensity = M_QUARTER_PI * source->magnetic_moment_rms / (distance * distance * distance) * 10000;
+    float int32_tensity = M_QUARTER_PI * source->magnetic_moment_rms / (distance * distance * distance) * 10000;
 
-    return intensity;
+    return int32_tensity;
 }
 
 /**
- * @brief Calculates the distance from the magnetic field source required to generate a specified intensity.
+ * @brief Calculates the distance from the magnetic field source required to generate a specified int32_tensity.
  *
  * @param source A pointer to the MagneticFieldSource object representing the magnetic field source.
- * @param intensity The specified intensity.
+ * @param int32_tensity The specified int32_tensity.
  *
- * @return The distance from the source required to generate the specified intensity.
+ * @return The distance from the source required to generate the specified int32_tensity.
  */
-float getMagneticSourceDistanceByIntensity(MagneticFieldSource *source, float intensity) {
-    float distance = cbrt(M_QUARTER_PI * source->magnetic_moment_rms / intensity * 10000);
+float getMagneticSourceDistanceByint32_tensity(MagneticFieldSource *source, float int32_tensity) {
+    float distance = cbrt(M_QUARTER_PI * source->magnetic_moment_rms / int32_tensity * 10000);
 
     return distance;
 }

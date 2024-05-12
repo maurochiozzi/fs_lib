@@ -3,15 +3,12 @@
 #ifndef TRANSMITTER_H
 #define TRANSMITTER_H
 
-#ifndef TRUNCATION
-#define TRUNCATION 1000.0
-#endif
-
-#if FS_COMPILER == 1
-#include FS_TARGET
-#endif
-
 #include "../../fs_config.h"
+
+#include FS_TARGET
+
+#include <stdint.h>
+
 #include "../beacon/beacon.h"
 #include "../current_sensor/current_sensor.h"
 #include "../sine_wave/sine_wave.h"
@@ -23,30 +20,24 @@ typedef struct Transmitter {
     CurrentSensor sensor;
     SineWave wave;
 
-    int signal_index;  // Indexer for signal writing
+    int32_t signal_index;  // Indexer for signal writing
 
-#if FS_COMPILER == 0
-    short int signal_output_pin;
-    short int signal_direction_pin;
-#else
-    short int signal_output_pin;
-    short int signal_direction_pin;
-#endif
+    int8_t signal_direction_pin;
+
     /**
      * @brief Flag indicating whether the Transmitter has been properly initialized.
      */
-    short int initialized;
+    int8_t initialized;
 } Transmitter;
 
-int initTransmitter(Transmitter *transmitter, SineWave *wave,
-                    short int signal_output_pin,
-                    short int signal_direction_pin);
+int32_t initTransmitter(Transmitter *transmitter, SineWave *wave,
+                        int8_t signal_direction_pin);
 
-float update(Transmitter *transmitter);
+float updateTransmitterSignal(Transmitter *transmitter);
 
-void write_signal(int pin, int signal);
-void set_direction(int pin, int direction);
+void write_signal(uint32_t value);
+void set_direction(int32_t pin, int32_t direction);
 
-int setCurrentSensor(Transmitter *transmitter, CurrentSensor *sensor);
+int32_t setCurrentSensor(Transmitter *transmitter, CurrentSensor *sensor);
 
 #endif

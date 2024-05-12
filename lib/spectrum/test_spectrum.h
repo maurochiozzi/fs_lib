@@ -6,6 +6,7 @@
 #ifndef TEST_SPECTRUM
 #define TEST_SPECTRUM
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "../minunit/minunit.h"
@@ -47,7 +48,7 @@ static char *test_spectrum_initialized() {
 static char *test_spectrum_not_initialized() {
     Spectrum spectrum = {0};
 
-    mu_assert("error, spectrum initialization misinterpreting",
+    mu_assert("error, spectrum initialization misint32_terpreting",
               isSpectrumInitialized(&spectrum) == 0);
 
     return 0;
